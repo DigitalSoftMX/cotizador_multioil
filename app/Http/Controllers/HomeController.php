@@ -97,7 +97,7 @@ class HomeController extends Controller
             }
 
             foreach ($terminal->competitions()->orderBy('created_at')->get() as $competition) {
-                return $terminal->competitions()->orderBy('created_at')->get();
+               // return $terminal->competitions()->orderBy('created_at')->get();
                 foreach ($competition->prices()->orderBy('created_at')->get() as $price) {
                     if ($price->created_at >= $firstDay) {
                         array_push($fechas2, $price->created_at->format('j - m'));

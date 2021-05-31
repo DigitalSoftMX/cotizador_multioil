@@ -113,7 +113,7 @@
 }
 .icon-persona-add-azul:before {
   content: "\e916";
-  color: #006caa;
+  color: #00ACE8;
 }
 .icon-persona-add-gris:before {
   content: "\e917";
@@ -121,7 +121,7 @@
 }
 .icon-personas-azul:before {
   content: "\e918";
-  color: #006caa;
+  color: #00ACE8;
 }
 .icon-personas-gris:before {
   content: "\e919";
@@ -156,7 +156,7 @@
 }
 .icon-vendedores-azul:before {
   content: "\e921";
-  color: #006caa;
+  color: #00ACE8;
 }
 .icon-vendedores-gris:before {
   content: "\e922";
