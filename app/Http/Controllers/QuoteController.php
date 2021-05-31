@@ -16,27 +16,18 @@ class QuoteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Discount $discount_model, Terminal $model, Fit $fit_model, Request $request)
+    public function index(Request $request)
     {
-
         $request->user()->authorizeRoles(['Administrador']);
-        /*$terminal_seleciona = $request['terminal'];
-        if ($terminal_seleciona == "") {
-            $terminal_seleciona = "1";
-        }*/
+        $precios_estaticos =  Competition::where('terminal_id', '3')->first()->prices->last();
 
-        $competicions = Competition::where('terminal_id', '3')->get()->last();
-        $precios_estaticos = $competicions->prices[count($competicions->prices) - 1];
+        $discount_r = Discount::where([['producto', 'M'], ['vigencia_now', true], ['nombre', 'Valero']])->first();
+        $discount_p = Discount::where([['producto', 'P'], ['vigencia_now', true], ['nombre', 'Valero']])->first();
+        $discount_d = Discount::where([['producto', 'D'], ['vigencia_now', true], ['nombre', 'Valero']])->first();
 
-        $terminals = $model::all();
-
-        $discount_r = $discount_model::where('producto', 'M')->where('vigencia_now', true)->where('nombre', 'Valero')->first();
-        $discount_p = $discount_model::where('producto', 'P')->where('vigencia_now', true)->where('nombre', 'Valero')->first();
-        $discount_d = $discount_model::where('producto', 'D')->where('vigencia_now', true)->where('nombre', 'Valero')->first();
-
-        $discount_r_p = $discount_model::where('producto', 'M')->where('vigencia_now', true)->where('nombre', 'Pemex')->first();
-        $discount_p_p = $discount_model::where('producto', 'P')->where('vigencia_now', true)->where('nombre', 'Pemex')->first();
-        $discount_d_p = $discount_model::where('producto', 'D')->where('vigencia_now', true)->where('nombre', 'Pemex')->first();
+        $discount_r_p = Discount::where([['producto', 'M'], ['vigencia_now', true], ['nombre', 'Pemex']])->first();
+        $discount_p_p = Discount::where([['producto', 'P'], ['vigencia_now', true], ['nombre', 'Pemex']])->first();
+        $discount_d_p = Discount::where([['producto', 'D'], ['vigencia_now', true], ['nombre', 'Pemex']])->first();
 
         $regular[][] = [];
         $premium[][] = [];
@@ -68,9 +59,7 @@ class QuoteController extends Controller
             }
         }
 
-        $fits = $fit_model::where('id', '3')->get()->last();
-
-        return view('cotizador.index', ['terminals' => $terminals, 'fits' => $fits, 'regular' => $regular, 'premium' => $premium, 'disel' => $disel, 'regular_pemex' => $regular_p, 'premium_pemex' => $premium_p, 'diesel_pemex' => $disel_p, 'precios_puebla' => $precios_estaticos]);
+        return view('cotizador.index', ['terminals' => Terminal::where([['id', '!=', 1], ['id', '!=', 2], ['id', '!=', 5]])->get(), 'fits' => Fit::find(3), 'regular' => $regular, 'premium' => $premium, 'disel' => $disel, 'regular_pemex' => $regular_p, 'premium_pemex' => $premium_p, 'diesel_pemex' => $disel_p, 'precios_puebla' => $precios_estaticos]);
     }
 
 
@@ -81,8 +70,8 @@ class QuoteController extends Controller
             $terminal_seleciona = "3";
         }
         $fits = $fit_model::where('terminal_id', $request['terminal'])->get()->last();
-        $competicions = Competition::where('terminal_id', $terminal_seleciona)->get()->last();
-        $precios = $competicions->prices[count($competicions->prices) - 1];
+        $competitions = Competition::where('terminal_id', $terminal_seleciona)->get()->last();
+        $precios = $competitions->prices[count($competitions->prices) - 1];
         $selecion = array('precios' => $precios, 'fits' => $fits);
         return json_encode($selecion);
     }
@@ -189,7 +178,6 @@ class QuoteController extends Controller
     public function store(Request $request, Valero $valero)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        //var_dump($request->all());
         $valero->create($request->all());
         return redirect()->route('cotizador.index')->withStatus(__('Precio agregado correctamente.'));
     }

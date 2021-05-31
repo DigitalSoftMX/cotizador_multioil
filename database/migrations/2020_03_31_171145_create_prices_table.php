@@ -16,9 +16,9 @@ class CreatePricesTable extends Migration
         Schema::create('prices', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('competition_id');
-            $table->double('precio_regular', 12, 3)->nullable();
-            $table->double('precio_premium', 12, 3)->nullable();
-            $table->double('precio_disel', 12, 3)->nullable();
+            $table->double('regular_price', 12, 3)->nullable();
+            $table->double('premium_price', 12, 3)->nullable();
+            $table->double('diesel_price', 12, 3)->nullable();
             $table->timestamps();
 
             $table->foreign('competition_id')->references('id')->on('competitions');

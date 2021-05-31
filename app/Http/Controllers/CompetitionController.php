@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Terminal;
 use App\Competition;
 use App\Price;
 
@@ -14,11 +13,10 @@ class CompetitionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Competition $model)
+    public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        $competicions = $model::all();
-        return view('competidores.index', compact('competicions'));
+        return view('competidores.index', ['competicions' => Competition::all()]);
     }
 
     public function competencia_selec(Request $request, Competition $model, Price $price)
@@ -44,7 +42,7 @@ class CompetitionController extends Controller
         $competicions = Competition::all();
         return view('competidores.create', compact('competicions'));
     }
-    
+
     public function calendario_edit_pemex(Request $request, Price $price)
     {
         $terminal_seleciona = $request['idTerminal'];
@@ -57,15 +55,15 @@ class CompetitionController extends Controller
             $terminal_seleciona = "3";
         }
 
-        if($price::where('competition_id', $terminal_seleciona)->where('created_at', 'like', '' . $fecha . '%')->update(['precio_regular' => $precio_r, 'precio_premium' =>$precio_p, 'precio_disel' => $precio_d])){
+        if ($price::where('competition_id', $terminal_seleciona)->where('created_at', 'like', '' . $fecha . '%')->update(['precio_regular' => $precio_r, 'precio_premium' => $precio_p, 'precio_disel' => $precio_d])) {
             $mensaje = 'Precios actualizados correctamente.';
             $color = 'success';
-        }else{
+        } else {
             $mensaje = 'Error al actualizar los precios.';
             $color = 'danger';
         }
-        
-        $selecion = array('mensaje' => $mensaje,'color' => $color);
+
+        $selecion = array('mensaje' => $mensaje, 'color' => $color);
         return json_encode($selecion);
     }
 

@@ -1,15 +1,12 @@
 <?php
+
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use DB;
-use App\Role;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,20 +27,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('*', function($view)
-        {
-            $datos=[];
-            if(Auth::check()) {
+        view()->composer('*', function ($view) {
+            $datos = [];
+            if (Auth::check()) {
                 $user_rol = Auth::user();
                 $roles = DB::table('menu_role')->where('role_id', $user_rol->roles[0]->id)->get();
 
                 foreach ($roles as $rol) {
                     $menus = DB::table('menus')->where('id', $rol->menu_id)->get();
-                    array_push($datos, $menus);   
-                }         
+                    array_push($datos, $menus);
+                }
                 View::share('menus', $datos);
-
-            }else {
+            } else {
                 $view->with('menus', null);
             }
         });

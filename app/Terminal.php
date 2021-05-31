@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Terminal extends Model
 {
+    protected $fillable = ['business_name', 'rfc', 'name', 'status', 'postcode', 'kind_road', 'name_road', 'n_outsice', 'n_inside', 'settlement', 'location', 'town', 'state'];
 
     public function fits()
     {
-        return $this->hasMany('App\Fit');
+        return $this->hasMany(Fee::class);
     }
 
     public function fit()
@@ -51,7 +52,4 @@ class Terminal extends Model
     {
         return $this->hasMany('App\Energo');
     }
-    protected $fillable = [
-        'id', 'razon_social', 'rfc', 'nombre_terminal', 'status', 'codigo_postal', 'tipo_de_vialidad', 'nombre_de_vialidad', 'n_exterior', 'n_interior',
-    ];
 }
