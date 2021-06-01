@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Terminal;
 use App\Policon;
 use App\PricePolicon;
 

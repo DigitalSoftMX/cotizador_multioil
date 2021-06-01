@@ -26,13 +26,10 @@ class HomeController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador', 'Invitado', 'Vendedor', 'Ventas']);
 
-        $day = date("d", mktime(0, 0, 0, date('m') + 1, 0, date('m')));
         $firstDay = date('Y-m-d', mktime(0, 0, 0, date('m'), 1, date('Y')));
         $terminales = array();
-
         /* Precios Multioil */
         $precios_aar_multioil = array();
-
         $meses_espaniol = array();
         $mes = array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
         for ($i = 1; $i <= date('m'); $i++) {
@@ -110,8 +107,8 @@ class HomeController extends Controller
                         array_push($precios_aar_premium, floatval($price->precio_premium) - 0.90);
                         array_push($precios_aar_diesel, floatval($price->precio_disel) - 1.70);
                     }
-                }
 
+                }
                 array_push($precios_aar_multioil, $precios_aar_regular, $precios_aar_premium, $precios_aar_diesel);
             }
 

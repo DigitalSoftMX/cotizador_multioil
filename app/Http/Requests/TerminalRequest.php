@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Terminal;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TerminalRequest extends FormRequest
@@ -15,7 +13,7 @@ class TerminalRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -26,14 +24,17 @@ class TerminalRequest extends FormRequest
     public function rules()
     {
         return [
-
-            'razon_social' => [
-                'required', 'min:3'
-            ],
-            'status' => [
-                'required',
-            ],
-            
+            'business_name' => 'required|min:3',
+            'rfc' => 'required|min:3',
+            'name' => 'required|min:3',
+            'postcode' => 'required|integer',
+            'kind_road' => 'required|min:3',
+            'name_road' => 'required|min:3',
+            'n_outsice' => 'required|integer',
+            'settlement' => 'required|min:3',
+            'location' => 'required|min:3',
+            'town' => 'required|min:3',
+            'state' => 'required|min:3',
         ];
     }
 }

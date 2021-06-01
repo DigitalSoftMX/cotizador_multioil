@@ -57,34 +57,16 @@ Route::group(['middleware' => 'auth'], function () {
 	})->name('upgrade');
 });
 
-/*Route::group(['middleware' => 'auth'], function () {
-	Route::resource('user', 'UserController', ['except' => ['show']]);
-	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
-	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
-	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
-});
-*/
-// Auth::routes();
-
-//Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
-
-
-//rutas para conseguir los menus
-//Route::get('/home', 'MenuController@index')->name('home')->middleware('auth');
-
-
 Route::group(['middleware' => 'auth'], function () {
-	Route::resource('user', 'UserController', ['except' => ['show']]);
+	Route::resource('users', 'UserController', ['except' => ['show']]);
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 });
-
 // rutas de actividades
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('actividades', 'LoginActController');
 });
-
 // rutas de competidores
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('competencia', 'CompetitionController');
@@ -96,8 +78,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('competencia/competencia_selec', 'CompetitionController@competencia_selec');
 	Route::post('competencia/calendario_edit_pemex', 'CompetitionController@calendario_edit_pemex');
 });
-
-
 // rutas de policon
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('policon', 'PoliconController');
@@ -109,8 +89,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('policon/policon_selec', 'PoliconController@policon_selec');
 	Route::post('policon/calendario_edit_policon', 'PoliconController@calendario_edit_policon');
 });
-
-
 // rutas de impulsa
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('impulsa', 'ImpulsaController');
@@ -122,7 +100,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('impulsa/impulsa_selec', 'ImpulsaController@impulsa_selec');
 	Route::post('impulsa/calendario_edit_impulsa', 'ImpulsaController@calendario_edit_impulsa');
 });
-
 // rutas de hamse
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('hamse', 'HamseController');
@@ -134,7 +111,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('hamse/hamse_selec', 'HamseController@hamse_selec');
 	Route::post('hamse/calendario_edit_hamse', 'HamseController@calendario_edit_hamse');
 });
-
 // rutas de potesta
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('potesta', 'PotestaController');
@@ -146,7 +122,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('potesta/potesta_selec', 'PotestaController@potesta_selec');
 	Route::post('potesta/calendario_edit_potesta', 'PotestaController@calendario_edit_potesta');
 });
-
 // rutas de energo
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('energo', 'EnergoController');
@@ -158,23 +133,17 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('energo/energo_selec', 'EnergoController@energo_selec');
 	Route::post('energo/calendario_edit_energo', 'EnergoController@calendario_edit_energo');
 });
-
-
 // rutas de estaciones
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('estaciones', 'EstacionController');
 	Route::post('estaciones/edit', 'EstacionController@edit');
 });
-
-// rutas terminales
+// rutas terminales y FEE
 Route::group(['middleware' => 'auth'], function () {
-	Route::resource('terminales', 'TerminalController');
-	Route::post('terminales/update/{id}', 'TerminalController@update')->name('terminales.update');
-	Route::post('terminales/create', 'TerminalController@create');
-	Route::post('terminales/store', 'TerminalController@store');
-	Route::delete('terminales/destroy/{id}', 'TerminalController@destroy')->name('terminales.destroy');
+	Route::resource('terminals', 'TerminalController', ['except' => ['show']]);
+	Route::resource('fits', 'FeeController', ['except' => ['show', 'edit', 'update', 'destroy']]);
+	Route::resource('companies', 'CompanyController');
 });
-
 //rutas pemex
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('pemex', 'PemexController');
@@ -182,19 +151,11 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('pemex/store', 'PemexController@store');
 });
 
-// rutas terminales
-Route::group(['middleware' => 'auth'], function () {
-	Route::resource('fits', 'FitController');
-	Route::post('fits/update/{id}', 'FitController@update')->name('fits.update');
-	Route::post('fits/create', 'FitController@create');
-	Route::post('fits/store', 'FitController@store');
-	Route::delete('fits/destroy/{id}', 'FitController@destroy')->name('fits.destroy');
-});
 
 //rutas cotizador
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('cotizador', 'QuoteController');
-	Route::post('cotizador/store', 'QuoteController@store');
+	// Route::post('cotizador/store', 'QuoteController@store');
 	Route::any('cotizador_sele', 'QuoteController@cotizador_sele');
 	Route::any('calendario_selec', 'QuoteController@calendario_selec');
 	Route::any('calendario_edit', 'QuoteController@calendario_edit');
