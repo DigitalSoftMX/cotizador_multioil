@@ -107,8 +107,8 @@ class HomeController extends Controller
                         array_push($precios_aar_premium, floatval($price->precio_premium) - 0.90);
                         array_push($precios_aar_diesel, floatval($price->precio_disel) - 1.70);
                     }
-                }
 
+                }
                 array_push($precios_aar_multioil, $precios_aar_regular, $precios_aar_premium, $precios_aar_diesel);
             }
 
