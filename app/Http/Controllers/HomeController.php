@@ -94,18 +94,21 @@ class HomeController extends Controller
             }
 
             foreach ($terminal->competitions()->orderBy('created_at')->get() as $competition) {
-                foreach ($competition->prices()->whereDate('created_at', '>=', $firstDay)->get()->sortBy('created_at') as $price) {
-                    array_push($fechas2, $price->created_at->format('j - m'));
-                    array_push($precios_pemex_regular, $price->precio_regular);
-                    array_push($precios_pemex_premium, $price->precio_premium);
-                    array_push($precios_pemex_diesel, $price->precio_disel);
+               // return $terminal->competitions()->orderBy('created_at')->get();
+                foreach ($competition->prices()->orderBy('created_at')->get() as $price) {
+                    if ($price->created_at >= $firstDay) {
+                        array_push($fechas2, $price->created_at->format('j - m'));
+                        array_push($precios_pemex_regular, $price->precio_regular);
+                        array_push($precios_pemex_premium, $price->precio_premium);
+                        array_push($precios_pemex_diesel, $price->precio_disel);
 
-                    /* Obtenemos los precios de AAR */
-                    array_push($precios_aar_regular, floatval($price->precio_regular) - 0.90);
-                    array_push($precios_aar_premium, floatval($price->precio_premium) - 0.90);
-                    array_push($precios_aar_diesel, floatval($price->precio_disel) - 1.70);
+                        /* Obtenemos los precios de AAR */
+                        array_push($precios_aar_regular, floatval($price->precio_regular) - 0.90);
+                        array_push($precios_aar_premium, floatval($price->precio_premium) - 0.90);
+                        array_push($precios_aar_diesel, floatval($price->precio_disel) - 1.70);
+                    }
+
                 }
-
                 array_push($precios_aar_multioil, $precios_aar_regular, $precios_aar_premium, $precios_aar_diesel);
             }
 

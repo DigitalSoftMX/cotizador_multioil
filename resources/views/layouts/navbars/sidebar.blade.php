@@ -1,7 +1,7 @@
 <div class="sidebar" data-color="orange">
     <div class="logo">
         <center>
-            <img class="simple-text logo-normal" src="{{ asset('material/img/backend-logo.png') }}" width="100%">
+            <img class="simple-text logo-normal" src="{{asset('material/img/multioillogo.png')}}" width="100%">
             </img>
         </center>
     </div>
