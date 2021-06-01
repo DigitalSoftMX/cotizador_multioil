@@ -28,8 +28,8 @@
 }
 
 .menu-options .option input:checked + p {
-    color: #006BA9;
-    background-color: #FFD000;
+    color: #ffffff;
+    background-color: #13529E;
     transition: 500ms;
     transform: scale(1.1);
 }
@@ -191,7 +191,7 @@ select:focus .select{
 .options--content .btn-option{
     width: 126px;
     text-align: center;
-    background-color: #006BA9;
+    background-color: #13529E;
     color: #fff;
     border-radius: 6px;
     border: transparent;

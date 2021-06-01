@@ -138,11 +138,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('estaciones', 'EstacionController');
 	Route::post('estaciones/edit', 'EstacionController@edit');
 });
-// rutas terminales y FEE
+// rutas terminales, FEE, empresas y captura de precios
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('terminals', 'TerminalController', ['except' => ['show']]);
 	Route::resource('fits', 'FeeController', ['except' => ['show', 'edit', 'update', 'destroy']]);
 	Route::resource('companies', 'CompanyController');
+	
 });
 //rutas pemex
 Route::group(['middleware' => 'auth'], function () {
