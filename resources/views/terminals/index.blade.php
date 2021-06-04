@@ -24,8 +24,7 @@
                                     id="datatables" style="width:100%" width="100%">
                                     <thead class="text-primary">
                                         <th>{{ __('Nombre') }}</th>
-                                        <th>{{ __('RFC') }}</th>
-                                        <th>{{ __('Municipio') }}</th>
+                                        <th>{{ __('Ciudad') }}</th>
                                         <th>{{ __('Estado') }}</th>
                                         <th>{{ __('Status') }}</th>
                                         <th>{{ __('Fecha de Alta') }}</th>
@@ -34,9 +33,8 @@
                                     <tbody>
                                         @foreach ($terminals as $terminal)
                                             <tr>
-                                                <td>{{ $terminal->business_name }}</td>
-                                                <td>{{ $terminal->rfc }}</td>
-                                                <td>{{ $terminal->location }}</td>
+                                                <td>{{ $terminal->name }}</td>
+                                                <td>{{ $terminal->town }}</td>
                                                 <td>{{ $terminal->state }}</td>
                                                 <td>{{ $terminal->status == 1 ? 'Activa' : 'Inactiva' }}</td>
                                                 <td>{{ $terminal->created_at->format('Y/m/d') }}</td>
@@ -69,3 +67,12 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script src="{{ asset('js/ventas.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            loadTable('datatables');
+        });
+
+    </script>
+@endpush

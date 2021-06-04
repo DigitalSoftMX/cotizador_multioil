@@ -15,19 +15,15 @@ class CreateTerminalsTable extends Migration
     {
         Schema::create('terminals', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('business_name');
-            $table->string('rfc');
             $table->string('name');
-            $table->integer('status');
             $table->string('postcode');
-            $table->string('kind_road');
             $table->string('name_road');
             $table->string('n_outsice');
-            $table->string('n_inside');
-            $table->string('settlement')->nullable();
-            $table->string('location')->nullable();
             $table->string('town')->nullable();
             $table->string('state')->nullable();
+            $table->double('latitude');
+            $table->double('longitude');
+            $table->integer('status');
             $table->timestamps();
         });
     }

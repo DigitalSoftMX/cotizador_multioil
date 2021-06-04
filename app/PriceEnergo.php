@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class PriceEnergo extends Model
 {
     protected $fillable = [
-        'id','energo_id', 'precio_regular', 'precio_premium','precio_disel', 'created_at', 'updated_at',
+        'id', 'energo_id', 'precio_regular', 'precio_premium', 'precio_disel', 'created_at', 'updated_at',
     ];
+    // Relacion con la tabla energo
+    public function energo()
+    {
+        return $this->belongsTo(Energo::class);
+    }
 }

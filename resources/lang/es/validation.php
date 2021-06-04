@@ -195,5 +195,9 @@ return [
         'and_street' => 'y calle',
         'terminal_id' => 'terminal',
         'company_id' => 'empresa',
+        'continue' => 'continuar',
+        'latitude' => 'latitud',
+        'longitude' => 'longitud',
+        'kms' => 'kilómetros',
     ],
 ];

@@ -1,4 +1,5 @@
-@extends('layouts.app', ['activePage' => 'Fee', 'titlePage' => __('Fee')])
+@extends('layouts.app', ['activePage' => 'Captura de precios',
+'titlePage' => __('Captura de Precios de la competencia')])
 
 @section('content')
     <div class="content">
@@ -7,17 +8,15 @@
                 <div class="col-md-12 ">
                     <div class="card">
                         <div class="card-header card-header-primary">
-                            <h4 class="card-title ">{{ __('Fee') }}</h4>
-                            <p class="card-category">
-                                {{ __('Aquí puedes administrar todos los Fee de las terminales.') }}
-                            </p>
+                            <h4 class="card-title ">{{ __('Precios de la competencia') }}</h4>
+                            <p class="card-category">{{ __('Aquí puedes gestionar los precios de la competencia.') }}</p>
                         </div>
                         <div class="card-body">
                             @include('partials._notification')
                             <div class="row">
                                 <div class="col-12 text-right">
-                                    <a class="btn btn-sm btn-primary"
-                                        href="{{ route('fits.create') }}">{{ __('Agregar Fee') }}
+                                    <a class="btn btn-sm btn-primary" href="{{ route('prices.create') }}">
+                                        {{ __('Agregar Precio') }}
                                     </a>
                                 </div>
                             </div>
@@ -41,13 +40,13 @@
                                 <table cellspacing="0" class="table table-striped table-no-bordered table-hover"
                                     id="datatables" style="width:100%" width="100%">
                                     <thead class="text-primary">
-                                        <th>{{ __('Empresa') }}</th>
+                                        <th>{{ __('Competencia') }}</th>
                                         <th>{{ __('Terminal') }}</th>
-                                        <th>{{ __('Comision') }}</th>
-                                        <th>{{ __('Regular Fee') }}</th>
-                                        <th>{{ __('Premium Fee') }}</th>
-                                        <th>{{ __('Diesel Fee') }}</th>
+                                        <th>{{ __('Precio Regular') }}</th>
+                                        <th>{{ __('Precio Premium') }}</th>
+                                        <th>{{ __('Precio Diésel') }}</th>
                                         <th>{{ __('Fecha de Alta') }}</th>
+                                        <th>{{ __('Acciones') }}</th>
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -65,7 +64,7 @@
     <script>
         $(document).ready(function() {
             loadTable('datatables');
-            getFees(0);
+            getPrices(0);
         });
 
         $(".selectpicker").change(function() {
@@ -73,25 +72,32 @@
         });
         $('#input-company_id').change(function() {
             let company_id = document.getElementById('input-company_id').value;
-            getFees(company_id);
+            getPrices(company_id);
         });
 
-        async function getFees(company_id) {
+        async function getPrices(company_id) {
             try {
-                const data = await fetch(`companies/${company_id}`);
+                const data = await fetch(`prices/${company_id}`);
                 response = await data.json();
+                console.log(response);
                 destruir_table("datatables");
                 $('#datatables').find('tbody').empty();
-                response.fees.forEach(fee => {
+                response.prices.forEach(price => {
                     $("#datatables").find('tbody').append(/* html */
                         `<tr>
-                            <td> ${fee.company} </td>
-                            <td> ${fee.terminal} </td>
-                            <td> ${fee.commission} </td>
-                            <td> ${fee.regular_fit} </td>
-                            <td> ${fee.premium_fit} </td>
-                            <td> ${fee.diesel_fit} </td>
-                            <td> ${fee.created_at} </td>
+                            <td> ${price.company} </td>
+                            <td> ${price.terminal} </td>
+                            <td> ${price.regular} </td>
+                            <td> ${price.premium} </td>
+                            <td> ${price.diesel} </td>
+                            <td> ${price.created_at} </td>
+                            <td class="td-actions text-right">
+                                <a rel="tooltip" class="btn btn-success btn-link"
+                                    href="{{ url('') }}/prices/${price.id}/edit" data-original-title="" title="">
+                                    <i class="material-icons">edit</i>
+                                    <div class="ripple-container"></div>
+                                </a>
+                            </td>
                         </tr>`
                     );
                 });

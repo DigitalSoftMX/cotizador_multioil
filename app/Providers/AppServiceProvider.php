@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        date_default_timezone_set('America/Mexico_City');
         view()->composer('*', function ($view) {
             $datos = [];
             if (Auth::check()) {

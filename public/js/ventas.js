@@ -24,21 +24,47 @@
     }
 
     function loadTable(name) {
-        $('#' + name).DataTable({
+        table=$('#'+name).DataTable({
 
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ elementos por página",
-                "zeroRecords": "No hay ninguna coincidencia",
-                "info": "Página _PAGE_ de _PAGES_",
-                "infoEmpty": "No hay datos que mostrar",
-                "infoFiltered": "",
-                "search": '<i class="material-icons">search</i>',
-                "paginate": {
-                    "next": "Siguiente",
-                    "previous": "Anterior"
-                },
+            responsive: true,
+            dom: 'Blfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    className: 'btn btn-sm btn-success',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }
+            ],
+            'pageLength': 10,
+            'lengthMenu': [[10, 20, 25, 50, -1], [10, 20, 25, 50, 'Todos']],
+            language: {
+              search: "_INPUT_",
+              searchPlaceholder: "",
+              processing:     "Transformación...",
+              search:         "Buscar:",
+              lengthMenu:     "Mostrar _MENU_ Resultados",
+              info:           "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+              infoEmpty:      "0 Entradas de 0 Disponibles",
+              infoFiltered:   "(filtrado de entre _MAX_ elementos disponibles)",
+              infoPostFix:    "",
+              loadingRecords: "Cargando...",
+              zeroRecords:    "No se encontraron elementos coincidentes.",
+              emptyTable:     "No hay datos disponibles.",
+              paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+              },
+              aria: {
+                sortAscending : "active para ordenar la columna en orden ascendente",
+                sortDescending: "active para ordenar la columna en orden descendente"
+              }
             }
-        });
+            
+          });
     }
 
     function destruir_table(nombre_tabla) {

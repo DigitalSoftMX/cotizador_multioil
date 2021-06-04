@@ -6,13 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Terminal extends Model
 {
-    protected $fillable = ['business_name', 'rfc', 'name', 'status', 'postcode', 'kind_road', 'name_road', 'n_outsice', 'n_inside', 'settlement', 'location', 'town', 'state'];
-
+    protected $fillable = ['latitude', 'longitude', 'name', 'status', 'postcode', 'name_road', 'n_outsice', 'town', 'state'];
+    // Relacion con los fees
     public function fits()
     {
         return $this->hasMany(Fee::class);
     }
-
+    // Relacion con los precios
+    public function prices()
+    {
+        return $this->hasMany(CompetitionPrice::class);
+    }
     public function fit()
     {
         return $this->belongsTo('App\Fit', 'id', 'terminal_id');

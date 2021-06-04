@@ -30,31 +30,69 @@ class Activities
             if ($company_id == null) {
                 foreach (Company::all() as $company) {
                     $fee = $terminal->fits->where('company_id', $company->id)->last();
-                    if ($fee != null) {
-                        $data['terminal'] = $fee->terminals->business_name;
-                        $data['company'] = $fee->companies->name;
-                        $data['commission'] = '$ ' . $fee->commission;
-                        $data['regular_fit'] = '$ ' . $fee->regular_fit;
-                        $data['premium_fit'] = '$ ' . $fee->premium_fit;
-                        $data['diesel_fit'] = '$ ' . $fee->diesel_fit;
-                        $data['created_at'] = $fee->created_at->format('Y/m/d');
-                        array_push($fees, $data);
-                    }
+                    $fees = $fee != null ? $this->dataFees($fee, $fees) : $fees;
                 }
             } else {
                 $fee = $terminal->fits->where('company_id', $company_id)->last();
-                if ($fee != null) {
-                    $data['terminal'] = $fee->terminals->business_name;
-                    $data['company'] = $fee->companies->name;
-                    $data['commission'] = '$ ' . $fee->commission;
-                    $data['regular_fit'] = '$ ' . $fee->regular_fit;
-                    $data['premium_fit'] = '$ ' . $fee->premium_fit;
-                    $data['diesel_fit'] = '$ ' . $fee->diesel_fit;
-                    $data['created_at'] = $fee->created_at->format('Y/m/d');
-                    array_push($fees, $data);
-                }
+                $fees = $fee != null ? $this->dataFees($fee, $fees) : $fees;
             }
         }
         return $fees;
+    }
+    // llenado de fees
+    private function dataFees($fee, $fees)
+    {
+        $data['terminal'] = $fee->terminals->business_name;
+        $data['company'] = $fee->companies->name;
+        $data['commission'] = '$ ' . $fee->commission;
+        $data['regular_fit'] = '$ ' . $fee->regular_fit;
+        $data['premium_fit'] = '$ ' . $fee->premium_fit;
+        $data['diesel_fit'] = '$ ' . $fee->diesel_fit;
+        $data['created_at'] = $fee->created_at->format('Y/m/d');
+        array_push($fees, $data);
+        return $fees;
+    }
+    // copiando de los competidores a competition_prices
+    public function fillDataPrices($company, $terminal, $price)
+    {
+        $data = [
+            'company_id' => $company,
+            'terminal_id' => $terminal,
+            'regular' => $price->precio_regular != null ? $price->precio_regular : 0,
+            'premium' => $price->precio_premium != null ? $price->precio_premium : 0,
+            'diesel' => $price->precio_disel != null ? $price->precio_disel : 0,
+            'created_at' => $price->created_at,
+            'updated_at' => $price->updated_at
+        ];
+        return $data;
+    }
+    public function getPrices($company_id = null)
+    {
+        $prices = array();
+        foreach (Terminal::all() as $terminal) {
+            if ($company_id == null) {
+                foreach (Company::all() as $company) {
+                    $price = $terminal->prices->where('company_id', $company->id)->last();
+                    $prices = $price != null ? $this->dataPrices($price, $prices) : $prices;
+                }
+            } else {
+                $price = $terminal->prices->where('company_id', $company_id)->last();
+                $prices = $price != null ? $this->dataPrices($price, $prices) : $prices;
+            }
+        }
+        return $prices;
+    }
+    // llenado de precios
+    private function dataPrices($price, $prices)
+    {
+        $data['id'] = $price->id;
+        $data['terminal'] = $price->terminal->business_name;
+        $data['company'] = $price->company->name;
+        $data['regular'] = '$ ' . $price->regular;
+        $data['premium'] = '$ ' . $price->premium;
+        $data['diesel'] = '$ ' . $price->diesel;
+        $data['created_at'] = $price->created_at->format('Y/m/d');
+        array_push($prices, $data);
+        return $prices;
     }
 }

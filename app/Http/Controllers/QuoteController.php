@@ -100,65 +100,6 @@ class QuoteController extends Controller
         return json_encode($selecion);
     }
 
-    public function flete(Request $request)
-    {
-        $request->user()->authorizeRoles(['Administrador', 'Invitado', 'Vendedor', 'Ventas']);
-        $display = "block";
-        if (auth()->user()->roles[0]->name == 'Invitado') {
-            $display = "none";
-        }
-
-
-        /* Asignación temporal, debe llevarse a un modelo, controlador,
-         migracion y guardado en la base de datos   */
-
-        $locations = array();
-
-        $station['name'] = 'Monterrey Cadereyta';
-        $station['address'] = 'Autopista Monterrey Reynosa km. 32 s/n colonia centro municipio Cadereyta Jimenez Nuevo León, C.P. 67480';
-        $station['longitude'] = -99.97349;
-        $station['latitude'] = 25.60259;
-        array_push($locations, $station);
-
-        $station['name'] = 'Guadalajara Silos Tysa';
-        $station['address'] = 'Camino a Industrias GOSA # 133, San Jose del Castillo entre camino al Conico y Carretera a la capilla C.P. 45679, El Salto, Jalisco, México';
-        $station['longitude'] = -103.227684;
-        $station['latitude'] = 20.477778;
-        array_push($locations, $station);
-
-        $station['name'] = 'Nuevo Laredo';
-        $station['address'] = 'NuStar Internacional Terminal de Nuevo Laredo';
-        $station['longitude'] = -99.585476;
-        $station['latitude'] = 27.594878;
-        array_push($locations, $station);
-
-        $station['name'] = 'Chihuahua (Cd. Cuauhtémoc)';
-        $station['address'] = 'Prologación Juarez y Gómez Mórin Campo 25 (Brecha al campo 24) 1.8 km la segunda bodega C.d Cuauhtemoc, Chihuahua';
-        $station['longitude'] = -106.844421;
-        $station['latitude'] = 28.449421;
-        array_push($locations, $station);
-
-        $station['name'] = 'Puebla (Huejotzingo)';
-        $station['address'] = 'Kilometro 4.8 libramiento autopista Mexico - Puebla s/n camino al Aereopuerto Hermanos Serdán';
-        $station['longitude'] = -98.360400;
-        $station['latitude'] = 19.207747;
-        array_push($locations, $station);
-
-        $station['name'] = 'Veracruz (Nvo. Puerto de Veracruz)';
-        $station['address'] = 'Terminal de refinados Veracruz. Nuevo Puerto de Veracruz';
-        $station['longitude'] = -96.171805;
-        $station['latitude'] = 19.245784;
-        array_push($locations, $station);
-
-        $station['name'] = 'Edo. de México (Tizayuca)';
-        $station['address'] = 'Carretera Otumba - Axapusco - Temascalapa km 289 Tizayuca, Edo de México.';
-        $station['longitude'] = -98.899701;
-        $station['latitude'] = 19.831391;
-        array_push($locations, $station);
-
-        return view('flete.index', ['display' => $display, 'locations' => $locations]);
-    }
-
     /**
      * Show the form for creating a new resource.
      *
