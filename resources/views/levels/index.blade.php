@@ -185,7 +185,6 @@
             total = myroute.legs[0].distance.text;
             total_km = myroute.legs[0].distance.value / 1000;
 
-            document.getElementById("distancia-recorrer").value = total_km;
             document.getElementById('prev-map').style.display = "none";
             document.getElementById('map').style.display = "block";
             cotizar_viaje();
@@ -196,6 +195,7 @@
             let distance = parseFloat(total_km);
             let liters = document.getElementById("liters").value;
             let levels = @json($levels);
+            let monto = 0;
             levels.forEach(level => {
                 if (level.kms <= distance) {
                     shipping = level.price;
@@ -203,10 +203,18 @@
                 }
             });
             let lastLevel = levels.pop();
-            let monto = shipping * liters;
-            document.getElementById("costo-envio").value = shipping.toFixed(3);
-            document.getElementById("monto-total").value = '$ ' + monto.toFixed(3).replace(/\d(?=(\d{3})+\.)/g, '$&,') +
-                " (Precio sin IVA)";
+            monto = distance <= lastLevel.kms ? shipping * liters : 0;
+
+            document.getElementById("costo-envio").value = monto != 0 ?
+                '$ ' + shipping.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') :
+                'Ubicación fuera de los límites';
+
+            document.getElementById("monto-total").value = monto != 0 ?
+                '$ ' + monto.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') +
+                " (Precio sin IVA)" : 'Ubicación fuera de los límites';
+
+            document.getElementById("distancia-recorrer").value = monto != 0 ?
+                total_km + ' kms' : 'Ubicación fuera de los límites';
         }
 
     </script>

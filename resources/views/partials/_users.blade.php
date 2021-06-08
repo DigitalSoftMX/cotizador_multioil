@@ -107,6 +107,24 @@
                     <span id="name-rol" class="error text-danger" for="input-rol">{{ $errors->first('rol') }}</span>
                 @endif
             </div>
+            <div class="form-group{{ $errors->has('company_id') ? ' has-danger' : '' }} col-sm-3">
+                <select id="input-company_id" name="company_id"
+                    class="selectpicker show-menu-arrow {{ $errors->has('company_id') ? ' has-danger' : '' }}"
+                    data-style="btn-primary" data-width="100%" data-live-search="true">
+                    <option value="">{{ __('Elija un empresa') }}</option>
+                    @foreach ($companies as $company)
+                        @if (isset($user))
+                            <option value="{{ $company->id }}" @if (($u = $user->company_id) == $company->id) selected @endif>{{ $company->name }}</option>
+                        @else
+                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                        @endif
+                    @endforeach
+                </select>
+                @if ($errors->has('company_id'))
+                    <span id="name-company_id" class="error text-danger"
+                        for="input-company_id">{{ $errors->first('company_id') }}</span>
+                @endif
+            </div>
         </div>
     </div>
     <div class="card-footer ml-auto mr-auto">

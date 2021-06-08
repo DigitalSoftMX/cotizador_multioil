@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CompanyRequest;
 use App\Repositories\Activities;
+use App\Terminal;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -28,7 +30,7 @@ class CompanyController extends Controller
     public function create(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('companies.create');
+        return view('companies.create', ['terminals' => Terminal::all()]);
     }
 
     /**
@@ -37,11 +39,11 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        request()->validate(['name' => 'required|min:3']);
-        Company::create($request->only('name'));
+        $company = Company::create($request->all());
+        $company->terminals()->attach($request->terminal_id);
         return redirect()->route('companies.index')->withStatus('Empresa registrada correctamente');
     }
 
@@ -63,7 +65,7 @@ class CompanyController extends Controller
     public function edit(Request $request, Company $company)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('companies.edit', compact('company'));
+        return view('companies.edit', ['company' => $company, 'terminals' => Terminal::all()]);
     }
 
     /**
@@ -73,11 +75,20 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(CompanyRequest $request, Company $company)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        request()->validate(['name' => 'required|min:3']);
-        $company->update($request->only(['name']));
+        $company->update($request->except('active'));
+        foreach ($company->terminals as $terminal) {
+            if (!in_array($terminal->id, $request->terminal_id)) {
+                $company->terminals()->detach($terminal->id);
+            }
+        }
+        foreach ($request->terminal_id as $terminal_id) {
+            if (!$company->terminals->contains($terminal_id)) {
+                $company->terminals()->attach($terminal_id);
+            }
+        }
         return redirect()->route('companies.index')->withStatus('Se ha actualizado la empresa correctamente');
     }
 

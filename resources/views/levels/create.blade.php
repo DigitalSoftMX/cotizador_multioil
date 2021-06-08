@@ -66,7 +66,9 @@
                                     </form>
                                 </div>
                             </div>
-                            {{-- formulario para agregar nuevo nivel --}}
+                            <div class="row justify-content-center">
+                                <h4 class="card-category">{{ __('Lista de relación kilometro - precio') }}</h4>
+                            </div>
                             <div class="row justify-content-center mt-5">
                                 <div class="col-8">
                                     <div class="table-responsive">

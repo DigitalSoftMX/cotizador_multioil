@@ -42,7 +42,7 @@ class Activities
     // llenado de fees
     private function dataFees($fee, $fees)
     {
-        $data['terminal'] = $fee->terminals->business_name;
+        $data['terminal'] = $fee->terminals->name;
         $data['company'] = $fee->companies->name;
         $data['commission'] = '$ ' . $fee->commission;
         $data['regular_fit'] = '$ ' . $fee->regular_fit;
@@ -86,7 +86,7 @@ class Activities
     private function dataPrices($price, $prices)
     {
         $data['id'] = $price->id;
-        $data['terminal'] = $price->terminal->business_name;
+        $data['terminal'] = $price->terminal->name;
         $data['company'] = $price->company->name;
         $data['regular'] = '$ ' . $price->regular;
         $data['premium'] = '$ ' . $price->premium;
