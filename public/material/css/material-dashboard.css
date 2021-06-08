@@ -6528,6 +6528,17 @@ button.bg-danger:hover,
 button.bg-danger:focus {
   background-color: #ea1c0d !important;
 }
+.newstyle{
+ text-align: center;
+ font-weight: bold;
+ color: #13529e;
+}
+.newstyle2{
+  margin-top: 25px;
+  font-weight: bold;
+  color: #13529e;
+  text-align: center;
+ }
 
 .bg-light {
   background-color: #f8f9fa !important;

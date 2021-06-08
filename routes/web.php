@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('pemex', 'PemexController');
 	Route::post('pemex/create', 'PemexController@create');
 	Route::post('pemex/store', 'PemexController@store');
+	Route::resource('pedidos', 'PedidoController');
 });
 
 
