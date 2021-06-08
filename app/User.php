@@ -12,7 +12,7 @@ class User extends Authenticatable
     // Relacion con los roles
     public function roles()
     {
-        return $this->belongsToMany('App\Role');
+        return $this->belongsToMany(Role::class);
     }
 
     public function authorizeRoles($roles)

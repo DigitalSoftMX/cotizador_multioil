@@ -26,7 +26,7 @@
                                             data-style="btn-primary" data-width="100%" data-live-search="true">
                                             <option value="">{{ __('Elija una terminal') }}</option>
                                             @foreach ($terminals as $terminal)
-                                                <option value="{{ $terminal->id }}">{{ $terminal->business_name }}
+                                                <option value="{{ $terminal->id }}">{{ $terminal->name }}
                                                 </option>
                                             @endforeach
                                         </select>

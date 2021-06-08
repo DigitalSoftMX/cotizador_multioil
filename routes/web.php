@@ -75,10 +75,12 @@ Route::group(['middleware' => 'auth'], function () {
 // rutas terminales, FEE, empresas y captura de precios
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('terminals', 'TerminalController', ['except' => ['show']]);
+	Route::get('getcompanies/{terminal}', 'TerminalController@getCompanies')->name('getcompanies');
 	Route::resource('fits', 'FeeController', ['except' => ['show', 'edit', 'update', 'destroy']]);
 	Route::resource('companies', 'CompanyController');
 	Route::resource('prices', 'CompetitionPriceController');
 	Route::get('getprice/{terminal}/{company}/{date}', 'CompetitionPriceController@getPrice')->name('getprice');
+	Route::get('getlastprice/{company}/{terminal}', 'CompetitionPriceController@getLastPrice')->name('getlastprice');
 });
 //rutas pemex
 Route::group(['middleware' => 'auth'], function () {
@@ -90,7 +92,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 //rutas cotizador
 Route::group(['middleware' => 'auth'], function () {
-	Route::resource('cotizador', 'QuoteController');
+	Route::resource('quotes', 'QuoteController');
 	Route::any('cotizador_sele', 'QuoteController@cotizador_sele');
 	Route::any('calendario_selec', 'QuoteController@calendario_selec');
 	Route::any('calendario_edit', 'QuoteController@calendario_edit');

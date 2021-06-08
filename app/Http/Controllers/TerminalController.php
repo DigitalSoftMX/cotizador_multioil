@@ -81,4 +81,10 @@ class TerminalController extends Controller
         $terminal->delete();
         return redirect()->route('terminals.index')->withStatus(__('Terminal eliminada correctamente.'));
     }
+    // funcion para obtener la lista de empresas de la terminal
+    public function getCompanies(Request $request, Terminal $terminal)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        return response()->json(['companies' => $terminal->companies]);
+    }
 }

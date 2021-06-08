@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\User;
 use App\Role;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class UserController extends Controller
     public function create(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('users.create', ['roles' => Role::all()]);
+        return view('users.create', ['roles' => Role::all(), 'companies' => Company::all()]);
     }
 
     /**
@@ -43,6 +44,7 @@ class UserController extends Controller
     {
         $user = User::create($request->merge(['password' => bcrypt($request->password), 'active' => 1])->all());
         $user->roles()->sync($request->rol);
+        
         return redirect()->route('users.index')->withStatus(__('Usuario creado con éxito'));
     }
 

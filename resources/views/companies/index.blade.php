@@ -28,6 +28,10 @@
                                     id="datatables" style="width:100%" width="100%">
                                     <thead class="text-primary">
                                         <th>{{ __('Nombre') }}</th>
+                                        <th>{{ __('RFC') }}</th>
+                                        <th>{{ __('Dirección de entrega') }}</th>
+                                        <th>{{ __('Dirección fiscal') }}</th>
+                                        <th>{{ __('# Terminales') }}</th>
                                         <th>{{ __('Status') }}</th>
                                         <th>{{ __('Fecha de Alta') }}</th>
                                         <th>{{ __('Acciones') }}</th>
@@ -36,6 +40,10 @@
                                         @foreach ($companies as $company)
                                             <tr>
                                                 <td>{{ $company->name }}</td>
+                                                <td>{{ $company->rfc }}</td>
+                                                <td>{{ $company->delivery_address }}</td>
+                                                <td>{{ $company->fiscal_address }}</td>
+                                                <td>{{ $company->terminals->count() }}</td>
                                                 <td>{{ $company->status == 0 ? 'activo' : 'inactivo' }}</td>
                                                 <td>{{ $company->created_at->format('Y/m/d') }}</td>
                                                 <td class="td-actions text-right">

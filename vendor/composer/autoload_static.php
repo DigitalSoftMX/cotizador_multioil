@@ -525,6 +525,7 @@ class ComposerStaticInit56ac023881b004f4b68351295bc2df6c
         'App\\Http\\Controllers\\HamseController' => __DIR__ . '/../..' . '/app/Http/Controllers/HamseController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\ImpulsaController' => __DIR__ . '/../..' . '/app/Http/Controllers/ImpulsaController.php',
+        'App\\Http\\Controllers\\LevelController' => __DIR__ . '/../..' . '/app/Http/Controllers/LevelController.php',
         'App\\Http\\Controllers\\LoginActController' => __DIR__ . '/../..' . '/app/Http/Controllers/LoginActController.php',
         'App\\Http\\Controllers\\MenuController' => __DIR__ . '/../..' . '/app/Http/Controllers/MenuController.php',
         'App\\Http\\Controllers\\PemexController' => __DIR__ . '/../..' . '/app/Http/Controllers/PemexController.php',

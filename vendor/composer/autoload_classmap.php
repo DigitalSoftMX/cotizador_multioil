@@ -37,6 +37,7 @@ return array(
     'App\\Http\\Controllers\\HamseController' => $baseDir . '/app/Http/Controllers/HamseController.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
     'App\\Http\\Controllers\\ImpulsaController' => $baseDir . '/app/Http/Controllers/ImpulsaController.php',
+    'App\\Http\\Controllers\\LevelController' => $baseDir . '/app/Http/Controllers/LevelController.php',
     'App\\Http\\Controllers\\LoginActController' => $baseDir . '/app/Http/Controllers/LoginActController.php',
     'App\\Http\\Controllers\\MenuController' => $baseDir . '/app/Http/Controllers/MenuController.php',
     'App\\Http\\Controllers\\PemexController' => $baseDir . '/app/Http/Controllers/PemexController.php',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use Illuminate\Http\Request;
 use App\Terminal;
 use App\Fit;
@@ -19,47 +20,7 @@ class QuoteController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        $precios_estaticos =  Competition::where('terminal_id', '3')->first()->prices->last();
-
-        $discount_r = Discount::where([['producto', 'M'], ['vigencia_now', true], ['nombre', 'Valero']])->first();
-        $discount_p = Discount::where([['producto', 'P'], ['vigencia_now', true], ['nombre', 'Valero']])->first();
-        $discount_d = Discount::where([['producto', 'D'], ['vigencia_now', true], ['nombre', 'Valero']])->first();
-
-        $discount_r_p = Discount::where([['producto', 'M'], ['vigencia_now', true], ['nombre', 'Pemex']])->first();
-        $discount_p_p = Discount::where([['producto', 'P'], ['vigencia_now', true], ['nombre', 'Pemex']])->first();
-        $discount_d_p = Discount::where([['producto', 'D'], ['vigencia_now', true], ['nombre', 'Pemex']])->first();
-
-        $regular[][] = [];
-        $premium[][] = [];
-        $disel[][] = [];
-
-        $regular_p[][] = [];
-        $premium_p[][] = [];
-        $disel_p[][] = [];
-
-        for ($i = 1; $i < 11; $i++) {
-            $indice = "nivel_" . $i;
-
-            $discounts_arrayR = explode(",", $discount_r->$indice);
-            $discounts_arrayP = explode(",", $discount_p->$indice);
-            $discounts_arrayD = explode(",", $discount_d->$indice);
-
-            $discounts_arrayR_P = explode(",", $discount_r_p->$indice);
-            $discounts_arrayP_P = explode(",", $discount_p_p->$indice);
-            $discounts_arrayD_P = explode(",", $discount_d_p->$indice);
-
-            for ($j = 0; $j < 3; $j++) {
-                $regular[$i - 1][$j] = $discounts_arrayR[$j];
-                $premium[$i - 1][$j] = $discounts_arrayP[$j];
-                $disel[$i - 1][$j] = $discounts_arrayD[$j];
-
-                $regular_p[$i - 1][$j] = $discounts_arrayR_P[$j];
-                $premium_p[$i - 1][$j] = $discounts_arrayP_P[$j];
-                $disel_p[$i - 1][$j] = $discounts_arrayD_P[$j];
-            }
-        }
-
-        return view('cotizador.index', ['terminals' => Terminal::where([['id', '!=', 1], ['id', '!=', 2], ['id', '!=', 5]])->get(), 'fits' => Fit::find(3), 'regular' => $regular, 'premium' => $premium, 'disel' => $disel, 'regular_pemex' => $regular_p, 'premium_pemex' => $premium_p, 'diesel_pemex' => $disel_p, 'precios_puebla' => $precios_estaticos]);
+        return view('quote.index', ['terminals' => Terminal::all()]);
     }
 
 

@@ -56,4 +56,9 @@ class Terminal extends Model
     {
         return $this->hasMany('App\Energo');
     }
+    // Relacion con la empresa
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'companies_terminals');
+    }
 }

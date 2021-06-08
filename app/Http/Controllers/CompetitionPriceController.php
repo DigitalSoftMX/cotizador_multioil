@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\CompetitionPrice;
+use App\Fee;
 use App\Http\Controllers\Controller;
 use App\Price;
 use App\PriceEnergo;
@@ -192,5 +193,13 @@ class CompetitionPriceController extends Controller
             'premium' => $price != null ? $price->premium : null,
             'diesel' => $price != null ? $price->diesel : null
         ]);
+    }
+    // Metodo para obtener el ultimo precio por terminal y empresa
+    public function getLastPrice(Request $request, $company, $terminal)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        $prices = CompetitionPrice::where([['company_id', $company], ['terminal_id', $terminal]])->get()->last();
+        $fees = Fee::where([['company_id', $company], ['terminal_id', $terminal]])->get()->last();
+        return response()->json(['prices' => $prices, 'fees' => $fees]);
     }
 }
