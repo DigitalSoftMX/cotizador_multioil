@@ -33,7 +33,6 @@
                                                 <td>{{ $user->name }} {{ $user->app_name }} {{ $user->apm_name }}
                                                 </td>
                                                 <td>{{ $user->email }}</td>
-                                                <td></td>
                                                 <td>{{ $user->roles()->first()->name ?? '' }}</td>
                                                 <td>
                                                     {{ $user->created_at->format('Y-m-d') }}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\Terminal;
 use Illuminate\Http\Request;
 use App\Http\Requests\TerminalRequest;
@@ -82,9 +83,9 @@ class TerminalController extends Controller
         return redirect()->route('terminals.index')->withStatus(__('Terminal eliminada correctamente.'));
     }
     // funcion para obtener la lista de empresas de la terminal
-    public function getCompanies(Request $request, Terminal $terminal)
+    public function getCompanies(Request $request, Terminal $terminal = null)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return response()->json(['companies' => $terminal->companies]);
+        return response()->json(['companies' => $terminal != null ? $terminal->companies : Company::all()]);
     }
 }

@@ -199,5 +199,7 @@ return [
         'latitude' => 'latitud',
         'longitude' => 'longitud',
         'kms' => 'kilómetros',
+        'freight' => 'fletera',
+        'secure' => 'seguro'
     ],
 ];

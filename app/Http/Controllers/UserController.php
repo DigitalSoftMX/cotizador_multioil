@@ -42,10 +42,12 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        if ($request->rol != 1) {
+            request()->validate(['company_id' => 'required|integer']);
+        }
         $user = User::create($request->merge(['password' => bcrypt($request->password), 'active' => 1])->all());
         $user->roles()->sync($request->rol);
-        
-        return redirect()->route('users.index')->withStatus(__('Usuario creado con éxito'));
+        return redirect()->route('users.index')->withStatus(__('Usuario registrado correctamente'));
     }
 
     /**
@@ -57,7 +59,7 @@ class UserController extends Controller
     public function edit(Request $request, User $user)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('users.edit', ['user' => $user, 'roles' => Role::all()]);
+        return view('users.edit', ['user' => $user, 'roles' => Role::all(), 'companies' => Company::all()]);
     }
 
     /**
@@ -70,6 +72,9 @@ class UserController extends Controller
     public function update(UserRequest $request, User  $user)
     {
         $request->user()->authorizeRoles(['Administrador']);
+        if ($request->rol != 1) {
+            request()->validate(['company_id' => 'required|integer']);
+        }
         if ($request->password != null) {
             $user->update(['password' => bcrypt($request->password)]);
         }

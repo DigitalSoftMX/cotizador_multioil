@@ -75,7 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
 // rutas terminales, FEE, empresas y captura de precios
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('terminals', 'TerminalController', ['except' => ['show']]);
-	Route::get('getcompanies/{terminal}', 'TerminalController@getCompanies')->name('getcompanies');
+	Route::get('getcompanies/{terminal?}', 'TerminalController@getCompanies')->name('getcompanies');
 	Route::resource('fits', 'FeeController', ['except' => ['show', 'edit', 'update', 'destroy']]);
 	Route::resource('companies', 'CompanyController');
 	Route::resource('prices', 'CompetitionPriceController');
@@ -92,10 +92,11 @@ Route::group(['middleware' => 'auth'], function () {
 
 //rutas cotizador
 Route::group(['middleware' => 'auth'], function () {
-	Route::resource('quotes', 'QuoteController');
-	Route::any('cotizador_sele', 'QuoteController@cotizador_sele');
-	Route::any('calendario_selec', 'QuoteController@calendario_selec');
-	Route::any('calendario_edit', 'QuoteController@calendario_edit');
+	Route::resource('orders', 'OrderController', ['except' => ['create', 'edit', 'destroy']]);
+	Route::get('excel', 'OrderController@downloadExcel')->name('excel');
+	Route::resource('validations', 'ValidationController');
+	Route::post('validations/accept/{order}', 'ValidationController@accept')->name('accept');
+	Route::post('validations/deny/{order}', 'ValidationController@deny')->name('deny');
 });
 
 Route::group(['middleware' => 'auth'], function () {
@@ -157,12 +158,3 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::get('clientes/download/{name_file}', 'VendedorClienteController@download_client')->name('clientes.downloadclient');
-
-
-//Route::get('estaciones', ['as' => 'estaciones.index', 'uses' => 'EstacionController@index']);
-//Route::group(['middleware' => 'auth'], function () {
-	//Route::resource('user', 'UserController', ['except' => ['show']]);
-	//Route::get('estaciones', ['as' => 'estaciones.index', 'uses' => 'EstacionController@index']);
-	//Route::get('estaciones', ['as' => 'estaciones.edit', 'uses' => 'EstacionController@edit']);
-	//Route::put('estaciones', ['as' => 'estaciones.update', 'uses' => 'ProfileController@update']);
-//});

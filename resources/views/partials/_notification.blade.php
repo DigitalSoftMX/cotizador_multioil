@@ -1,7 +1,7 @@
 @if (session('status'))
     <div class="row">
         <div class="col-sm-12">
-            <div class="alert alert-success">
+            <div class="alert alert-{{ session('color') ?? 'success' }}">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <i class="material-icons">close</i>
                 </button>

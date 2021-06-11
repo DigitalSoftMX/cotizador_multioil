@@ -23,7 +23,12 @@ class CreateUsersTable extends Migration
             $table->integer('active')->nullable();
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
+            $table->unsignedBigInteger('company_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('company_id')->references('id')->on('companies')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

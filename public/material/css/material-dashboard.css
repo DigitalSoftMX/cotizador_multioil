@@ -29679,9 +29679,9 @@ select.selectpicker {
 }
 
 .btn.btn-warning {
-  background: #335aa6;
+  background: #e99801;
   color: white !important;
-  border-radius: 30px !important;
+  border-radius: 2px !important;
 }
 
 .cancelar {

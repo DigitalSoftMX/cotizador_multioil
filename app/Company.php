@@ -12,4 +12,9 @@ class Company extends Model
     {
         return $this->belongsToMany(Terminal::class, 'companies_terminals');
     }
+    // relacion con los usuarios
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

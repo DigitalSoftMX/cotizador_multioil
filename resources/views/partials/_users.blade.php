@@ -97,9 +97,10 @@
                     <option value="">{{ __('Elija un rol') }}</option>
                     @foreach ($roles as $rol)
                         @if (isset($user))
-                            <option value="{{ $rol->id }}" @if (($u = $user->roles->first()->id) == $rol->id) selected @endif>{{ $rol->name }}</option>
+                            <option id="r_{{ $rol->id }}" value="{{ $rol->id }}" @if (($u = $user->roles->first()->id ?? '') == $rol->id) selected @endif>{{ $rol->name }}</option>
                         @else
-                            <option value="{{ $rol->id }}">{{ $rol->name }}</option>
+                            <option id="r_{{ $rol->id }}" value="{{ $rol->id }}">{{ $rol->name }}
+                            </option>
                         @endif
                     @endforeach
                 </select>

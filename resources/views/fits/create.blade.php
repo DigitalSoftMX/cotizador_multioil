@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="row justify-content-center">
                                     <div class="form-group{{ $errors->has('commission') ? ' has-danger' : '' }} col">
-                                        <label for="commission">{{ __('commission') }}</label>
+                                        <label for="commission">{{ __('Comisión') }}</label>
                                         <input type="number" step="0.01"
                                             class="form-control{{ $errors->has('commission') ? ' is-invalid' : '' }}"
                                             id="input-commission" placeholder="0" aria-describedby="commissionHelp"
