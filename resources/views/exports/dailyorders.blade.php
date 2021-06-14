@@ -1,16 +1,16 @@
 <table>
     <thead>
         <tr>
-            <th rowspan="2" bgcolor="#10B9D3">{{ __('Ship To') }}</th>
-            <th rowspan="2" bgcolor="#10B9D3">{{ __('Estación') }}</th>
-            <th rowspan="2" bgcolor="#10B9D3">{{ __('Fecha') }}</th>
-            <th colspan="3" bgcolor="#10B9D3">{{ __('Producto') }}</th>
-            <th rowspan="2" bgcolor="#10B9D3">{{ __('Alias') }}</th>
+            <td align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Ship To') }}</td>
+            <td align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Estación') }}</td>
+            <td align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Fecha') }}</td>
+            <td align="center" colspan="3" bgcolor="#10B9D3">{{ __('Producto') }}</td>
+            <td align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Alias') }}</td>
         </tr>
         <tr>
-            <th bgcolor="#10B9D3">{{ __('Regular') }}</th>
-            <th bgcolor="#10B9D3">{{ __('Premium') }}</th>
-            <th bgcolor="#10B9D3">{{ __('Diésel') }}</th>
+            <td align="center" bgcolor="#10B9D3">{{ __('Regular') }}</td>
+            <td align="center" bgcolor="#10B9D3">{{ __('Premium') }}</td>
+            <td align="center" bgcolor="#10B9D3">{{ __('Diésel') }}</td>
         </tr>
     </thead>
     <tbody>
