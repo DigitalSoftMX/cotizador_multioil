@@ -18,7 +18,7 @@
                                 </h4>
                             </div>
                             <div class="card-body mt-5">
-                                <div class="row justify-content-md-start">
+                               
                                     <div
                                         class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-sm-3">
                                         <select id="input-terminal_id" name="terminal_id"
