@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Pedido;
+use App\Company;
+use App\Terminal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,8 @@ class PedidoController extends Controller
      */
     public function index()
     {
-       return view("Pedidos.index");
+        
+       return view("Pedidos.index", ['terminals' => Terminal::all()],['companies' => Company::all()]);
     }
 
     /**
@@ -37,6 +40,10 @@ class PedidoController extends Controller
     public function store(Request $request)
     {
         //
+        //$datosPedido=request()->all();
+        $datosPedido=request()->except('_token');
+        Pedido::insert($datosPedido);
+        return response()->json($datosPedido);
     }
 
     /**

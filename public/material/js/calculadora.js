@@ -47,11 +47,13 @@ function Suma() {
         dieselS = (isNaN(parseInt(dieselS)))? 0 : parseInt(dieselS);
       
       
-       document.calculadora.resultado.value = regularL+regularMa+regularMi+regularJ+regularV+regularS;
+       document.calculadora.totalR.value = regularL+regularMa+regularMi+regularJ+regularV+regularS;
 
-       document.calculadora.resultado2.value = premiumL+premiumMa+premiumMi+premiumJ+premiumV+premiumS;
+       document.calculadora.totalP.value = premiumL+premiumMa+premiumMi+premiumJ+premiumV+premiumS;
 
-       document.calculadora.resultado3.value = dieselL+dieselMa+dieselMi+dieselJ+dieselV+dieselS;
+       document.calculadora.totalD.value = dieselL+dieselMa+dieselMi+dieselJ+dieselV+dieselS;
+
+       document.calculadora.grantotal.value = regularL+regularMa+regularMi+regularJ+regularV+regularS+premiumL+premiumMa+premiumMi+premiumJ+premiumV+premiumS+dieselL+dieselMa+dieselMi+dieselJ+dieselV+dieselS;
         }
    //Si se produce un error no hacemos nada
    catch(e) {}

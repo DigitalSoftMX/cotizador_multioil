@@ -97,7 +97,7 @@
     <script>
         let date = new Date();
         let actualOrder = `${date.getMonth() + 1}-${date.getDate() + 1}-${date.getFullYear()}`;
-        init_calendar('calendar_first', actualOrder, actualOrder);
+        init_calendar('calendar_first', '06-14-2021','06-19-2021');
         // calculo de precio total pedido
         $(document).on("keyup", "#liters_r", function() {
             let litersR = document.getElementById('liters_r').value;
