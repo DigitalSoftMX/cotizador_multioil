@@ -1,22 +1,22 @@
 <table>
     <thead>
         <tr>
-            <td align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Ship To') }}</td>
-            <td align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Estación') }}</td>
-            <td align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Fecha') }}</td>
-            <td align="center" colspan="3" bgcolor="#10B9D3">{{ __('Producto') }}</td>
-            <td align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Alias') }}</td>
+            <td style="font-weight:bold" align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Ship To') }}</td>
+            <td style="font-weight:bold" align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Estación') }}</td>
+            <td style="font-weight:bold" align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Fecha') }}</td>
+            <td style="font-weight:bold" align="center" colspan="3" bgcolor="#10B9D3">{{ __('Producto') }}</td>
+            <td style="font-weight:bold" align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Alias') }}</td>
         </tr>
         <tr>
-            <td align="center" bgcolor="#10B9D3">{{ __('Regular') }}</td>
-            <td align="center" bgcolor="#10B9D3">{{ __('Premium') }}</td>
-            <td align="center" bgcolor="#10B9D3">{{ __('Diésel') }}</td>
+            <td style="font-weight:bold" align="center" bgcolor="#10B9D3">{{ __('Regular') }}</td>
+            <td style="font-weight:bold" align="center" bgcolor="#10B9D3">{{ __('Premium') }}</td>
+            <td style="font-weight:bold" align="center" bgcolor="#10B9D3">{{ __('Diésel') }}</td>
         </tr>
     </thead>
     <tbody>
         @foreach ($orders as $order)
             <tr>
-                <td>{{ __('6002936') }}</td>
+                <td style="font-weight:bold">{{ __('6002936') }}</td>
                 <td>{{ __('LA GUERRERA & OIL ENERGY S.A. DE C.V.') }}</td>
                 <td>{{ date('Y/m/d', strtotime($order->date)) }}</td>
                 <td>{{ number_format($order->total_r, 2) }}</td>

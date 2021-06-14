@@ -50,6 +50,13 @@ class EmailMultioilNotification
                         ->subject('Status orden de pedido');
                 });
                 break;
+            case 4:
+                Mail::send('emails.pedido', ['order' => $order], function ($o) use ($order) {
+                    $o->from($order->company->user->email, '')
+                        ->to('mesadecontrol@grupomultioil.com')
+                        ->subject('Orden de pedido Semanal');
+                });
+                break;
         }
     }
 }
