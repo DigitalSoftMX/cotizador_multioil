@@ -94,6 +94,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('orders', 'OrderController', ['except' => ['create', 'edit', 'destroy']]);
 	Route::get('excel', 'OrderController@downloadExcel')->name('excel');
+	Route::get('export', 'OrderController@export');
 	Route::resource('validations', 'ValidationController');
 	Route::post('validations/accept/{order}', 'ValidationController@accept')->name('accept');
 	Route::post('validations/deny/{order}', 'ValidationController@deny')->name('deny');

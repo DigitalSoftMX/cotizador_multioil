@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\CompetitionPrice;
 use App\Events\EmailMultioil;
+use App\Exports\OrdersExport;
 use App\Fee;
 use App\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Terminal;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -74,6 +76,11 @@ class OrderController extends Controller
     public function downloadExcel(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
+        return Excel::download(new OrdersExport, 'confirmacion_pedidos-diarios.xlsx');
         return 'generar excel';
+    }
+    public function export()
+    {
+        return view('exports.dailyorders', ['orders' => Order::all()]);
     }
 }
