@@ -25,7 +25,8 @@ class PedidoRequest extends FormRequest
     {
         return [
             'terminal_id' => 'required|integer',
-            'company_id' => 'required|integer'
+            'company_id' => 'required|integer',
+            'monday' => 'required|monday',
         ];
     }
 }

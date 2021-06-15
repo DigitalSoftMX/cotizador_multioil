@@ -9,11 +9,12 @@
 </head>
 
 <body>
-<br>
-   
-    <strong class="font-weight-bold">Fecha de solicitud: </strong>{{ now()->format('Y-m-d') }}<br><br>
-
-  
+    <br>
+    {{ isset($m) ? 'Su pedido ha sido denegado.' : 'Su pedido ha sido aceptado.' }} <br><br>
+    @isset($m)
+        <b>Motivo: </b> <b style="color:red;">{{ $m }}</b> <br>
+    @endisset
+    <strong>Detalles del pedido:</strong> <br>
     <table style="width:100%">
         <tr align="left">
             <th>Fecha/Producto</th>
@@ -75,9 +76,6 @@
      
     </table>
     <p>Total de litros: {{ number_format($order->grantotal, 0) }} LTS</p><br>
-    <p>¿Requiere flete?: {{ ($order->nflete) }} </p>
-    <p>¿Requiere seguro para su flete?: {{ ($order->nseguro) }} </p>
-    
 </body>
 
 </html>
