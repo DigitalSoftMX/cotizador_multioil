@@ -93,8 +93,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 //rutas cotizador
 Route::group(['middleware' => 'auth'], function () {
+	Route::get('pricescompany/{company_id}/{month}', 'HomeController@getPricesJson')->name('pricescompany');
 	Route::resource('orders', 'OrderController', ['except' => ['create', 'edit', 'destroy']]);
 	Route::get('excel', 'OrderController@downloadExcel')->name('excel');
+	Route::get('sales', 'OrderController@downloadSales')->name('sales');
 	Route::get('export', 'OrderController@export');
 	Route::resource('validations', 'ValidationController');
 	Route::post('validations/accept/{order}', 'ValidationController@accept')->name('accept');

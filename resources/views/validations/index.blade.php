@@ -45,10 +45,14 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="link2" aria-expanded="false">
-                                    <div class="row">
-                                        <div class="col-12 text-right">
+                                    <div class="row justify-content-end">
+                                        <div class="text-right">
                                             <a href="{{ route('excel') }}"
-                                                class="btn btn-sm btn-primary">{{ __('Descargar Excel') }}</a>
+                                                class="btn btn-sm btn-primary">{{ __('Excel Pedidos diarios') }}</a>
+                                        </div>
+                                        <div class="text-right">
+                                            <a href="{{ route('sales') }}"
+                                                class="btn btn-sm btn-primary">{{ __('Excel Ventas Impulsa') }}</a>
                                         </div>
                                     </div>
                                     <div class="table-responsive">

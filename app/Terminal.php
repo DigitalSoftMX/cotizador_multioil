@@ -61,4 +61,9 @@ class Terminal extends Model
     {
         return $this->belongsToMany(Company::class, 'companies_terminals');
     }
+    // Relacion con los precios
+    public function precios()
+    {
+        return $this->hasMany(CompetitionPrice::class);
+    }
 }

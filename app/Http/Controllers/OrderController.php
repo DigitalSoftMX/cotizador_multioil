@@ -76,11 +76,16 @@ class OrderController extends Controller
     public function downloadExcel(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return Excel::download(new OrdersExport, 'confirmacion_pedidos-diarios.xlsx');
-        return 'generar excel';
+        return Excel::download(new OrdersExport(1), 'confirmacion_pedidos-diarios.xlsx');
+    }
+    // Generar excel de ventas
+    public function downloadSales(Request $request)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        return Excel::download(new OrdersExport(2), 'Ventas_Impulsa.xlsx');
     }
     public function export()
     {
-        return view('exports.dailyorders', ['orders' => Order::all()]);
+        return view('exports.sales', ['orders' => Order::all()]);
     }
 }

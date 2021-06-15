@@ -1,4 +1,4 @@
-<table>
+<table border="1">
     <thead>
         <tr>
             <td style="font-weight:bold" align="center" rowspan="2" bgcolor="#10B9D3">{{ __('Ship To') }}</td>
