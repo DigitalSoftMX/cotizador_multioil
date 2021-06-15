@@ -88,6 +88,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('pemex/create', 'PemexController@create');
 	Route::post('pemex/store', 'PemexController@store');
 	Route::resource('pedidos', 'PedidoController');
+	Route::resource('validacion', 'validacionSController');
 });
 
 
@@ -95,10 +96,13 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('orders', 'OrderController', ['except' => ['create', 'edit', 'destroy']]);
 	Route::get('excel', 'OrderController@downloadExcel')->name('excel');
+	Route::get('excel2', 'PedidoController@downloadExcel')->name('excel2');
 	Route::get('export', 'OrderController@export');
 	Route::resource('validations', 'ValidationController');
 	Route::post('validations/accept/{order}', 'ValidationController@accept')->name('accept');
 	Route::post('validations/deny/{order}', 'ValidationController@deny')->name('deny');
+	Route::post('validacion/accept/{pedido}', 'validacionSController@accept')->name('accept');
+	Route::post('validacion/deny/{pedido}', 'validacionSController@deny')->name('deny');
 });
 
 Route::group(['middleware' => 'auth'], function () {

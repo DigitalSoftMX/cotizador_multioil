@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Exports\PedidosExport;
 use App\Pedido;
 use App\Company;
 use App\Events\EmailMultioil;
@@ -9,6 +9,7 @@ use App\Terminal;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PedidoRequest;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PedidoController extends Controller
 {
@@ -93,5 +94,15 @@ class PedidoController extends Controller
     public function destroy(Pedido $pedido)
     {
         //
+    }
+    public function downloadExcel(Request $request)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        return Excel::download(new PedidosExport, 'confirmacion_pedidos-semanales.xlsx');
+        return 'generar excel';
+    }
+    public function export()
+    {
+        return view('exports.semanlorders', ['Pedidos' => Pedido::all()]);
     }
 }
