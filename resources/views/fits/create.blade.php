@@ -3,7 +3,6 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
-
             <div class="row">
                 <div class="col-md-12">
                     <form action="{{ route('fits.store') }}" autocomplete="off" class="form-horizontal" method="post">
@@ -18,7 +17,7 @@
                                 </h4>
                             </div>
                             <div class="card-body mt-5">
-                               
+                                <div class="row">
                                     <div
                                         class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-sm-3">
                                         <select id="input-terminal_id" name="terminal_id"
@@ -40,10 +39,6 @@
                                             class="selectpicker show-menu-arrow {{ $errors->has('company_id') ? ' has-danger' : '' }}"
                                             data-style="btn-primary" data-width="100%" data-live-search="true">
                                             <option value="">{{ __('Elija una empresa') }}</option>
-                                            @foreach ($companies as $company)
-                                                <option value="{{ $company->id }}">{{ $company->name }}
-                                                </option>
-                                            @endforeach
                                         </select>
                                         @if ($errors->has('company_id'))
                                             <span id="name-company_id" class="error text-danger"
@@ -112,3 +107,31 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script>
+        $(".selectpicker").change(function() {
+            let terminal = document.getElementById('input-terminal_id').value;
+        });
+        $('#input-terminal_id').change(function() {
+            let terminal = document.getElementById('input-terminal_id').value;
+            getCompanies(terminal);
+        });
+        // lista de empresas relacionadas con la terminal
+        async function getCompanies(terminal_id) {
+            try {
+                const resp = await fetch('{{ url('') }}/getcompanies/' + terminal_id);
+                const companies = await resp.json();
+                $('#input-company_id').children('option').remove();
+                $('#input-company_id').append(`<option value="">Elija un empresa</option>`);
+                companies.companies.forEach(company => {
+                    $('#input-company_id').append(
+                        `<option id="c_${company.id}" value="${company.id}">${company.name}</option>`);
+                });
+                $('#input-company_id').selectpicker('refresh');
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+    </script>
+@endpush

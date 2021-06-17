@@ -77,3 +77,12 @@
         </div>
     </div>
 @endsection
+@push('js')
+    <script src="{{ asset('js/ventas.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            loadTable('datatables');
+        });
+
+    </script>
+@endpush

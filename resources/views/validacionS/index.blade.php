@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'Validación de pedidos semanales', 'titlePage' => __('Validación de pedidos semanales')])
+@extends('layouts.app', ['activePage' => 'Validacion P semanal', 'titlePage' => __('Validación de pedidos semanales')])
 
 @section('content')
     <div class="content">

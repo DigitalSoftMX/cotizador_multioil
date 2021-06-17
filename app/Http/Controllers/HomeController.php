@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\CompetitionPrice;
+use App\Terminal;
+use DateTime;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -25,7 +27,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['Administrador', 'Invitado', 'Ventas']);
+        $request->user()->authorizeRoles(['Administrador', 'Cliente', 'Ventas']);
         $months = [
             ['name' => 'Enero', 'id' => '01'],
             ['name' => 'Febrero', 'id' => '02'],
@@ -44,39 +46,81 @@ class HomeController extends Controller
         for ($i = 1; $i <= date('d'); $i++) {
             array_push($days, $i);
         }
-        $company = Company::all()->first();
+        $terminal = Terminal::all()->first();
+        if (auth()->user()->company_id != null) {
+            $prices = $terminal != null ? $this->getPrices($terminal->id, date('m'), auth()->user()->company_id) : [];
+        } else {
+            $prices = $terminal != null ? $this->getPrices($terminal->id, date('m')) : [];
+        }
+        // return $prices;
         return view('dashboard', [
             'months' => $months,
             'actualMonth' => date('m'),
-            'companies' => Company::all(),
+            'terminals' => Terminal::all(),
             'days' => $days,
-            'prices' => $company != null ? $this->getPrices($company->id, date('m')) : []
+            'prices' => $prices,
+            'pricesclient' => auth()->user()->roles->last()->id == 2 ? auth()->user()->company->prices->last() : ''
         ]);
     }
-    // respuesta json precios por empresa
-    public function getPricesJson(Request $request, $company_id, $month)
+    // respuesta json precios por terminal
+    public function getPricesJson(Request $request, $terminal_id, $month)
     {
-        $request->user()->authorizeRoles(['Administrador', 'Invitado', 'Ventas']);
-        return response()->json(['prices' => $this->getPrices($company_id, $month)]);
+        $request->user()->authorizeRoles(['Administrador', 'Cliente', 'Ventas']);
+        // Devolver la cantidad de dias del mes no actual
+        // numero de dias del mes
+        /* $days = [];
+        for ($i = 1; $i <= date('d'); $i++) {
+            array_push($days, $i);
+        } */
+        // calculando el ultimo dia del mes != nes actual
+        /* $start = date('Y') . '-' . $month . '-01';
+        $lastDay = date('d');
+        if ($month != date('m')) {
+            $lastDay = new DateTime($start);
+            $lastDay->modify('last day of this month');
+            $lastDay = $lastDay->format('d');
+        } */
+        return response()->json(['prices' => $this->getPrices($terminal_id, $month, auth()->user()->company_id != null ? auth()->user()->company_id : null)]);
     }
     // precios por empresa
-    private function getPrices($company_id, $month)
+    private function getPrices($terminal_id, $month, $company_id = null)
     {
+        $start = date('Y') . '-' . $month . '-01';
+        $lastDay = date('d');
+        if ($month != date('m')) {
+            $lastDay = new DateTime($start);
+            $lastDay->modify('last day of this month');
+            $lastDay = $lastDay->format('d');
+        }
         $prices = [];
-        foreach (($company = Company::find($company_id))->terminals as $terminal) {
-            /* $dataTerminal = CompetitionPrice::whereDate('created_at', '>=', date('Y') . '-' . date('m') . '-01')
-                ->whereDate('created_at', '<=', now()->format('Y-m-d')) */
-            $dataTerminal = CompetitionPrice::whereDate('created_at', '>=', '2020-' . $month . '-01')
-                ->whereDate('created_at', '<=', '2020-' . $month . '-14')
-                ->where([['terminal_id', $terminal->id], ['company_id', $company->id]])->get()->sortBy('created_at');
-            $data['name'] = $terminal->name;
+        if ($company_id != null) {
+            $companies = Company::where('id', 2)->orWhere('id', $company_id)->get();
+        } else {
+            $companies = Terminal::find($terminal_id)->companies;
+        }
+        foreach ($companies as $company) {
+            $dataCompany = CompetitionPrice::whereDate('created_at', '>=', $start)
+                ->whereDate('created_at', '<=', date('Y') . '-' . $month . '-' . $lastDay)
+                ->where([['terminal_id', $terminal_id], ['company_id', $company->id]])->get()->sortBy('created_at');
+            $data['name'] = $company->name;
             $data['regular'] = [];
             $data['premium'] = [];
             $data['diesel'] = [];
-            foreach ($dataTerminal as $product) {
-                array_push($data['regular'], $product->regular);
-                array_push($data['premium'], $product->premium);
-                array_push($data['diesel'], $product->diesel);
+            for ($i = 0; $i < (int)$lastDay; $i++) {
+                array_push($data['regular'], ',');
+                array_push($data['premium'], ',');
+                array_push($data['diesel'], ',');
+            }
+            foreach ($dataCompany as $product) {
+                $date = new DateTime($start);
+                for ($i = 0; $i < (int)$lastDay; $i++) {
+                    if ($product->created_at->format('Y-m-d') == $date->format('Y-m-d')) {
+                        $data['regular'][$i] = $product->regular;
+                        $data['premium'][$i] = $product->premium;
+                        $data['diesel'][$i] = $product->diesel;
+                    }
+                    $date->modify('+1 day');
+                }
             }
             array_push($prices, $data);
             $data = [];

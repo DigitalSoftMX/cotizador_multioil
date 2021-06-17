@@ -42,10 +42,19 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        if ($request->rol != 1) {
+        $request->user()->authorizeRoles(['Administrador']);
+        if ($request->rol == 2) {
             request()->validate(['company_id' => 'required|integer']);
         }
-        $user = User::create($request->merge(['password' => bcrypt($request->password), 'active' => 1])->all());
+        if ($request->rol == 4) {
+            request()->validate(['companies' => 'required']);
+        }
+        if ($request->rol == 4) {
+            $user = User::create($request->merge(['password' => bcrypt($request->password), 'active' => 1])->except(['company_id']));
+            $user->companies()->attach($request->companies);
+        } else {
+            $user = User::create($request->merge(['password' => bcrypt($request->password), 'active' => 1])->all());
+        }
         $user->roles()->sync($request->rol);
         return redirect()->route('users.index')->withStatus(__('Usuario registrado correctamente'));
     }

@@ -16,17 +16,17 @@
                         <div class="card-body">
                             @include('partials._notification')
                             <div class="row justify-content-md-start">
-                                <div class="form-group{{ $errors->has('company_id') ? ' has-danger' : '' }} col-sm-3">
-                                    <select id="input-company_id" name="company_id"
-                                        class="selectpicker show-menu-arrow {{ $errors->has('company_id') ? ' has-danger' : '' }}"
+                                <div class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-sm-3">
+                                    <select id="input-terminal_id" name="terminal_id"
+                                        class="selectpicker show-menu-arrow {{ $errors->has('terminal_id') ? ' has-danger' : '' }}"
                                         data-style="btn-primary" data-width="100%" data-live-search="true">
-                                        @foreach ($companies as $company)
-                                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                        @foreach ($terminals as $terminal)
+                                            <option value="{{ $terminal->id }}">{{ $terminal->name }}</option>
                                         @endforeach
                                     </select>
-                                    @if ($errors->has('company_id'))
-                                        <span id="name-company_id" class="error text-danger"
-                                            for="input-company_id">{{ $errors->first('company_id') }}</span>
+                                    @if ($errors->has('terminal_id'))
+                                        <span id="name-terminal_id" class="error text-danger"
+                                            for="input-terminal_id">{{ $errors->first('terminal_id') }}</span>
                                     @endif
                                 </div>
                                 <div class="form-group{{ $errors->has('month_id') ? ' has-danger' : '' }} col-sm-3">
@@ -46,6 +46,18 @@
                                 </div>
                             </div>
                             <div class="row justify-content-center">
+                                @if (auth()->user()->roles->last()->id == 2)
+                                    <div class="col-3">
+                                        <div class="card" style="width: 18rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Precio de gasolina</h5>
+                                                <strong>Regular: </strong> {{ $pricesclient->regular }} <br>
+                                                <strong>Premium: </strong> {{ $pricesclient->premium }} <br>
+                                                <strong>Diesel: </strong> {{ $pricesclient->diesel }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                                 <div id="carouselExampleIndicators0" class="carousel slide col-lg-9 col-md-12 col-sm-12"
                                     data-ride="carousel">
                                     <div class="carousel-inner">
@@ -115,23 +127,23 @@
         let chartDiesel = new Chart(document.getElementById("Diesel").getContext('2d'), configChart(pricesD));
 
         $(".selectpicker").change(function() {
-            let company_id = document.getElementById('input-company_id').value;
+            let terminal_id = document.getElementById('input-terminal_id').value;
             let month = document.getElementById('input-month_id').value;
         });
-        $('#input-company_id').change(function() {
-            let company_id = document.getElementById('input-company_id').value;
+        $('#input-terminal_id').change(function() {
+            let terminal_id = document.getElementById('input-terminal_id').value;
             let month = document.getElementById('input-month_id').value;
-            getPrices(company_id, month);
+            getPrices(terminal_id, month);
         });
         $('#input-month_id').change(function() {
-            let company_id = document.getElementById('input-company_id').value;
+            let terminal_id = document.getElementById('input-terminal_id').value;
             let month = document.getElementById('input-month_id').value;
-            getPrices(company_id, month);
+            getPrices(terminal_id, month);
         });
 
         async function getPrices(terminal, month) {
             try {
-                const resp = await fetch('{{ url('') }}/pricescompany/' + terminal + '/' + month);
+                const resp = await fetch('{{ url('') }}/pricesterminal/' + terminal + '/' + month);
                 const prices = await resp.json();
                 console.log(prices);
                 chartRegular.destroy();
@@ -141,7 +153,7 @@
                 pricesR = arrayPrices('r', prices.prices);
                 pricesP = arrayPrices('p', prices.prices);
                 pricesD = arrayPrices('d', prices.prices);
-
+// enviar numero de dias
                 chartRegular = new Chart(document.getElementById("Regular").getContext('2d'), configChart(pricesR));
                 chartPremium = new Chart(document.getElementById("Premium").getContext('2d'), configChart(pricesP));
                 chartDiesel = new Chart(document.getElementById("Diesel").getContext('2d'), configChart(pricesD));
@@ -169,7 +181,7 @@
             });
             return prices;
         }
-
+// recibir numero de dias por parametro
         function configChart(prices) {
             let config = {
                 type: 'line',

@@ -6,15 +6,8 @@ use App\Company;
 use App\CompetitionPrice;
 use App\Fee;
 use App\Http\Controllers\Controller;
-use App\Price;
-use App\PriceEnergo;
-use App\PriceHamse;
-use App\PriceImpulsa;
-use App\PricePolicon;
-use App\PricePotesta;
 use App\Repositories\Activities;
 use App\Terminal;
-use App\Valero;
 use Illuminate\Http\Request;
 
 class CompetitionPriceController extends Controller
@@ -27,69 +20,6 @@ class CompetitionPriceController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        $activity = new Activities();
-        // precios de pemex
-        foreach (Price::all() as $price) {
-            $name = $price->competition->nombre;
-            $company = Company::where('name', 'like', "%{$name}%")->first()->id;
-            $terminal = $price->competition->terminal_id;
-            $data = $activity->fillDataPrices($company, $terminal, $price);
-            CompetitionPrice::create($data);
-            $price->delete();
-        }
-        // precios de valero
-        foreach (Valero::all() as $valero) {
-            $company = Company::where('name', 'like', '%valero%')->first()->id;
-            $terminal = $valero->terminal_id;
-            $data = $activity->fillDataPrices($company, $terminal, $valero);
-            CompetitionPrice::create($data);
-            $valero->delete();
-        }
-        // Precios de energo
-        foreach (PriceEnergo::all() as $energo) {
-            $name = $energo->energo->nombre;
-            $company = Company::where('name', 'like', "%{$name}%")->first()->id;
-            $terminal = $energo->energo->terminal_id;
-            $data = $activity->fillDataPrices($company, $terminal, $energo);
-            CompetitionPrice::create($data);
-            $energo->delete();
-        }
-        // Precios de hamse
-        foreach (PriceHamse::all() as $hamse) {
-            $name = $hamse->hamse->nombre;
-            $company = Company::where('name', 'like', "%{$name}%")->first()->id;
-            $terminal = $hamse->hamse->terminal_id;
-            $data = $activity->fillDataPrices($company, $terminal, $hamse);
-            CompetitionPrice::create($data);
-            $hamse->delete();
-        }
-        // Precios de impulsa
-        foreach (PriceImpulsa::all() as $impulsa) {
-            $name = $impulsa->impulsa->nombre;
-            $company = Company::where('name', 'like', "%{$name}%")->first()->id;
-            $terminal = $impulsa->impulsa->terminal_id;
-            $data = $activity->fillDataPrices($company, $terminal, $impulsa);
-            CompetitionPrice::create($data);
-            $impulsa->delete();
-        }
-        // Precios de 
-        foreach (PricePolicon::all() as $policon) {
-            $name = $policon->policon->nombre;
-            $company = Company::where('name', 'like', "%{$name}%")->first()->id;
-            $terminal = $policon->policon->terminal_id;
-            $data = $activity->fillDataPrices($company, $terminal, $policon);
-            CompetitionPrice::create($data);
-            $policon->delete();
-        }
-        // precios potesta
-        foreach (PricePotesta::all() as $potesta) {
-            $name = $potesta->potesta->nombre;
-            $company = Company::where('name', 'like', "%{$name}%")->first()->id;
-            $terminal = $potesta->potesta->terminal_id;
-            $data = $activity->fillDataPrices($company, $terminal, $potesta);
-            CompetitionPrice::create($data);
-            $potesta->delete();
-        }
         return view('prices.index', ['companies' => Company::all()]);
     }
 
@@ -101,7 +31,7 @@ class CompetitionPriceController extends Controller
     public function create(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('prices.create', ['companies' => Company::all(), 'terminals' => Terminal::all()]);
+        return view('prices.create', ['terminals' => Terminal::all()]);
     }
 
     /**
@@ -114,15 +44,27 @@ class CompetitionPriceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate([
-            'company_id' => 'required|integer',
             'terminal_id' => 'required|integer',
             'continue' => 'required|integer'
         ]);
-        $request = $request->create_at == null ? $request->merge(['created_at' => now()]) : $request;
+        $request = $request->created_at == null ? $request->merge(['created_at' => now()]) : $request;
         $request = $request->regular == null ? $request->merge(['regular' => 0]) : $request;
         $request = $request->regular == null ? $request->merge(['premium' => 0]) : $request;
         $request = $request->regular == null ? $request->merge(['diesel' => 0]) : $request;
-        CompetitionPrice::create($request->all());
+        $regular = $request->regular;
+        $premium = $request->premium;
+        $diesel = $request->diesel;
+        $terminal = Terminal::find($request->terminal_id);
+        $companies = $request->pemex != null ? Company::where('id', 15)->get() : $terminal->companies->where('id', '!=', 15);
+        foreach ($companies as $company) {
+            if ($request->pemex == null) {
+                $fee = Fee::where([['terminal_id', $request->terminal_id], ['company_id', $company->id]])->get()->last();
+                $request->merge(['regular' => $fee != null ? $request->regular + $fee->regular_fit : $regular]);
+                $request->merge(['premium' => $fee != null ? $request->premium + $fee->premium_fit : $premium]);
+                $request->merge(['diesel' => $fee != null ? $request->diesel + $fee->diesel_fit : $diesel]);
+            }
+            CompetitionPrice::create($request->merge(['company_id' => $company->id])->all());
+        }
         return $request->continue == 0 ? redirect()->back()->withStatus('Precio registrado correctamente.') : redirect()->route('prices.index')->withStatus('Precio registrado correctamente.');
     }
 
@@ -145,7 +87,7 @@ class CompetitionPriceController extends Controller
     public function edit(Request $request, CompetitionPrice $price)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('prices.edit', ['price' => $price, 'companies' => Company::all(), 'terminals' => Terminal::all()]);
+        return view('prices.edit', ['price' => $price, 'terminals' => Terminal::all()]);
     }
 
     /**
@@ -197,7 +139,7 @@ class CompetitionPriceController extends Controller
     // Metodo para obtener el ultimo precio por terminal y empresa
     public function getLastPrice(Request $request, $company, $terminal)
     {
-        $request->user()->authorizeRoles(['Administrador']);
+        $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         $prices = CompetitionPrice::where([['company_id', $company], ['terminal_id', $terminal]])->get()->last();
         $fees = Fee::where([['company_id', $company], ['terminal_id', $terminal]])->get()->last();
         return response()->json(['prices' => $prices, 'fees' => $fees]);

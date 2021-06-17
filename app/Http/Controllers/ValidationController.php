@@ -16,7 +16,10 @@ class ValidationController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['Administrador']);
+        $request->user()->authorizeRoles(['Administrador', 'Cliente']);
+        if (auth()->user()->company_id != null) {
+            return view('validations.index', ['orders' => Order::where('company_id', auth()->user()->company_id)->get()]);
+        }
         return view('validations.index', ['orders' => Order::all()]);
     }
 

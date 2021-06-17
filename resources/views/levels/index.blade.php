@@ -11,12 +11,14 @@
                             <p class="card-category"> {{ __('Aquí puedes calcular el costo de un flete.') }}</p>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-12 text-right">
-                                    <a href="{{ route('levels.create') }}"
-                                        class="btn btn-sm btn-primary">{{ __('Agregar nivel km-precio') }}</a>
+                            @if (auth()->user()->roles()->first()->id == 1)
+                                <div class="row">
+                                    <div class="col-12 text-right">
+                                        <a href="{{ route('levels.create') }}"
+                                            class="btn btn-sm btn-primary">{{ __('Agregar nivel km-precio') }}</a>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                             <div class="row mt-3">
                                 <div class="form-group{{ $errors->has('origin') ? ' has-danger' : '' }} col-4">
                                     <select id="origin" name="origin"

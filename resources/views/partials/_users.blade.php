@@ -91,7 +91,7 @@
         </div>
         <div class="row justify-content-md-start">
             <div class="form-group{{ $errors->has('rol') ? ' has-danger' : '' }} col-sm-3">
-                <select id="input-rol" name="rol"
+                <select id="input-rol_id" name="rol"
                     class="selectpicker show-menu-arrow {{ $errors->has('rol') ? ' has-danger' : '' }}"
                     data-style="btn-primary" data-width="100%" data-live-search="true">
                     <option value="">{{ __('Elija un rol') }}</option>
@@ -105,10 +105,11 @@
                     @endforeach
                 </select>
                 @if ($errors->has('rol'))
-                    <span id="name-rol" class="error text-danger" for="input-rol">{{ $errors->first('rol') }}</span>
+                    <span id="name-rol" class="error text-danger"
+                        for="input-rol_id">{{ $errors->first('rol') }}</span>
                 @endif
             </div>
-            <div class="form-group{{ $errors->has('company_id') ? ' has-danger' : '' }} col-sm-3">
+            <div id="companies" class="form-group{{ $errors->has('company_id') ? ' has-danger' : '' }} col-sm-3">
                 <select id="input-company_id" name="company_id"
                     class="selectpicker show-menu-arrow {{ $errors->has('company_id') ? ' has-danger' : '' }}"
                     data-style="btn-primary" data-width="100%" data-live-search="true">
@@ -126,9 +127,67 @@
                         for="input-company_id">{{ $errors->first('company_id') }}</span>
                 @endif
             </div>
+            <div id="companiescheck"
+                class="form-group{{ $errors->has('companies') ? ' has-danger' : '' }} col-sm-4 checkbox-radios">
+                <label for="companies">{{ __('Elije las empresas del vendedor') }}</label>
+                @foreach ($companies as $company)
+                    <div class="form-check mt-3">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" value="{{ $company->id }}"
+                                name="companies[]" @if ($company->users->contains($user->id ?? '')) checked @endif>
+                            {{ $company->name }}
+                            <span class="form-check-sign">
+                                <span class="check"></span>
+                            </span>
+                        </label>
+                    </div>
+                @endforeach
+                @if ($errors->has('companies'))
+                    <span id="companies-error" class="error text-danger" for="input-companies">
+                        {{ $errors->first('companies') }}
+                    </span>
+                @endif
+            </div>
         </div>
     </div>
     <div class="card-footer ml-auto mr-auto">
         <button type="submit" class="btn btn-primary">{{ $button ?? __('Registrar') }}</button>
     </div>
 </div>
+@push('js')
+    <script>
+        let user = "{{ isset($user) ? $user->roles->first()->id : '' }}"
+        if (user != '') {
+            display(user);
+        } else {
+            document.getElementById('companies').style.display = 'none';
+            document.getElementById('companiescheck').style.display = 'none';
+        }
+        $(".selectpicker").change(function() {
+            let rol_id = document.getElementById('input-rol_id').value;
+        });
+        $('#input-rol_id').change(function() {
+            let rol_id = document.getElementById('input-rol_id').value;
+            console.log(rol_id);
+            display(rol_id);
+        });
+
+        function display(rol_id) {
+            switch (rol_id) {
+                case '1':
+                    document.getElementById('companies').style.display = 'none';
+                    document.getElementById('companiescheck').style.display = 'none';
+                    break;
+                case '2':
+                    document.getElementById('companies').style.display = 'block';
+                    document.getElementById('companiescheck').style.display = 'none';
+                    break;
+                case '4':
+                    document.getElementById('companies').style.display = 'none';
+                    document.getElementById('companiescheck').style.display = 'block';
+                    break;
+            }
+        }
+
+    </script>
+@endpush

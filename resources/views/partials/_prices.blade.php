@@ -13,19 +13,21 @@
     <div class="card-body">
         @include('partials._notification')
         <div class="row justify-content-center">
-            <div class="form-group{{ $errors->has('company_id') ? ' has-danger' : '' }} col-3">
-                <select id="input-company_id" name="company_id"
-                    class="selectpicker show-menu-arrow {{ $errors->has('company_id') ? ' has-danger' : '' }}"
-                    data-style="btn-primary" data-width="100%" data-live-search="true">
-                    <option value="">{{ __('Elija una empresa') }}</option>
-                    @foreach ($companies as $company)
-                        <option value="{{ $company->id }}" @if (($c = $price->company_id ?? '') == $company->id) selected @endif>{{ $company->name }}
-                        </option>
-                    @endforeach
-                </select>
-                @if ($errors->has('company_id'))
-                    <span id="name-company_id" class="error text-danger"
-                        for="input-company_id">{{ $errors->first('company_id') }}</span>
+            <div class="form-group{{ $errors->has('pemex') ? ' has-danger' : '' }} col-3 checkbox-radios">
+                <label class="label-control" for="pemex">{{ __('Activar el precio para Pemex') }}</label>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="1" name="pemex" id="pemexid">
+                        {{ 'Pemex' }}
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                    </label>
+                </div>
+                @if ($errors->has('pemex'))
+                    <span id="pemex-error" class="error text-danger" for="input-pemex">
+                        {{ $errors->first('pemex') }}
+                    </span>
                 @endif
             </div>
             <div class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-3">
@@ -69,28 +71,33 @@
                 </input>
             </div>
         </div>
-        @if (!isset($price))
-            <div class="row justify-content-center mt-5">
-                <div class="checkbox-radios form-group{{ $errors->has('continue') ? ' has-danger' : '' }} col-3">
-                    <label for="bill">{{ __('Registro de precios') }}</label>
-                    <div id="radiocontinue"></div>
-                    @if ($errors->has('continue'))
-                        <span class="invalid-feedback" style="display: block;" role="alert">
-                            {{ $errors->first('continue') }}
-                        </span>
-                    @endif
+        <div class="row justify-content-center mt-5">
+            <div class="checkbox-radios form-group{{ $errors->has('continue') ? ' has-danger' : '' }} col-3">
+                <label for="bill">{{ __('Registro de precios') }}</label>
+                <div>
+                    <div class="form-check-radio">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="continue" value="1">
+                            {{ __('Registrar e ir al listado de precios') }}
+                        </label>
+                    </div>
+                    <div class="form-check-radio">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="continue" value="0">
+                            {{ __('Registrar y volver') }}
+                        </label>
+                    </div>
                 </div>
+                @if ($errors->has('continue'))
+                    <span class="invalid-feedback" style="display: block;" role="alert">
+                        {{ $errors->first('continue') }}
+                    </span>
+                @endif
             </div>
-        @endif
-        @isset($price)
-            <input type="hidden" value="1" name="continue">
-        @endisset
+        </div>
     </div>
-    <div class="card-footer">
-        @if (!isset($price))
-            <button id="register" type="submit" class="btn btn-primary">{{ __('Registrar') }}
-        @endif
+    <div class="card-footer justify-content-center">
+        <button id="register" type="submit" class="btn btn-primary">{{ $btn ?? __('Registrar') }}
         </button>
-        <button id="update" type="submit" class="btn btn-primary">{{ __('Actualizar') }}</button>
     </div>
 </div>

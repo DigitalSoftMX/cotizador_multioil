@@ -18,7 +18,6 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/', 'HomeController@index')->name('home');
-	Route::post('/fechas', 'HomeController@fechas');
 });
 
 Auth::routes();
@@ -27,10 +26,6 @@ Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
 
 Route::group(['middleware' => 'auth'], function () {
-
-	Route::get('table-list', function () {
-		return view('pages.table_list');
-	})->name('table');
 
 	Route::get('typography', function () {
 		return view('pages.typography');
@@ -94,7 +89,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 //rutas cotizador
 Route::group(['middleware' => 'auth'], function () {
-	Route::get('pricescompany/{company_id}/{month}', 'HomeController@getPricesJson')->name('pricescompany');
+	Route::get('pricesterminal/{terminal_id}/{month}/{company?}', 'HomeController@getPricesJson')->name('pricesterminal');
 	Route::resource('orders', 'OrderController', ['except' => ['create', 'edit', 'destroy']]);
 	Route::get('excel', 'OrderController@downloadExcel')->name('excel');
 	Route::get('sales', 'OrderController@downloadSales')->name('sales');

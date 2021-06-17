@@ -43,27 +43,29 @@
                     </a>
                     {{-- modal --}}
                     @include('partials._modal',[$id=$order->id.'see',$see=true])
-                    @if ($status == 1 || $status == 3)
-                        <form action="{{ route('accept', $order) }}" method="post">
-                            @csrf
-                            <button type="button" class="btn btn-success btn-link" data-original-title="" title=""
-                                onclick="confirm('{{ __('¿Estás seguro de que deseas autorizar este pedido?') }}') ? this.parentElement.submit() : ''">
-                                <i class="material-icons">done</i>
-                                <div class="ripple-container"></div>
-                            </button>
-                        </form>
-                    @endif
-                    @if ($status == 1)
-                        <form action="{{ route('deny', $order) }}" method="post">
-                            @csrf
-                            <button type="button" class="btn btn-danger btn-link" data-original-title="" title=""
-                                data-toggle="modal" data-target="#exampleModalLong{{ $order->id }}">
-                                <i class=" material-icons">close</i>
-                                <div class="ripple-container"></div>
-                            </button>
-                            {{-- modal --}}
-                            @include('partials._modal',[$id=$order->id,$see=false])
-                        </form>
+                    @if (auth()->user()->roles->first()->id == 1)
+                        @if ($status == 1 || $status == 3)
+                            <form action="{{ route('accept', $order) }}" method="post">
+                                @csrf
+                                <button type="button" class="btn btn-success btn-link" data-original-title="" title=""
+                                    onclick="confirm('{{ __('¿Estás seguro de que deseas autorizar este pedido?') }}') ? this.parentElement.submit() : ''">
+                                    <i class="material-icons">done</i>
+                                    <div class="ripple-container"></div>
+                                </button>
+                            </form>
+                        @endif
+                        @if ($status == 1)
+                            <form action="{{ route('deny', $order) }}" method="post">
+                                @csrf
+                                <button type="button" class="btn btn-danger btn-link" data-original-title="" title=""
+                                    data-toggle="modal" data-target="#exampleModalLong{{ $order->id }}">
+                                    <i class=" material-icons">close</i>
+                                    <div class="ripple-container"></div>
+                                </button>
+                                {{-- modal --}}
+                                @include('partials._modal',[$id=$order->id,$see=false])
+                            </form>
+                        @endif
                     @endif
                 </td>
             </tr>

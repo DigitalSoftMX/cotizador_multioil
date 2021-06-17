@@ -17,4 +17,14 @@ class Company extends Model
     {
         return $this->hasOne(User::class);
     }
+    // relacion con los usuarios para el caso ventas
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_companies');
+    }
+    // relacion con los precios
+    public function prices()
+    {
+        return $this->hasMany(CompetitionPrice::class);
+    }
 }

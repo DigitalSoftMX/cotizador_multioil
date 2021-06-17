@@ -14,7 +14,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
-
+    // Relacion con la empresa en caso de ser cliente
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+    // Relacion con las empresas para el caso ventas
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'user_companies');
+    }
     public function authorizeRoles($roles)
     {
         if ($this->hasAnyRole($roles)) {

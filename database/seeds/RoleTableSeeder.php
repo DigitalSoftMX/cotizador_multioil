@@ -18,17 +18,15 @@ class RoleTableSeeder extends Seeder
         $role->description = "Usuarion con nivel de administracion total.";
         $role->save();
         $role->menus()->attach(1);
-
-
+        
         $role = new Role();
-        $role->name = "Invitado";
-        $role->description = "Usuarion con nivel bajo de acceso.";
+        $role->name = "Cliente";
+        $role->description = "Usuarion con nivel medio de acceso.";
         $role->save();
 
         $role = new Role();
-        $role->name = "Vendedor";
+        $role->name = "Ventas";
         $role->description = "Usuario con nivel medio de acceso";
         $role->save();
-
     }
 }

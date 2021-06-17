@@ -22,7 +22,10 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['Administrador']);
+        $request->user()->authorizeRoles(['Administrador', 'Cliente']);
+        if (auth()->user()->company_id != null) {
+            return view('orders.index', ['terminals' => Terminal::all(), 'company' => auth()->user()->company]);
+        }
         return view('orders.index', ['terminals' => Terminal::all()]);
     }
     /**
@@ -33,7 +36,7 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
-        $request->user()->authorizeRoles(['Administrador']);
+        $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         $request = $request->liters_r == null ? $request->merge(['liters_r' => 0]) : $request;
         $request = $request->liters_p == null ? $request->merge(['liters_p' => 0]) : $request;
         $request = $request->liters_d == null ? $request->merge(['liters_d' => 0]) : $request;
@@ -75,13 +78,13 @@ class OrderController extends Controller
     // Generar excel
     public function downloadExcel(Request $request)
     {
-        $request->user()->authorizeRoles(['Administrador']);
+        $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         return Excel::download(new OrdersExport(1), 'confirmacion_pedidos-diarios.xlsx');
     }
     // Generar excel de ventas
     public function downloadSales(Request $request)
     {
-        $request->user()->authorizeRoles(['Administrador']);
+        $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         return Excel::download(new OrdersExport(2), 'Ventas_Impulsa.xlsx');
     }
     public function export()

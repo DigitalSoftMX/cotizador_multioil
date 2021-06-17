@@ -40,7 +40,7 @@
                                     <div class="table-responsive">
                                         <table class="table dataTable table-sm table-striped" cellspacing="0" width="100%"
                                             id="pendientes">
-                                            @include('partials._orders',[$status=1])
+                                            @include('partials._orders',[$status=1])_orders
                                         </table>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                         </div>
                                         <div class="text-right">
                                             <a href="{{ route('sales') }}"
-                                                class="btn btn-sm btn-primary">{{ __('Excel Ventas Impulsa') }}</a>
+                                                class="btn btn-sm btn-primary">{{ __('Excel Ventas') }}</a>
                                         </div>
                                     </div>
                                     <div class="table-responsive">

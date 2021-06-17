@@ -16,11 +16,7 @@ class LevelController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['Administrador', 'Invitado', 'Vendedor', 'Ventas']);
-        /* $display = "block";
-        if (auth()->user()->roles[0]->name == 'Invitado') {
-            $display = "none";
-        } */
+        $request->user()->authorizeRoles(['Administrador', 'Cliente', 'Ventas']);
         return view(
             'levels.index',
             [
