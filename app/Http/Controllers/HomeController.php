@@ -63,23 +63,21 @@ class HomeController extends Controller
         ]);
     }
     // respuesta json precios por terminal
-    public function getPricesJson(Request $request, $terminal_id, $month)
+    public function getPricesJson(Request $request, $terminal_id, $month,$lastDay)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente', 'Ventas']);
         // Devolver la cantidad de dias del mes no actual
         // numero de dias del mes
-        /* $days = [];
-        for ($i = 1; $i <= date('d'); $i++) {
-            array_push($days, $i);
-        } */
+        $days = [];
+        
         // calculando el ultimo dia del mes != nes actual
-        /* $start = date('Y') . '-' . $month . '-01';
+        $start = date('Y') . '-' . $month . '-01';
         $lastDay = date('d');
         if ($month != date('m')) {
             $lastDay = new DateTime($start);
             $lastDay->modify('last day of this month');
             $lastDay = $lastDay->format('d');
-        } */
+        } 
         return response()->json(['prices' => $this->getPrices($terminal_id, $month, auth()->user()->company_id != null ? auth()->user()->company_id : null)]);
     }
     // precios por empresa
