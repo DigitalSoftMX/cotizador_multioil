@@ -55,7 +55,7 @@
                                         </div>
                                     @endif
                                     @if (auth()->user()->roles()->first()->id == 2)
-                                        <input type="hidden" name="company_id" value="{{$company->id}}">
+                                        <input type="hidden" name="company_id" value="{{ $company->id }}">
                                     @endif
                                     <div class="col-3">
                                         <label class="label-control">{{ __('Fecha de entrega') }}</label>
@@ -113,7 +113,7 @@
                                             </span>
                                         @endif
                                     </div>
-                                    <div
+                                    <div id="displaysecure"
                                         class="checkbox-radios form-group{{ $errors->has('secure') ? ' has-danger' : '' }} col-3">
                                         <label for="secure">{{ __('¿Deseas asegurar tu flete?') }}</label>
                                         <div class="form-check-radio">
@@ -186,7 +186,7 @@
         let total_price = 0;
         let freight = 0;
         let secure = 0;
-        let company_client="{{ $company->id ?? ''}}"
+        let company_client = "{{ $company->id ?? '' }}"
         init_calendar('calendar_first', actualOrder, actualOrder);
         // calculo de precio total pedido
         $(document).on("keyup", "#liters_r", function() {
@@ -201,16 +201,16 @@
         // select de terminales
         $(".selectpicker").change(function() {
             let terminal = document.getElementById('input-terminal_id').value;
-            if(company_client!=''){
+            if (company_client != '') {
                 let company = company_client;
                 getPrices(company, terminal);
                 document.getElementById('orderbutton').disabled = false;
-            }else{
+            } else {
                 let company = document.getElementById('input-company_id').value;
             }
         });
         $('#input-terminal_id').change(function() {
-            if(company_client==''){
+            if (company_client == '') {
                 let terminal = document.getElementById('input-terminal_id').value;
                 getTerminals(terminal);
             }
@@ -227,6 +227,13 @@
         // valor del freight
         $("input[name=freight]").click(function() {
             freight = $('input:radio[name=freight]:checked').val();
+            if (freight == 0) {
+                document.getElementById('displaysecure').style.display = 'none';
+                secure = 0;
+            } else {
+                document.getElementById('displaysecure').style.display = 'block';
+                secure = $('input:radio[name=secure]:checked').val();
+            }
         });
         $("input[name=secure]").click(function() {
             secure = $('input:radio[name=secure]:checked').val();
@@ -258,12 +265,9 @@
                 const resp = await fetch('{{ url('') }}/getlastprice/' + `${company_id}/${terminal_id}`);
                 const prices = await resp.json();
                 console.log(prices);
-                document.getElementById('price_r').value =
-                    (prices.prices.regular + (prices.fees != null ? prices.fees.regular_fit : 0)).toFixed(2);
-                document.getElementById('price_p').value =
-                    (prices.prices.premium + (prices.fees != null ? prices.fees.premium_fit : 0)).toFixed(2);
-                document.getElementById('price_d').value =
-                    (prices.prices.diesel + (prices.fees != null ? prices.fees.diesel_fit : 0)).toFixed(2);
+                document.getElementById('price_r').value = (prices.prices.regular).toFixed(2);
+                document.getElementById('price_p').value = (prices.prices.premium).toFixed(2);
+                document.getElementById('price_d').value = (prices.prices.diesel).toFixed(2);
                 totalPrice('r');
                 totalPrice('p');
                 totalPrice('d');
@@ -302,7 +306,7 @@
         function ticket() {
             try {
                 let terminal = document.getElementById('input-terminal_id').value;
-                let company = company_client==''? document.getElementById('input-company_id').value:company_client;
+                let company = company_client == '' ? document.getElementById('input-company_id').value : company_client;
                 let litersR = document.getElementById('liters_r').value;
                 let litersP = document.getElementById('liters_p').value;
                 let litersD = document.getElementById('liters_d').value;
@@ -314,7 +318,8 @@
                 let total_d = document.getElementById('total_d').value;
                 let total = document.getElementById('total_price').value;
                 let nameTerminal = document.getElementById(`t_${terminal}`).innerText;
-                let nameCompany = company_client==''? document.getElementById(`c_${company}`).innerText:"{{$company->name??''}}";
+                let nameCompany = company_client == '' ? document.getElementById(`c_${company}`).innerText :
+                    "{{ $company->name ?? '' }}";
                 let ticket = document.getElementById('ticket').innerHTML = /* html */
                     `<strong class="font-weight-bold">Fecha de entrega: </strong>${actualOrder}<br>
                     <strong class="font-weight-bold">Terminal: </strong>${nameTerminal}<br>
@@ -358,6 +363,5 @@
                 alert('Completa todos los campos para realizar un pedido');
             }
         }
-
     </script>
 @endpush

@@ -28,7 +28,6 @@ class OrderRequest extends FormRequest
             'company_id' => 'required|integer',
             'date' => 'required|date',
             'freight' => 'required|integer',
-            'secure' => 'required|integer'
         ];
     }
 }

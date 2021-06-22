@@ -46,7 +46,7 @@
                     @include('partials._modalS',[$id=$pedido->id.'see',$see=true])
                     @if (auth()->user()->roles->first()->id == 1)
                         @if ($status == 1 || $status == 3)
-                            <form action="{{ route('accept', $pedido) }}" method="post">
+                            <form action="{{ route('accepts', $pedido) }}" method="post">
                                 @csrf
                                 <button type="button" class="btn btn-success btn-link" data-original-title="" title=""
                                     onclick="confirm('{{ __('¿Estás seguro de que deseas autorizar este pedido?') }}') ? this.parentElement.submit() : ''">
@@ -56,7 +56,7 @@
                             </form>
                         @endif
                         @if ($status == 1)
-                            <form action="{{ route('deny', $pedido) }}" method="post">
+                            <form action="{{ route('denys', $pedido) }}" method="post">
                                 @csrf
                                 <button type="button" class="btn btn-danger btn-link" data-original-title="" title=""
                                     data-toggle="modal" data-target="#exampleModalLong{{ $pedido->id }}">

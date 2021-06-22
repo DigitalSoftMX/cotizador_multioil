@@ -136,7 +136,6 @@ class CompetitionPriceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         $prices = CompetitionPrice::where([['company_id', $company], ['terminal_id', $terminal]])->get()->last();
-        $fees = Fee::where([['company_id', $company], ['terminal_id', $terminal]])->get()->last();
-        return response()->json(['prices' => $prices, 'fees' => $fees]);
+        return response()->json(['prices' => $prices]);
     }
 }

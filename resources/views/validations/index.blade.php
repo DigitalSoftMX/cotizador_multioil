@@ -40,7 +40,7 @@
                                     <div class="table-responsive">
                                         <table class="table dataTable table-sm table-striped" cellspacing="0" width="100%"
                                             id="pendientes">
-                                            @include('partials._orders',[$status=1])_orders
+                                            @include('partials._orders',[$status=1])
                                         </table>
                                     </div>
                                 </div>

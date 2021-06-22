@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\CompetitionPrice;
 use App\Events\EmailMultioil;
 use App\Exports\OrdersExport;
-use App\Fee;
 use App\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Terminal;
+use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -41,15 +41,19 @@ class OrderController extends Controller
         $request = $request->liters_p == null ? $request->merge(['liters_p' => 0]) : $request;
         $request = $request->liters_d == null ? $request->merge(['liters_d' => 0]) : $request;
         $prices = CompetitionPrice::where([['company_id', $request->company_id], ['terminal_id', $request->terminal_id]])->get()->last();
-        $fees = Fee::where([['company_id', $request->company_id], ['terminal_id', $request->terminal_id]])->get()->last();
         $request->merge([
-            'total_r' => $request->liters_r * (($prices != null ? $prices->regular : 0) + ($fees != null ? $fees->regular_fit : 0)),
-            'total_p' => $request->liters_p * (($prices != null ? $prices->premium : 0) + ($fees != null ? $fees->premium_fit : 0)),
-            'total_d' => $request->liters_d * (($prices != null ? $prices->diesel : 0) + ($fees != null ? $fees->diesel_fit : 0)),
+            'total_r' => $request->liters_r * (($prices != null ? $prices->regular : 0)),
+            'total_p' => $request->liters_p * (($prices != null ? $prices->premium : 0)),
+            'total_d' => $request->liters_d * (($prices != null ? $prices->diesel : 0)),
         ]);
         $request->merge(['total' => $request->total_r + $request->total_p + $request->total_d, $request->date => now()->modify('+1 day')->format('Y-m-d'), 'status_id' => 1]);
         $order = Order::create($request->all());
-        event(new EmailMultioil($order, 1));
+        try {
+            event(new EmailMultioil($order, 1));
+        } catch (Exception $e) {
+            $order->delete();
+            return redirect()->back()->withStatus('No hay un usuario asociado a la empresa seleccionada')->withColor('danger');
+        }
         return redirect()->route('orders.index')->withStatus(__('Pedido realizado correctamente.'));
     }
 

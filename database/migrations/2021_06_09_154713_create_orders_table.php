@@ -26,7 +26,7 @@ class CreateOrdersTable extends Migration
             $table->double('total')->default(0);
             $table->timestamp('date')->nullable();
             $table->integer('freight');
-            $table->integer('secure');
+            $table->integer('secure')->default(0);
             $table->unsignedBigInteger('status_id')->default(1);
             $table->timestamps();
 
