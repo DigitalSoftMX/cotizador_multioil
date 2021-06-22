@@ -72,7 +72,9 @@ Route::group(['middleware' => 'auth'], function () {
 //rutas pemex
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('pedidos', 'PedidoController');
+	Route::resource('factura', 'FacturacionController');
 	Route::resource('validacion', 'validacionSController');
+	Route::resource('historialcliente', 'HistorialCController');
 });
 
 
