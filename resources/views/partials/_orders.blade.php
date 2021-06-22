@@ -41,6 +41,12 @@
                         <i class="material-icons">visibility</i>
                         <div class="ripple-container"></div>
                     </a>
+                    @if ($status == 2)
+                    <a rel="tooltip" class="btn btn-dark btn-link" href="{{ route('factura.index') }}">
+                        <i class="material-icons">fact_check</i>
+                        <div class="ripple-container"></div>
+                    </a>
+                    @endif
                     {{-- modal --}}
                     @include('partials._modal',[$id=$order->id.'see',$see=true])
                     @if (auth()->user()->roles->first()->id == 1)

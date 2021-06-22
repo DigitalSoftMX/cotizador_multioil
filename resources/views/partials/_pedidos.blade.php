@@ -42,6 +42,7 @@
                         <i class="material-icons">visibility</i>
                         <div class="ripple-container"></div>
                     </a>
+                    
                     {{-- modal --}}
                     @include('partials._modalS',[$id=$pedido->id.'see',$see=true])
                     @if (auth()->user()->roles->first()->id == 1)
