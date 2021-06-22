@@ -43,7 +43,7 @@ class HomeController extends Controller
             ['name' => 'Diciembre', 'id' => '12'],
         ];
         $days = [];
-        for ($i = 1; $i <= date('d'); $i++) {
+        for ($i = 1; $i <= (int)date('d'); $i++) {
             array_push($days, $i);
         }
         $terminal = Terminal::all()->first();
@@ -52,7 +52,6 @@ class HomeController extends Controller
         } else {
             $prices = $terminal != null ? $this->getPrices($terminal->id, date('m')) : [];
         }
-        // return $prices;
         return view('dashboard', [
             'months' => $months,
             'actualMonth' => date('m'),
@@ -66,21 +65,21 @@ class HomeController extends Controller
     public function getPricesJson(Request $request, $terminal_id, $month)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente', 'Ventas']);
-        // Devolver la cantidad de dias del mes no actual
-        // numero de dias del mes
-        /* $days = [];
-        for ($i = 1; $i <= date('d'); $i++) {
-            array_push($days, $i);
-        } */
-        // calculando el ultimo dia del mes != nes actual
-        /* $start = date('Y') . '-' . $month . '-01';
         $lastDay = date('d');
         if ($month != date('m')) {
-            $lastDay = new DateTime($start);
+            $lastDay = new DateTime(date('Y') . '-' . $month . '-01');
             $lastDay->modify('last day of this month');
             $lastDay = $lastDay->format('d');
-        } */
-        return response()->json(['prices' => $this->getPrices($terminal_id, $month, auth()->user()->company_id != null ? auth()->user()->company_id : null)]);
+        }
+        // numero de dias del mes
+        $days = [];
+        for ($i = 1; $i <= (int)$lastDay; $i++) {
+            array_push($days, $i);
+        }
+        return response()->json([
+            'days' => $days,
+            'prices' => $this->getPrices($terminal_id, $month, auth()->user()->company_id != null ? auth()->user()->company_id : null)
+        ]);
     }
     // precios por empresa
     private function getPrices($terminal_id, $month, $company_id = null)

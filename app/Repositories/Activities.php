@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Company;
+use App\CompetitionPrice;
 use App\Terminal;
 
 class Activities
@@ -66,17 +67,21 @@ class Activities
         ];
         return $data;
     }
-    public function getPrices($company_id = null)
+    public function getPrices($company_id, $date)
     {
         $prices = array();
         foreach (Terminal::all() as $terminal) {
-            if ($company_id == null) {
+            if ($company_id == 0) {
                 foreach (Company::all() as $company) {
-                    $price = $terminal->prices->where('company_id', $company->id)->last();
+                    $price = $date == 0 ?
+                        $terminal->prices->where('company_id', $company->id)->last() :
+                        CompetitionPrice::where([['company_id', $company->id], ['terminal_id', $terminal->id]])->whereDate('created_at', $date)->first();
                     $prices = $price != null ? $this->dataPrices($price, $prices) : $prices;
                 }
             } else {
-                $price = $terminal->prices->where('company_id', $company_id)->last();
+                $price = $date == 0 ?
+                    $terminal->prices->where('company_id', $company_id)->last() :
+                    CompetitionPrice::where([['company_id', $company_id], ['terminal_id', $terminal->id]])->whereDate('created_at', $date)->first();
                 $prices = $price != null ? $this->dataPrices($price, $prices) : $prices;
             }
         }

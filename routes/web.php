@@ -58,30 +58,19 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 });
-// rutas de actividades
-Route::group(['middleware' => 'auth'], function () {
-	Route::resource('actividades', 'LoginActController');
-});
-// rutas de estaciones
-Route::group(['middleware' => 'auth'], function () {
-	Route::resource('estaciones', 'EstacionController');
-	Route::post('estaciones/edit', 'EstacionController@edit');
-});
 // rutas terminales, FEE, empresas y captura de precios
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('terminals', 'TerminalController', ['except' => ['show']]);
 	Route::get('getcompanies/{terminal?}', 'TerminalController@getCompanies')->name('getcompanies');
 	Route::resource('fits', 'FeeController', ['except' => ['show', 'edit', 'update', 'destroy']]);
 	Route::resource('companies', 'CompanyController');
-	Route::resource('prices', 'CompetitionPriceController');
-	Route::get('getprice/{terminal}/{company}/{date}', 'CompetitionPriceController@getPrice')->name('getprice');
+	Route::resource('prices', 'CompetitionPriceController', ['except' => 'show', 'destroy']);
+	Route::get('getprices/{company}/{date?}', 'CompetitionPriceController@getPrices')->name('getprices');
+	Route::get('getprice/{pemex}/{terminal}/{date?}', 'CompetitionPriceController@getPrice')->name('getprice');
 	Route::get('getlastprice/{company}/{terminal}', 'CompetitionPriceController@getLastPrice')->name('getlastprice');
 });
 //rutas pemex
 Route::group(['middleware' => 'auth'], function () {
-	Route::resource('pemex', 'PemexController');
-	Route::post('pemex/create', 'PemexController@create');
-	Route::post('pemex/store', 'PemexController@store');
 	Route::resource('pedidos', 'PedidoController');
 	Route::resource('validacion', 'validacionSController');
 });
@@ -100,12 +89,6 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('validations/deny/{order}', 'ValidationController@deny')->name('deny');
 	Route::post('validacion/accept/{pedido}', 'validacionSController@accept')->name('accept');
 	Route::post('validacion/deny/{pedido}', 'validacionSController@deny')->name('deny');
-});
-
-Route::group(['middleware' => 'auth'], function () {
-	Route::resource('table_descount', 'DiscountController');
-	Route::post('table_descount/create', 'DiscountController@create');
-	Route::post('table_descount/store', 'DiscountController@store');
 });
 
 //rutas cotizador

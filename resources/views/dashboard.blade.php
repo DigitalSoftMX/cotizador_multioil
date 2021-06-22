@@ -15,6 +15,14 @@
                         </div>
                         <div class="card-body">
                             @include('partials._notification')
+                            @if (auth()->user()->roles->first()->id == 1)
+                                <div class="row">
+                                    <div class="col-12 text-right">
+                                        <a href="{{ route('prices.index') }}"
+                                            class="btn btn-sm btn-success">{{ __('Capturar precios') }}</a>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="row justify-content-md-start">
                                 <div class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-sm-3">
                                     <select id="input-terminal_id" name="terminal_id"
@@ -122,9 +130,12 @@
         let pricesP = arrayPrices('p', @json($prices));
         let pricesD = arrayPrices('d', @json($prices));
 
-        let chartRegular = new Chart(document.getElementById("Regular").getContext('2d'), configChart(pricesR));
-        let chartPremium = new Chart(document.getElementById("Premium").getContext('2d'), configChart(pricesP));
-        let chartDiesel = new Chart(document.getElementById("Diesel").getContext('2d'), configChart(pricesD));
+        let chartRegular = new Chart(document.getElementById("Regular").getContext('2d'),
+            configChart(pricesR, @json($days)));
+        let chartPremium = new Chart(document.getElementById("Premium").getContext('2d'),
+            configChart(pricesP, @json($days)));
+        let chartDiesel = new Chart(document.getElementById("Diesel").getContext('2d'),
+            configChart(pricesD, @json($days)));
 
         $(".selectpicker").change(function() {
             let terminal_id = document.getElementById('input-terminal_id').value;
@@ -153,10 +164,13 @@
                 pricesR = arrayPrices('r', prices.prices);
                 pricesP = arrayPrices('p', prices.prices);
                 pricesD = arrayPrices('d', prices.prices);
-// enviar numero de dias
-                chartRegular = new Chart(document.getElementById("Regular").getContext('2d'), configChart(pricesR));
-                chartPremium = new Chart(document.getElementById("Premium").getContext('2d'), configChart(pricesP));
-                chartDiesel = new Chart(document.getElementById("Diesel").getContext('2d'), configChart(pricesD));
+                // enviar numero de dias
+                chartRegular = new Chart(document.getElementById("Regular").getContext('2d'),
+                    configChart(pricesR, prices.days));
+                chartPremium = new Chart(document.getElementById("Premium").getContext('2d'),
+                    configChart(pricesP, prices.days));
+                chartDiesel = new Chart(document.getElementById("Diesel").getContext('2d'),
+                    configChart(pricesD, prices.days));
             } catch (error) {
                 console.log(error)
             }
@@ -181,13 +195,13 @@
             });
             return prices;
         }
-// recibir numero de dias por parametro
-        function configChart(prices) {
+        // recibir numero de dias por parametro
+        function configChart(prices, days) {
             let config = {
                 type: 'line',
                 data: {
                     // Fechas 1-30,31,29
-                    labels: @json($days),
+                    labels: days,
                     // Preios del competidor
                     datasets: prices,
                 },

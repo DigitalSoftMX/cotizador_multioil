@@ -288,68 +288,6 @@ class VentasController extends Controller
             } else {
                 $json_cliente['vendedor'] = "Sin vendedor";
             }
-
-            // if($cliente->carta_de_intencion != null)
-            // {   $json_cliente['avance']++; }
-
-            // if($cliente->convenio_de_confidencialidad != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->margen_garantizado != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->solicitud_de_documentos != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->ine != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->acta_constitutiva != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->poder_notarial != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->constancia_de_situacion_fiscal != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->comprobante_de_domicilio != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->propuestas != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->contrato_comodato != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->contrato_de_suministro != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->carta_bienvenida != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->permiso_cree != null)
-            // {   $json_cliente['avance']++;  }
-
-            // $total = 13;
-
-            // $json_cliente['avance'] = ($json_cliente['avance'] * 100)/$total;
-
-            // if( $json_cliente['avance'] != 0 )
-            // {
-            //     if($json_cliente['avance'] < 50)
-            //     {
-            //         $json_cliente['color'] = 'bg-danger';
-            //     }else{
-            //         if($json_cliente['avance'] >= 50  && $json_cliente['avance'] < 100 )
-            //         {
-            //             $json_cliente['color'] = 'bg-info';
-            //         }else{
-            //             $json_cliente['color'] = 'bg-success';
-            //         }
-            //     }
-            // }
-
             array_push($data['clientes'], $json_cliente);
         }
 
@@ -384,13 +322,8 @@ class VentasController extends Controller
         $cliente->estatus = 'prospecto';
         $cliente->estado = $estado;
         $cliente->value_key =  $value_key;
-        // $clientes->gasolina_verde = 'FALSE';
-        // $clientes->gasolina_roja = 'FALSE';
-        // $clientes->diesel = 'FALSE';
 
         $cliente->save();
-
-        // $cliente_id = Cliente::where('value_key', $value_key)->first()->id;
 
         if ($id_user !== null) {
             $cliente_vendedor = new ClienteVendedor();
@@ -433,9 +366,6 @@ class VentasController extends Controller
 
     public function agregar_dias_prospecto(Request $request)
     {
-
-        // $request->user()->authorizeRoles(['Administrador','Ventas']);
-
         $dias = floatval($request->post('dias'));
 
         $id_seguimiento = $request->post('id_seguimiento');
@@ -594,8 +524,6 @@ class VentasController extends Controller
 
             $vendedor['vendedor'] = $json_vendedor;
         }
-
-        // dd($vendedor_en_seguimiento);
 
         return view('ventas.look_prospecto', compact('prospecto', 'vendedor'));
     }

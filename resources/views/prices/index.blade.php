@@ -35,6 +35,11 @@
                                             for="input-company_id">{{ $errors->first('company_id') }}</span>
                                     @endif
                                 </div>
+                                <div class="col-3">
+                                    <label class="label-control">{{ __('Fecha') }}</label>
+                                    <input class="form-control datetimepicker" id="calendar_first" name="date" type="text"
+                                        value="" />
+                                </div>
                             </div>
                             <div class="material-datatables">
                                 <table cellspacing="0" class="table table-striped table-no-bordered table-hover"
@@ -62,28 +67,38 @@
 @push('js')
     <script src="{{ asset('js/ventas.js') }}"></script>
     <script>
+        let date = new Date();
         $(document).ready(function() {
             loadTable('datatables');
-            getPrices(0);
+            init_calendar('calendar_first', `01-01-${date.getFullYear()}`, `12-31-${date.getFullYear()}`);
+            getPrices(0, 0);
         });
 
         $(".selectpicker").change(function() {
             let company_id = document.getElementById('input-company_id').value;
         });
+        
         $('#input-company_id').change(function() {
             let company_id = document.getElementById('input-company_id').value;
-            getPrices(company_id);
+            fecha = $('#calendar_first').val();
+            getPrices(company_id, fecha);
         });
 
-        async function getPrices(company_id) {
+        $("#calendar_first").blur(function() {
+            let company_id = document.getElementById('input-company_id').value;
+            fecha = $('#calendar_first').val();
+            getPrices(company_id, fecha);
+        });
+
+        async function getPrices(company_id, fecha) {
             try {
-                const data = await fetch(`prices/${company_id}`);
-                response = await data.json();
-                console.log(response);
+                const resp = await fetch('{{ url('') }}/getprices/' + company_id + '/' + fecha);
+                const data = await resp.json();
+                console.log(data);
                 destruir_table("datatables");
                 $('#datatables').find('tbody').empty();
-                response.prices.forEach(price => {
-                    $("#datatables").find('tbody').append(/* html */
+                data.prices.forEach(price => {
+                    $("#datatables").find('tbody').append( /* html */
                         `<tr>
                             <td> ${price.company} </td>
                             <td> ${price.terminal} </td>
@@ -106,6 +121,5 @@
                 console.log(error)
             }
         };
-
     </script>
 @endpush

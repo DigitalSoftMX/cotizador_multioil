@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use App\Cliente;
 use App\ClienteVendedor;
 use Illuminate\Support\Facades\DB;
-use App\VendedorUnidadNegocio;
 use Mail;
-use App\Mail\NotificacionDocs;
 
 class VendedorClienteController extends Controller
 {
@@ -198,67 +196,6 @@ class VendedorClienteController extends Controller
             $status_documentos = ( $cliente->documento_rfc !== null ) && $status_documentos ? true : false;
 
             $json_cliente['ficha_tecnica'][0]['status_solicitud_doc'] = $status_documentos;
-
-            // if($cliente->carta_de_intencion != null)
-            // {   $json_cliente['avance']++; }
-
-            // if($cliente->convenio_de_confidencialidad != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->margen_garantizado != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->solicitud_de_documentos != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->ine != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->acta_constitutiva != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->poder_notarial != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->constancia_de_situacion_fiscal != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->comprobante_de_domicilio != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->propuestas != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->contrato_comodato != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->contrato_de_suministro != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->carta_bienvenida != null)
-            // {   $json_cliente['avance']++;  }
-
-            // if($cliente->permiso_cree != null)
-            // {   $json_cliente['avance']++;  }
-
-            // $total = 13;
-
-            // $json_cliente['avance'] = ($json_cliente['avance'] * 100)/$total;
-
-            // if( $json_cliente['avance'] != 0 )
-            // {
-            //     if($json_cliente['avance'] < 50)
-            //     {
-            //         $json_cliente['color'] = 'bg-danger';
-            //     }else{
-            //         if($json_cliente['avance'] >= 50  && $json_cliente['avance'] < 100 )
-            //         {
-            //             $json_cliente['color'] = 'bg-info';
-            //         }else{
-            //             $json_cliente['color'] = 'bg-success';
-            //         }
-            //     }
-            // }
 
             array_push( $data['clientes'], $json_cliente );
         }

@@ -8,7 +8,6 @@
                 <div class="col-md-12">
                     <form action="{{ route('prices.store') }}" autocomplete="off" class="form-horizontal" method="post"
                         id="store_update">
-                        <input type="hidden" name="_method" value="post" id="_method">
                         @include('partials._prices')
                     </form>
                 </div>
@@ -16,12 +15,3 @@
         </div>
     </div>
 @endsection
-@push('js')
-    <script>
-        let date = new Date();
-        $(document).ready(function() {
-            init_calendar('calendar_first', `01-01-${date.getFullYear()}`, `12-31-${date.getFullYear()}`);
-        });
-
-    </script>
-@endpush
