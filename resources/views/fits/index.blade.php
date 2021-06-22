@@ -36,6 +36,11 @@
                                             for="input-company_id">{{ $errors->first('company_id') }}</span>
                                     @endif
                                 </div>
+                                <div class="col-3">
+                                    <label class="label-control">{{ __('Fecha') }}</label>
+                                    <input class="form-control datetimepicker" id="calendar_first" name="date" type="text"
+                                        value="" />
+                                </div>
                             </div>
                             <div class="material-datatables">
                                 <table cellspacing="0" class="table table-striped table-no-bordered table-hover"
@@ -63,8 +68,10 @@
 @push('js')
     <script src="{{ asset('js/ventas.js') }}"></script>
     <script>
+        let date = new Date();
         $(document).ready(function() {
             loadTable('datatables');
+            init_calendar('calendar_first', `01-01-${date.getFullYear()}`, `12-31-${date.getFullYear()}`);
             getFees(0);
         });
 
@@ -73,17 +80,24 @@
         });
         $('#input-company_id').change(function() {
             let company_id = document.getElementById('input-company_id').value;
-            getFees(company_id);
+            let fecha = $('#calendar_first').val();
+            console.log(fecha);
+            // getFees(company_id);
+        });
+
+        $("#calendar_first").blur(function() {
+            let fecha = $('#calendar_first').val();
+            console.log(fecha);
         });
 
         async function getFees(company_id) {
             try {
-                const data = await fetch(`companies/${company_id}`);
+                const data = await fetch(`{{ url('') }}/companies/${company_id}`);
                 response = await data.json();
                 destruir_table("datatables");
                 $('#datatables').find('tbody').empty();
                 response.fees.forEach(fee => {
-                    $("#datatables").find('tbody').append(/* html */
+                    $("#datatables").find('tbody').append( /* html */
                         `<tr>
                             <td> ${fee.company} </td>
                             <td> ${fee.terminal} </td>
@@ -100,6 +114,5 @@
                 console.log(error)
             }
         };
-
     </script>
 @endpush

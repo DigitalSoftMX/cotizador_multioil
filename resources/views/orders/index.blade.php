@@ -204,7 +204,6 @@
             if (company_client != '') {
                 let company = company_client;
                 getPrices(company, terminal);
-                document.getElementById('orderbutton').disabled = false;
             } else {
                 let company = document.getElementById('input-company_id').value;
             }
@@ -221,7 +220,6 @@
             let terminal = document.getElementById('input-terminal_id').value;
             if (company != '') {
                 getPrices(company, terminal);
-                document.getElementById('orderbutton').disabled = false;
             }
         });
         // valor del freight
@@ -265,9 +263,12 @@
                 const resp = await fetch('{{ url('') }}/getlastprice/' + `${company_id}/${terminal_id}`);
                 const prices = await resp.json();
                 console.log(prices);
-                document.getElementById('price_r').value = (prices.prices.regular).toFixed(2);
-                document.getElementById('price_p').value = (prices.prices.premium).toFixed(2);
-                document.getElementById('price_d').value = (prices.prices.diesel).toFixed(2);
+                document.getElementById('price_r').value = prices.prices != null ?
+                    (prices.prices.regular).toFixed(2) : 0;
+                document.getElementById('price_p').value = prices.prices != null ?
+                    (prices.prices.premium).toFixed(2) : 0;
+                document.getElementById('price_d').value = prices.prices != null ?
+                    (prices.prices.diesel).toFixed(2) : 0;
                 totalPrice('r');
                 totalPrice('p');
                 totalPrice('d');
@@ -301,6 +302,7 @@
                         '$ ' + total_price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') : '';
                     break;
             }
+            document.getElementById('orderbutton').disabled = (total_price != 0) ? false : true;
         }
 
         function ticket() {
