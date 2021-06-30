@@ -30,7 +30,7 @@ class FeeController extends Controller
     public function create(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('fits.create', ['terminals' => Terminal::all()]);
+        return view('fits.create', ['terminals' => Terminal::all(), 'bases' => Company::where('main', 1)->get()]);
     }
 
     /**
@@ -44,5 +44,30 @@ class FeeController extends Controller
         $request->user()->authorizeRoles(['Administrador']);
         Fee::create($request->all());
         return redirect()->route('fits.index')->withStatus(__('FEE registrado correctamente'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Fee  $fit
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Request $request, Fee $fit)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        return view('fits.edit', ['fit' => $fit, 'terminals' => Terminal::all(), 'bases' => Company::where('main', 1)->get()]);
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Fee  $fit
+     * @return \Illuminate\Http\Response
+     */
+    public function update(FeeRequest $request, Fee $fit)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        $fit->update($request->all());
+        return redirect()->route('fits.index')->withStatus(__('FEE actualizado correctamente'));
     }
 }

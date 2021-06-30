@@ -4,25 +4,13 @@ namespace App\Repositories;
 
 use App\Company;
 use App\CompetitionPrice;
+use App\Order;
 use App\Terminal;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class Activities
 {
-    // copiando la tabla fits a fees
-    public function fillData($fit, $company = null)
-    {
-        $data = [
-            'terminal_id' => $fit->terminal_id,
-            'commission' => $fit->comision,
-            'regular_fit' => $fit->regular_fit,
-            'premium_fit' => $fit->premium_fit,
-            'diesel_fit' => $fit->disel_fit,
-            'created_at' => $fit->created_at,
-            'updated_at' => $fit->updated_at
-        ];
-        $data['company_id'] = $company;
-        return $data;
-    }
     // obteniendo los fees dependiendo la empresa
     public function getFees($company_id = null)
     {
@@ -43,9 +31,10 @@ class Activities
     // llenado de fees
     private function dataFees($fee, $fees)
     {
+        $data['id'] = $fee->id;
         $data['terminal'] = $fee->terminals->name;
         $data['company'] = $fee->companies->name;
-        $data['commission'] = '$ ' . $fee->commission;
+        $data['base'] = $fee->base_id != null ? $fee->base->name : '';
         $data['regular_fit'] = '$ ' . $fee->regular_fit;
         $data['premium_fit'] = '$ ' . $fee->premium_fit;
         $data['diesel_fit'] = '$ ' . $fee->diesel_fit;
@@ -53,20 +42,7 @@ class Activities
         array_push($fees, $data);
         return $fees;
     }
-    // copiando de los competidores a competition_prices
-    public function fillDataPrices($company, $terminal, $price)
-    {
-        $data = [
-            'company_id' => $company,
-            'terminal_id' => $terminal,
-            'regular' => $price->precio_regular != null ? $price->precio_regular : 0,
-            'premium' => $price->precio_premium != null ? $price->precio_premium : 0,
-            'diesel' => $price->precio_disel != null ? $price->precio_disel : 0,
-            'created_at' => $price->created_at,
-            'updated_at' => $price->updated_at
-        ];
-        return $data;
-    }
+    // obteniendo los rpecios por empresa y fecha
     public function getPrices($company_id, $date)
     {
         $prices = array();
@@ -86,6 +62,41 @@ class Activities
             }
         }
         return $prices;
+    }
+    // Registro de pedidos
+    public function register($request, $product)
+    {
+        $data = [
+            'company_id' => $request['company_id'],
+            'terminal_id'  => $request['terminal_id'],
+            'freight' => $request['freight'],
+            'price' => $request["price_$product"],
+            'liters' => $request["liters_$product"],
+            'total' => $request["total_$product"],
+            'date' => $request['date'],
+            'statud_id' => 1,
+        ];
+        if ($product == 'r')
+            $data['product'] = 'regular';
+        if ($product == 'p')
+            $data['product'] = 'premium';
+        if ($product == 'd')
+            $data['product'] = 'diesel';
+        if (isset($request['secure'])) {
+            $data['secure'] = $request['secure'] == 0 ? 0 : 1;
+        }
+        Order::create($data);
+    }
+    // Metodo para validar pdf y xml
+    public function saveFile($request, $invoice, $file)
+    {
+        if ($request->file("file_$file")) {
+            if (File::exists(public_path() . $invoice->$file)) {
+                File::delete(public_path() . $invoice->$file);
+            }
+            $save = $request->file("file_$file")->store('public' . '/orders/' . $invoice->id);
+            $invoice->update([$file => Storage::url($save)]);
+        }
     }
     // llenado de precios
     private function dataPrices($price, $prices)

@@ -2,7 +2,9 @@
 
 namespace App\Listeners;
 
+use App\Company;
 use App\Events\EmailMultioil;
+use App\Terminal;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
@@ -31,8 +33,12 @@ class EmailMultioilNotification
         $order = $event->getOrder();
         switch ($state) {
             case 1:
-                Mail::send('emails.order', ['order' => $order], function ($o) use ($order) {
-                    $o->from($order->company->user->email, '')
+                Mail::send('emails.order', [
+                    'order' => $order,
+                    'company' => ($company = Company::find($order->company_id)),
+                    'terminal' => ($terminal = Terminal::find($order->terminal_id))
+                ], function ($o) use ($order, $company, $terminal) {
+                    $o->from($company->user->email, '')
                         ->to('mesadecontrol@grupomultioil.com')
                         ->subject('Orden de pedido');
                 });
@@ -57,18 +63,19 @@ class EmailMultioilNotification
                         ->subject('Orden de pedido Semanal');
                 });
                 break;
-                case 5:
-                    Mail::send('emails.notifyS', ['order' => $order], function ($o) use ($order) {
-                        $o->to($order->company->user->email)
-                            ->subject('Status orden de pedido semanal');
-                    });
-                    break;
-                    case 6:
-                        $m = $event->getMessage();
-                        Mail::send('emails.notifyS', ['order' => $order, 'm' => $m], function ($o) use ($order, $m) {
-                            $o->to($order->company->user->email)
-                                ->subject('Status orden de pedido Semanal');
-                        });
+            case 5:
+                Mail::send('emails.notifyS', ['order' => $order], function ($o) use ($order) {
+                    $o->to($order->company->user->email)
+                        ->subject('Status orden de pedido semanal');
+                });
+                break;
+            case 6:
+                $m = $event->getMessage();
+                Mail::send('emails.notifyS', ['order' => $order, 'm' => $m], function ($o) use ($order, $m) {
+                    $o->to($order->company->user->email)
+                        ->subject('Status orden de pedido Semanal');
+                });
+                break;
         }
     }
 }

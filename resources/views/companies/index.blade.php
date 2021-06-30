@@ -38,7 +38,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($companies as $company)
-                                            <tr>
+                                            <tr class="{{ $company->main ? 'table-success' : '' }}">
                                                 <td>{{ $company->name }}</td>
                                                 <td>{{ $company->rfc }}</td>
                                                 <td>{{ $company->delivery_address }}</td>
@@ -83,6 +83,5 @@
         $(document).ready(function() {
             loadTable('datatables');
         });
-
     </script>
 @endpush

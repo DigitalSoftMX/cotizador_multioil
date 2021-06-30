@@ -200,6 +200,20 @@ return [
         'longitude' => 'longitud',
         'kms' => 'kilómetros',
         'freight' => 'fletera',
-        'secure' => 'seguro'
+        'secure' => 'seguro',
+        'dispatched_liters' => 'litos despachados',
+        'invoice' => 'cantidad facturada',
+        'CFDI' => 'factura',
+        'file_pdf' => 'pdf',
+        'file_xml' => 'xml',
+        'commission' => 'comisión',
+        'payment' => 'pago',
+        'user_id' => 'ventas',
+        'payment_freight' => 'pago de fletera',
+        'name_freight' => 'nombre de la fletera',
+        'sale_price' => 'precio de venta',
+        'dispatched' => 'fecha de despacho',
+        'main' => 'principal',
+        'base_id' => 'precio base'
     ],
 ];

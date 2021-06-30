@@ -16,6 +16,11 @@ class CreateCompaniesTable extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('rfc');
+            $table->string('delivery_address');
+            $table->string('fiscal_address');
+            $table->string('clabe');
+            $table->integer('main')->default(0);
             $table->integer('active')->default(1);
             $table->timestamps();
         });

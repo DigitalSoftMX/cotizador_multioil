@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('terminals', 'TerminalController', ['except' => ['show']]);
 	Route::get('getcompanies/{terminal?}', 'TerminalController@getCompanies')->name('getcompanies');
-	Route::resource('fits', 'FeeController', ['except' => ['show', 'edit', 'update', 'destroy']]);
+	Route::resource('fits', 'FeeController', ['except' => ['show', 'destroy']]);
 	Route::resource('companies', 'CompanyController');
 	Route::resource('prices', 'CompetitionPriceController', ['except' => 'show', 'destroy']);
 	Route::get('getprices/{company}/{date?}', 'CompetitionPriceController@getPrices')->name('getprices');
@@ -53,20 +53,21 @@ Route::group(['middleware' => 'auth'], function () {
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('pedidos', 'PedidoController');
 	Route::resource('factura', 'FacturacionController');
-	Route::resource('validacion', 'validacionSController');
+	Route::resource('validacion', 'validacionSController', ['only' => ['index']]);
 	Route::resource('historialcliente', 'HistorialCController');
 });
-
 
 //rutas cotizador
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('pricesterminal/{terminal_id}/{month}/{company?}', 'HomeController@getPricesJson')->name('pricesterminal');
 	Route::resource('orders', 'OrderController', ['except' => ['create', 'edit', 'destroy']]);
+	Route::resource('orders/{order}/payments', 'PaymentController');
+	Route::resource('invoices', 'InvoiceController', ['only' => ['edit', 'update']]);
+	Route::get('downloadfile/{order}/{file}', 'InvoiceController@download')->name('download');
 	Route::get('excel', 'OrderController@downloadExcel')->name('excel');
 	Route::get('sales', 'OrderController@downloadSales')->name('sales');
 	Route::get('excel2', 'PedidoController@downloadExcel')->name('excel2');
-	Route::get('export', 'OrderController@export');
-	Route::resource('validations', 'ValidationController');
+	Route::resource('validations', 'ValidationController', ['only' => ['index']]);
 	Route::post('validations/accept/{order}', 'ValidationController@accept')->name('accept');
 	Route::post('validations/deny/{order}', 'ValidationController@deny')->name('deny');
 	Route::post('validacion/accept/{pedido}', 'validacionSController@accept')->name('accepts');

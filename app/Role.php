@@ -6,17 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-    public function roles(){
-        return $this->belongsToMany('App\Role');
-    }
-
-    public function menus(){
-        return $this->belongsToMany('App\Menu');
-    }
-
     protected $guarded = ['id'];
-
-    public function estacions(){
-        return $this->belongsToMany('App\Estacion');
+    // Relacion con los usuarios
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+    // relación con los menús
+    public function menus()
+    {
+        return $this->belongsToMany('App\Menu');
     }
 }

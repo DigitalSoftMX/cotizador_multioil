@@ -31,7 +31,7 @@ class CompetitionPriceController extends Controller
     public function create(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('prices.create', ['terminals' => Terminal::all()]);
+        return view('prices.create', ['terminals' => Terminal::all(), 'bases' => Company::where('main', 1)->get()]);
     }
 
     /**
@@ -44,6 +44,7 @@ class CompetitionPriceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate([
+            'base_id' => 'required|integer',
             'terminal_id' => 'required|integer',
             'continue' => 'required|integer'
         ]);

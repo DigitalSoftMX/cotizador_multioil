@@ -14,21 +14,19 @@
         @include('partials._notification')
         <div class="row justify-content-center">
             @if (!isset($price))
-                <div class="form-group{{ $errors->has('pemex') ? ' has-danger' : '' }} col-3 checkbox-radios">
-                    <label class="label-control" for="pemex">{{ __('Activar el precio para Pemex') }}</label>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="1" name="pemex" id="pemexid" @if (($p = $price->company_id ?? '') == 15) checked @endif>
-                            {{ 'Pemex' }}
-                            <span class="form-check-sign">
-                                <span class="check"></span>
-                            </span>
-                        </label>
-                    </div>
-                    @if ($errors->has('pemex'))
-                        <span id="pemex-error" class="error text-danger" for="input-pemex">
-                            {{ $errors->first('pemex') }}
-                        </span>
+                <div class="form-group{{ $errors->has('base_id') ? ' has-danger' : '' }} col-3">
+                    <select id="input-base_id" name="base_id"
+                        class="selectpicker show-menu-arrow {{ $errors->has('base_id') ? ' has-danger' : '' }}"
+                        data-style="btn-primary" data-width="100%" data-live-search="true">
+                        <option value="">{{ __('Elija el precio base') }}</option>
+                        @foreach ($bases as $base)
+                            <option value="{{ $base->id }}">{{ $base->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('base_id'))
+                        <span id="name-base_id" class="error text-danger"
+                            for="input-base_id">{{ $errors->first('base_id') }}</span>
                     @endif
                 </div>
             @else

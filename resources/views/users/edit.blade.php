@@ -1,7 +1,6 @@
 @extends('layouts.app', ['activePage' => 'Usuarios', 'titlePage' => __('Gestión de usuarios')])
 
 @section('content')
-
     <div class="content">
         <div class="container-fluid">
             <div class="row">

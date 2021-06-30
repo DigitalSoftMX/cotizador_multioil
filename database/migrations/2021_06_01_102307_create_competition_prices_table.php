@@ -20,6 +20,9 @@ class CreateCompetitionPricesTable extends Migration
             $table->double('regular')->default(0);
             $table->double('premium')->default(0);
             $table->double('diesel')->default(0);
+            $table->double('regular_sf')->default(0);
+            $table->double('premium_sf')->default(0);
+            $table->double('diesel_sf')->default(0);
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')

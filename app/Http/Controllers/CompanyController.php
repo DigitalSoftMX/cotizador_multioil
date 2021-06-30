@@ -78,6 +78,8 @@ class CompanyController extends Controller
     public function update(CompanyRequest $request, Company $company)
     {
         $request->user()->authorizeRoles(['Administrador']);
+        if ($request->main == null)
+            $request->merge(['main' => 0]);
         $company->update($request->except('active'));
         foreach ($company->terminals as $terminal) {
             if (!in_array($terminal->id, $request->terminal_id)) {

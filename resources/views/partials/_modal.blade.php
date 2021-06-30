@@ -26,27 +26,11 @@
                             <th>Litros</th>
                             <th>Importe</th>
                         </tr>
-                        @if ($order->liters_r > 0)
-                            <tr>
-                                <td>Regular</td>
-                                <td>{{ number_format($order->liters_r, 2) }} LTS</td>
-                                <td>{{ '$ ' . number_format($order->total_r, 2) }}</td>
-                            </tr>
-                        @endif
-                        @if ($order->liters_p)
-                            <tr>
-                                <td>Premium</td>
-                                <td>{{ number_format($order->liters_p, 2) }} LTS</td>
-                                <td>{{ '$ ' . number_format($order->total_p, 2) }}</td>
-                            </tr>
-                        @endif
-                        @if ($order->liters_d > 0)
-                            <tr>
-                                <td>Diesel</td>
-                                <td>{{ number_format($order->liters_d, 2) }} LTS</td>
-                                <td>{{ '$ ' . number_format($order->total_d, 2) }}</td>
-                            </tr>
-                        @endif
+                        <tr>
+                            <td>{{ $order->product }}</td>
+                            <td>{{ number_format($order->liters, 2) }} LTS</td>
+                            <td>{{ '$ ' . number_format($order->total, 2) }}</td>
+                        </tr>
                         <tr>
                             <th colspan="2" class="text-right">Total: </th>
                             <td>{{ '$ ' . number_format($order->total, 2) }}</td>

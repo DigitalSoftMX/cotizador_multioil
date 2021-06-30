@@ -12,29 +12,29 @@
     <br>
     <strong class="font-weight-bold">Fecha de solicitud: </strong>{{ now()->format('Y-m-d') }}<br>
     <strong class="font-weight-bold">Fecha de entrega: </strong>{{ $order->date }}<br>
-    <strong class="font-weight-bold">Empresa: </strong>{{ $order->company->name }}<br>
-    <strong class="font-weight-bold">Terminal: </strong>{{ $order->terminal->name }}<br><br>
+    <strong class="font-weight-bold">Empresa: </strong>{{ $company->name }}<br>
+    <strong class="font-weight-bold">Terminal: </strong>{{ $terminal->name }}<br><br>
     <table style="width:100%">
         <tr align="left">
             <th>Concepto</th>
             <th>Litros</th>
             <th>Importe</th>
         </tr>
-        @if ($order->liters_r != 0)
+        @if ($order->liters_r != null)
             <tr>
                 <td>Regular</td>
                 <td>{{ number_format($order->liters_r, 0) }} LTS</td>
                 <td>{{ '$ ' . number_format($order->total_r, 2) }}</td>
             </tr>
         @endif
-        @if ($order->liters_p != 0)
+        @if ($order->liters_p != null)
             <tr>
                 <td>Premium</td>
                 <td>{{ number_format($order->liters_p, 0) }} LTS</td>
                 <td>{{ '$ ' . number_format($order->total_p, 2) }}</td>
             </tr>
         @endif
-        @if ($order->liters_d != 0)
+        @if ($order->liters_d != null)
             <tr>
                 <td>Diesel</td>
                 <td>{{ number_format($order->liters_d, 0) }} LTS</td>

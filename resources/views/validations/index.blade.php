@@ -44,24 +44,26 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="link2" aria-expanded="false">
-                                    <div class="row justify-content-end">
-                                        <div class="text-right">
-                                            <a href="{{ route('excel') }}"
-                                                class="btn btn-sm btn-primary">{{ __('Excel Pedidos diarios') }}</a>
+                                @if (auth()->user()->roles->first()->id = 1)
+                                    <div class="tab-pane" id="link2" aria-expanded="false">
+                                        <div class="row justify-content-end">
+                                            <div class="text-right">
+                                                <a href="{{ route('excel') }}"
+                                                    class="btn btn-sm btn-primary">{{ __('Excel Pedidos diarios') }}</a>
+                                            </div>
+                                            <div class="text-right">
+                                                <a href="{{ route('sales') }}"
+                                                    class="btn btn-sm btn-primary">{{ __('Excel Ventas') }}</a>
+                                            </div>
                                         </div>
-                                        <div class="text-right">
-                                            <a href="{{ route('sales') }}"
-                                                class="btn btn-sm btn-primary">{{ __('Excel Ventas') }}</a>
+                                        <div class="table-responsive">
+                                            <table class="table dataTable table-sm table-striped" cellspacing="0"
+                                                width="100%" id="autorizados">
+                                                @include('partials._orders',[$status=2])
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="table-responsive">
-                                        <table class="table dataTable table-sm table-striped" cellspacing="0" width="100%"
-                                            id="autorizados">
-                                            @include('partials._orders',[$status=2])
-                                        </table>
-                                    </div>
-                                </div>
+                                @endif
                                 <div class="tab-pane" id="link3" aria-expanded="false">
                                     <div class="table-responsive">
                                         <table class="table dataTable table-sm table-striped" cellspacing="0" width="100%"
@@ -86,6 +88,5 @@
             loadTable('autorizados');
             loadTable('denegados');
         });
-
     </script>
 @endpush

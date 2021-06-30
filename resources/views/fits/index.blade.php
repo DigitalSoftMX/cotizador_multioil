@@ -36,11 +36,11 @@
                                             for="input-company_id">{{ $errors->first('company_id') }}</span>
                                     @endif
                                 </div>
-                                <div class="col-3">
+                                {{-- <div class="col-3">
                                     <label class="label-control">{{ __('Fecha') }}</label>
                                     <input class="form-control datetimepicker" id="calendar_first" name="date" type="text"
                                         value="" />
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="material-datatables">
                                 <table cellspacing="0" class="table table-striped table-no-bordered table-hover"
@@ -48,11 +48,12 @@
                                     <thead class="text-primary">
                                         <th>{{ __('Empresa') }}</th>
                                         <th>{{ __('Terminal') }}</th>
-                                        <th>{{ __('Comision') }}</th>
+                                        <th>{{ __('Precio base') }}</th>
                                         <th>{{ __('Regular Fee') }}</th>
                                         <th>{{ __('Premium Fee') }}</th>
                                         <th>{{ __('Diesel Fee') }}</th>
                                         <th>{{ __('Fecha de Alta') }}</th>
+                                        <th>{{ __('Acciones') }}</th>
                                     </thead>
                                     <tbody>
                                     </tbody>
@@ -80,15 +81,15 @@
         });
         $('#input-company_id').change(function() {
             let company_id = document.getElementById('input-company_id').value;
-            let fecha = $('#calendar_first').val();
-            console.log(fecha);
-            // getFees(company_id);
+            /* let fecha = $('#calendar_first').val();
+            console.log(fecha); */
+            getFees(company_id);
         });
 
-        $("#calendar_first").blur(function() {
+        /* $("#calendar_first").blur(function() {
             let fecha = $('#calendar_first').val();
             console.log(fecha);
-        });
+        }); */
 
         async function getFees(company_id) {
             try {
@@ -101,11 +102,18 @@
                         `<tr>
                             <td> ${fee.company} </td>
                             <td> ${fee.terminal} </td>
-                            <td> ${fee.commission} </td>
+                            <td> ${fee.base} </td>
                             <td> ${fee.regular_fit} </td>
                             <td> ${fee.premium_fit} </td>
                             <td> ${fee.diesel_fit} </td>
                             <td> ${fee.created_at} </td>
+                            <td>
+                                <a rel="tooltip" class="btn btn-success btn-link"
+                                    href="{{ url('') }}/fits/${fee.id}/edit" data-original-title="" title="">
+                                    <i class="material-icons">edit</i>
+                                    <div class="ripple-container"></div>
+                                </a>
+                            </td>
                         </tr>`
                     );
                 });

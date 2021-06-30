@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Fee extends Model
 {
-    protected $fillable = ['terminal_id', 'company_id', 'commission', 'regular_fit', 'premium_fit', 'diesel_fit', 'created_at', 'update_at'];
+    protected $fillable = ['terminal_id', 'company_id', 'base_id', 'regular_fit', 'premium_fit', 'diesel_fit', 'created_at'];
     // conexion con las empresas
     public function companies()
     {
@@ -16,5 +16,10 @@ class Fee extends Model
     public function terminals()
     {
         return $this->belongsTo(Terminal::class, 'terminal_id', 'id');
+    }
+    // Relacion con los precios base del fee
+    public function base()
+    {
+        return $this->belongsTo(Company::class, 'base_id', 'id');
     }
 }

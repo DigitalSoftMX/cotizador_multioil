@@ -117,14 +117,19 @@
     <script>
         let colors = [];
         colors.push([16, 211, 25]);
+        colors.push([128, 128, 0]);
+        colors.push([0, 0, 255]);
+        colors.push([255, 195, 0]);
+        colors.push([88, 24, 69]);
+        colors.push([216, 56, 8]);
         colors.push([16, 87, 171]);
+        colors.push([169, 216, 8]);
+        colors.push([199, 0, 57]);
         colors.push([211, 16, 34]);
         colors.push([211, 16, 161]);
         colors.push([16, 176, 211]);
         colors.push([210, 216, 8]);
         colors.push([216, 122, 8]);
-        colors.push([216, 56, 8]);
-        colors.push([169, 216, 8]);
 
         let pricesR = arrayPrices('r', @json($prices));
         let pricesP = arrayPrices('p', @json($prices));
@@ -220,6 +225,5 @@
             };
             return config;
         }
-
     </script>
 @endpush

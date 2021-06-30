@@ -17,16 +17,23 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('terminal_id');
-            $table->integer('liters_r')->default(0);
-            $table->integer('liters_p')->default(0);
-            $table->integer('liters_d')->default(0);
-            $table->double('total_r')->default(0);
-            $table->double('total_p')->default(0);
-            $table->double('total_d')->default(0);
+            $table->integer('freight');
+            $table->string('name_freight')->nullable();
+            $table->integer('secure')->default(0);
+            $table->double('price');
+            $table->double('sale_price')->nullable();
+            $table->integer('liters')->default(0);
+            $table->string('product');
             $table->double('total')->default(0);
             $table->timestamp('date')->nullable();
-            $table->integer('freight');
-            $table->integer('secure')->default(0);
+            $table->timestamp('dispatched')->nullable();
+            $table->integer('dispatched_liters')->nullable();
+            $table->double('invoice')->nullable();
+            $table->string('CFDI')->nullable();
+            $table->string('pdf')->nullable();
+            $table->string('xml')->nullable();
+            $table->double('commission')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('status_id')->default(1);
             $table->timestamps();
 
@@ -39,6 +46,10 @@ class CreateOrdersTable extends Migration
                 ->onDelete('cascade');
 
             $table->foreign('status_id')->references('id')->on('status')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

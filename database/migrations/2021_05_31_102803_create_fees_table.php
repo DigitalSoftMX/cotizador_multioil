@@ -17,7 +17,7 @@ class CreateFeesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('terminal_id');
             $table->unsignedBigInteger('company_id')->nullable();
-            $table->double('commission')->nullable();
+            $table->unsignedBigInteger('base_id')->nullable();
             $table->double('regular_fit');
             $table->double('premium_fit');
             $table->double('disel_fit');
@@ -28,6 +28,10 @@ class CreateFeesTable extends Migration
                 ->onUpdate('cascade');
 
             $table->foreign('company_id')->references('id')->on('companies')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
+            $table->foreign('base_id')->references('id')->on('companies')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });

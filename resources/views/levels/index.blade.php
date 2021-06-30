@@ -24,7 +24,7 @@
                                     <select id="origin" name="origin"
                                         class="selectpicker show-menu-arrow {{ $errors->has('origin') ? ' has-danger' : '' }}"
                                         data-style="btn-primary" data-width="100%" data-live-search="true">
-                                        <option value="">{{ __('Elija la origin de origen') }}</option>
+                                        <option value="">{{ __('Elija el lugar de origen') }}</option>
                                         @foreach ($terminals as $terminal)
                                             <option value="{{ $terminal }}">{{ $terminal->name }}</option>
                                         @endforeach
@@ -197,6 +197,13 @@
             let distance = parseFloat(total_km);
             let liters = document.getElementById("liters").value;
             let levels = @json($levels);
+            if (levels.length == 0) {
+                document.getElementById("costo-envio").value = 'No es posible realizar el cálculo';
+                document.getElementById("monto-total").value = 'No es posible realizar el cálculo';
+                document.getElementById("distancia-recorrer").value = 'No es posible realizar el cálculo';
+                alert('Debe haber al menos una relación entre kms y precios');
+                return;
+            }
             let monto = 0;
             levels.forEach(level => {
                 if (level.kms <= distance) {
@@ -218,6 +225,5 @@
             document.getElementById("distancia-recorrer").value = monto != 0 ?
                 total_km + ' kms' : 'Ubicación fuera de los límites';
         }
-
     </script>
 @endpush

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable = ['company_id', 'terminal_id', 'liters_r', 'liters_p', 'liters_d', 'total_r', 'total_p', 'total_d', 'total', 'date', 'freight', 'secure', 'status_id'];
+    protected $fillable = ['company_id', 'terminal_id', 'freight', 'name_freight', 'secure', 'price', 'sale_price', 'liters', 'product', 'total', 'date', 'dispatched', 'dispatched_liters', 'invoice', 'CFDI', 'pdf', 'xml', 'status_id', 'commission', 'user_id'];
     // Relacion con las empresas
     public function company()
     {
@@ -16,5 +16,10 @@ class Order extends Model
     public function terminal()
     {
         return $this->belongsTo(Terminal::class);
+    }
+    // Relacion con los pagos
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }

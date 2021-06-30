@@ -11,27 +11,11 @@
                 <td class="text-center">{{ $order->company->name }}</td>
                 <td class="text-center">
                     <table style="width:100%" class="table table-sm">
-                        @if ($order->liters_r > 0)
-                            <tr>
-                                <td>Regular</td>
-                                <td> {{ number_format($order->liters_r, 0) }} LTS</td>
-                                <td>{{ '$ ' . number_format($order->total_r, 2) }}</td>
-                            </tr>
-                        @endif
-                        @if ($order->liters_p > 0)
-                            <tr>
-                                <td>Premium</td>
-                                <td> {{ number_format($order->liters_p, 0) }} LTS</td>
-                                <td>{{ '$ ' . number_format($order->total_p, 2) }}</td>
-                            </tr>
-                        @endif
-                        @if ($order->liters_d > 0)
-                            <tr>
-                                <td>Diesel</td>
-                                <td> {{ number_format($order->liters_d, 0) }} LTS</td>
-                                <td>{{ '$ ' . number_format($order->total_d, 2) }}</td>
-                            </tr>
-                        @endif
+                        <tr>
+                            <td>{{ $order->product }}</td>
+                            <td> {{ number_format($order->liters, 0) }} LTS</td>
+                            <td>{{ '$ ' . number_format($order->total, 2) }}</td>
+                        </tr>
                     </table>
                 </td>
                 <td class="text-center">{{ date('Y-m-d', strtotime($order->date)) }}</td>
@@ -42,10 +26,10 @@
                         <div class="ripple-container"></div>
                     </a>
                     @if ($status == 2)
-                    <a rel="tooltip" class="btn btn-dark btn-link" href="{{ route('factura.index') }}">
-                        <i class="material-icons">fact_check</i>
-                        <div class="ripple-container"></div>
-                    </a>
+                        <a rel="tooltip" class="btn btn-dark btn-link" href="{{ route('invoices.edit', $order) }}">
+                            <i class="material-icons">fact_check</i>
+                            <div class="ripple-container"></div>
+                        </a>
                     @endif
                     {{-- modal --}}
                     @include('partials._modal',[$id=$order->id.'see',$see=true])

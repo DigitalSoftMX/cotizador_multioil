@@ -10,7 +10,7 @@
     </div>
     <div class="card-body">
         <div class="row justify-content-center mt-5">
-            <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }} col-sm-4">
+            <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }} col-md-4 col-sm-12">
                 <label for="name">{{ __('Nombre') }}</label>
                 <input type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" id="input-name"
                     aria-describedby="nameHelp" placeholder="Escribe el nombre de la empresa"
@@ -21,7 +21,7 @@
                     </span>
                 @endif
             </div>
-            <div class="form-group{{ $errors->has('rfc') ? ' has-danger' : '' }} col-sm-4">
+            <div class="form-group{{ $errors->has('rfc') ? ' has-danger' : '' }} col-md-4 col-sm-12">
                 <label for="rfc">{{ __('RFC') }}</label>
                 <input type="text" class="form-control{{ $errors->has('rfc') ? ' is-invalid' : '' }}" name="rfc"
                     id="input-rfc" value="{{ old('rfc', $company->rfc ?? '') }}" aria-required="true"
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="form-group{{ $errors->has('delivery_address') ? ' has-danger' : '' }} col-sm-4">
+            <div class="form-group{{ $errors->has('delivery_address') ? ' has-danger' : '' }} col-md-4 col-sm-12">
                 <label for="delivery_address">{{ __('Dirección de entrega') }}</label>
                 <input type="text" class="form-control{{ $errors->has('delivery_address') ? ' is-invalid' : '' }}"
                     id="input-delivery_address" aria-describedby="delivery_addressHelp"
@@ -47,7 +47,7 @@
                     </span>
                 @endif
             </div>
-            <div class="form-group{{ $errors->has('fiscal_address') ? ' has-danger' : '' }} col-sm-4">
+            <div class="form-group{{ $errors->has('fiscal_address') ? ' has-danger' : '' }} col-md-4 col-sm-12">
                 <label for="fiscal_address">{{ __('Dirección fiscal') }}</label>
                 <input type="text" class="form-control{{ $errors->has('fiscal_address') ? ' is-invalid' : '' }}"
                     name="fiscal_address" id="input-fiscal_address"
@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="form-group{{ $errors->has('clabe') ? ' has-danger' : '' }} col-sm-4">
+            <div class="form-group{{ $errors->has('clabe') ? ' has-danger' : '' }} col-md-4 col-sm-12">
                 <label for="clabe">{{ __('CLABE') }}</label>
                 <input type="text" class="form-control{{ $errors->has('clabe') ? ' is-invalid' : '' }}"
                     id="input-clabe" aria-describedby="clabeHelp" placeholder="Escribe el CLABE de la empresa"
@@ -73,7 +73,28 @@
                     </span>
                 @endif
             </div>
-            <div class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-sm-4 checkbox-radios">
+            <div
+                class="form-group{{ $errors->has('main') ? ' has-danger' : '' }} col-md-4 col-sm-12 checkbox-radios">
+                <label class="label-control" for="main">{{ __('Activar como una empresa principal') }}</label>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="1" name="main" id="mainid" @if ($company->main ?? '' == 1) checked @endif>
+                        {{ 'Activar' }}
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                    </label>
+                </div>
+                @if ($errors->has('main'))
+                    <span id="main-error" class="error text-danger" for="input-main">
+                        {{ $errors->first('main') }}
+                    </span>
+                @endif
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div
+                class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-md-4 col-sm-12 checkbox-radios">
                 <label for="terminal_id">{{ __('Elije las terminales de la empresa') }}</label>
                 @foreach ($terminals as $terminal)
                     <div class="form-check mt-3">
