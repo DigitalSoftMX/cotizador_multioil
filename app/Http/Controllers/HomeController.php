@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\CompetitionPrice;
+use App\Repositories\Activities;
 use App\Terminal;
 use DateTime;
 use Illuminate\Http\Request;
@@ -28,20 +29,8 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente', 'Ventas']);
-        $months = [
-            ['name' => 'Enero', 'id' => '01'],
-            ['name' => 'Febrero', 'id' => '02'],
-            ['name' => 'Marzo', 'id' => '03'],
-            ['name' => 'Abril', 'id' => '04'],
-            ['name' => 'Mayo', 'id' => '05'],
-            ['name' => 'Junio', 'id' => '06'],
-            ['name' => 'Julio', 'id' => '07'],
-            ['name' => 'Agosto', 'id' => '08'],
-            ['name' => 'Septiembre', 'id' => '09'],
-            ['name' => 'Octubre', 'id' => '10'],
-            ['name' => 'Noviembre', 'id' => '11'],
-            ['name' => 'Diciembre', 'id' => '12'],
-        ];
+        $activity = new Activities();
+        $months = $activity->getMonths();
         $days = [];
         for ($i = 1; $i <= (int)date('d'); $i++) {
             array_push($days, $i);

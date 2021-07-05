@@ -42,6 +42,7 @@ class FeeController extends Controller
     public function store(FeeRequest $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
+        // return $request->all();
         Fee::create($request->all());
         return redirect()->route('fits.index')->withStatus(__('FEE registrado correctamente'));
     }

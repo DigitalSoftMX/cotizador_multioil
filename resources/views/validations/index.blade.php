@@ -13,7 +13,7 @@
                         <div class="card-body">
                             @include('partials._notification')
                             <div class="row">
-                                <div class="col-12 text-right">
+                                <div class="col-md-12 text-right">
                                     <a href="{{ route('orders.index') }}"
                                         class="btn btn-sm btn-success">{{ __('Realizar Pedido') }}</a>
                                 </div>

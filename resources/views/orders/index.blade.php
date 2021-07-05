@@ -5,24 +5,23 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <form id="form" method="post" action="{{ route('orders.store') }}" autocomplete="off"
-                        class="form-horizontal">
-                        @method('post')
-                        @csrf
-                        <div class="card">
-                            <div class="card-header card-header-primary">
-                                <h4 class="card-title ">{{ __('Solicitud de pedidos') }}</h4>
-                                <p class="card-category"> {{ __('Aquí puedes cotizar el pedido diario de gasolina.') }}
-                                </p>
-                            </div>
-                            <div class="card-body">
-                                @include('partials._notification')
-                                <div class="row">
-                                    <div class="col-12 text-right">
-                                        <a href="{{ route('validations.index') }}"
-                                            class="btn btn-sm btn-success">{{ __('Ir a la lista de pedidos') }}</a>
-                                    </div>
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">{{ __('Solicitud de pedidos') }}</h4>
+                            <p class="card-category"> {{ __('Aquí puedes cotizar el pedido diario de gasolina.') }}
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            @include('partials._notification')
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <a href="{{ route('validations.index') }}"
+                                        class="btn btn-sm btn-success">{{ __('Ir a la lista de pedidos') }}</a>
                                 </div>
+                            </div>
+                            <form id="form" method="post" action="{{ route('orders.store') }}" autocomplete="off"
+                                class="form-horizontal">
+                                @csrf
                                 <div class="row justify-content-center">
                                     <div class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-3">
                                         <select id="input-terminal_id" name="terminal_id"
@@ -78,7 +77,8 @@
                                                 @include('partials._tableprices',[$product='Diesel',$p='d'])
                                                 <tr>
                                                     <td colspan="3">
-                                                        <h4 class="text-right font-weight-bold">{{ __('Monto Total') }}
+                                                        <h4 class="text-right font-weight-bold">
+                                                            {{ __('Monto Total Aprox.') }}
                                                         </h4>
                                                     </td>
                                                     <td>
@@ -168,9 +168,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

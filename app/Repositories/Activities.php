@@ -98,6 +98,24 @@ class Activities
             $invoice->update([$file => Storage::url($save)]);
         }
     }
+    // lista de meses en español
+    public function getMonths()
+    {
+        return [
+            ['name' => 'Enero', 'id' => '01'],
+            ['name' => 'Febrero', 'id' => '02'],
+            ['name' => 'Marzo', 'id' => '03'],
+            ['name' => 'Abril', 'id' => '04'],
+            ['name' => 'Mayo', 'id' => '05'],
+            ['name' => 'Junio', 'id' => '06'],
+            ['name' => 'Julio', 'id' => '07'],
+            ['name' => 'Agosto', 'id' => '08'],
+            ['name' => 'Septiembre', 'id' => '09'],
+            ['name' => 'Octubre', 'id' => '10'],
+            ['name' => 'Noviembre', 'id' => '11'],
+            ['name' => 'Diciembre', 'id' => '12'],
+        ];
+    }
     // llenado de precios
     private function dataPrices($price, $prices)
     {

@@ -11,6 +11,9 @@
                 <p style="text-align: justify;"> {{ __('% DE UTILIDAD') }}</p>
             </td>
             <td style="font-weight:bold;color:#ffffff;vertical-align:center" align="center" bgcolor="#34495E" rowspan="2" width="15">
+                <p style="text-align: justify;"> {{ __('FECHA DE SOLICITUD') }}</p>
+            </td>
+            <td style="font-weight:bold;color:#ffffff;vertical-align:center" align="center" bgcolor="#34495E" rowspan="2" width="15">
                 <p style="text-align: justify;"> {{ __('FECHA DE DESPACHO') }}</p>
             </td>
             <td style="font-weight:bold;color:#ffffff;vertical-align:center" align="center" bgcolor="#34495E" rowspan="2" width="15">
@@ -105,6 +108,7 @@
                         }
                     @endphp
                 </td>
+                <td>{{ Carbon\Carbon::parse($order->created_at)->format('d/m/Y') }}</td>
                 <td>{{ Carbon\Carbon::parse($order->date)->format('d/m/Y') }}</td>
                 <td>{{ $litrosSolicitados = $order->liters }}</td>
                 <td>{{ strtoupper($order->product) }}</td>
@@ -121,7 +125,7 @@
                 <td>{{ $order->CFDI }}</td>
                 <td>{{ '$' . number_format($cantidadFacturada = $order->invoice, 2) }}</td>
                 <td>{{ '$' . number_format($diferenciaPago = $cantidadFacturada - $pagoClienteGuerrera, 2) }}</td>
-                <td>{{ '$' . number_format($comision = $diferenciaPrecio * $litrosDespachados, 2) }}</td>
+                <td>{{ '$' . number_format($comision = ($diferenciaPrecio * $litrosDespachados - $pagoFletera), 2) }}</td>
                 <td>
                     @if ($order->commission != null)
                         {{ '$' . number_format($utilidadComisionista1 = $order->commission * $litrosDespachados - $pagoFletera / 2, 2) }}

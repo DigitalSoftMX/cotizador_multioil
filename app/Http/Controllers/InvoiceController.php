@@ -41,7 +41,8 @@ class InvoiceController extends Controller
         $savingFile = new Activities();
         $savingFile->saveFile($request, $invoice, 'pdf');
         $savingFile->saveFile($request, $invoice, 'xml');
-        $invoice->update($request->only(['dispatched', 'dispatched_liters', 'invoice', 'CFDI', 'sale_price', 'name_freight']));
+        $request->merge(['total' => $request->price * $invoice->liters]);
+        $invoice->update($request->only(['dispatched', 'dispatched_liters', 'invoice', 'CFDI', 'sale_price', 'name_freight', 'price', 'total']));
         return redirect()->back()->withStatus('Datos de facturación actualizados correctamente');
     }
     // descarga de archivo pdf o xml

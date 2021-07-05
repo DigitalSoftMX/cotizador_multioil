@@ -22,12 +22,12 @@ class CreateOrdersTable extends Migration
             $table->integer('secure')->default(0);
             $table->double('price');
             $table->double('sale_price')->nullable();
-            $table->integer('liters')->default(0);
+            $table->double('liters')->default(0);
             $table->string('product');
             $table->double('total')->default(0);
             $table->timestamp('date')->nullable();
             $table->timestamp('dispatched')->nullable();
-            $table->integer('dispatched_liters')->nullable();
+            $table->double('dispatched_liters')->nullable();
             $table->double('invoice')->nullable();
             $table->string('CFDI')->nullable();
             $table->string('pdf')->nullable();

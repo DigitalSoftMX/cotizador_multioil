@@ -34,7 +34,9 @@
                                     <label>
                                         <h6>Cantidad a pagar:</h6>
                                     </label>
-                                    <strong>{{ '$ ' . number_format($invoice->total, 2) }}</strong><br>
+                                    <strong>
+                                        {{ '$ ' . number_format($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total, 2) }}
+                                    </strong><br>
                                     <label>
                                         <h6>Cantidad pagada:</h6>
                                     </label>
@@ -44,8 +46,8 @@
                                         <h6>Cantidad restante:</h6>
                                     </label>
                                     <strong
-                                        style="{{ $invoice->total - $invoice->payments->sum('payment_guerrera') > 0 ? 'color:red;' : 'color:blue;' }}">
-                                        {{ '$ ' . number_format($invoice->total - $invoice->payments->sum('payment_guerrera'), 2) }}
+                                        style="{{ ($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total) - $invoice->payments->sum('payment_guerrera') > 0 ? 'color:red;' : 'color:blue;' }}">
+                                        {{ '$ ' . number_format(($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total) - $invoice->payments->sum('payment_guerrera'), 2) }}
                                     </strong>
                                 </div>
                                 <div class="col-md-4 col-sm-12">
@@ -174,10 +176,21 @@
                                                     </div>
                                                 </div>
                                                 <div class="row justify-content-center">
-                                                    <div class="form-group col-12">
-                                                        <label>{{ __('Precio de compra') }}</label>
-                                                        <input type="number" class="form-control"
-                                                            value="{{ $invoice->price }}" readonly>
+                                                    <div
+                                                        class="form-group{{ $errors->has('price') ? ' has-danger' : '' }} col-12">
+                                                        <label for="price">{{ __('Precio de compra') }}</label>
+                                                        <input type="number"
+                                                            class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}"
+                                                            id="input-price" aria-describedby="priceHelp"
+                                                            placeholder="Escribe el precio de compra por litro"
+                                                            value="{{ old('price', $invoice->price) }}"
+                                                            aria-required="true" name="price" step="any">
+                                                        @if ($errors->has('price'))
+                                                            <span id="price-error" class="error text-danger"
+                                                                for="input-price">
+                                                                {{ $errors->first('price') }}
+                                                            </span>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="row justify-content-center">

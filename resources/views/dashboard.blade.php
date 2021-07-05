@@ -17,7 +17,7 @@
                             @include('partials._notification')
                             @if (auth()->user()->roles->first()->id == 1)
                                 <div class="row">
-                                    <div class="col-12 text-right">
+                                    <div class="col-md-12 text-right">
                                         <a href="{{ route('prices.index') }}"
                                             class="btn btn-sm btn-success">{{ __('Capturar precios') }}</a>
                                     </div>
@@ -207,7 +207,7 @@
                 data: {
                     // Fechas 1-30,31,29
                     labels: days,
-                    // Preios del competidor
+                    // Precios del competidor
                     datasets: prices,
                 },
                 options: {

@@ -29,7 +29,8 @@ class InvoiceRequest extends FormRequest
             'invoice' => 'required',
             'CFDI' => 'required',
             'name_freight' => 'required|min:3',
-            'sale_price' => 'required|numeric'
+            'sale_price' => 'required|numeric',
+            'price' => 'required|numeric'
         ];
     }
 }

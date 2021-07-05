@@ -46,23 +46,31 @@
                                                 <td>{{ $company->terminals->count() }}</td>
                                                 <td>{{ $company->status == 0 ? 'activo' : 'inactivo' }}</td>
                                                 <td>{{ $company->created_at->format('Y/m/d') }}</td>
-                                                <td class="td-actions text-right">
+                                                <td class="td-actions">
                                                     <form action="{{ route('companies.destroy', $company) }}"
                                                         method="post">
                                                         @csrf
                                                         @method('delete')
-                                                        <a rel="tooltip" class="btn btn-success btn-link"
-                                                            href="{{ route('companies.edit', $company) }}"
-                                                            data-original-title="" title="">
-                                                            <i class="material-icons">edit</i>
-                                                            <div class="ripple-container"></div>
-                                                        </a>
-                                                        <button type="button" class="btn btn-danger btn-link"
-                                                            data-original-title="" title=""
-                                                            onclick="confirm('{{ __('¿Estás seguro de que deseas eliminar a este usuario?') }}') ? this.parentElement.submit() : ''">
-                                                            <i class="material-icons">close</i>
-                                                            <div class="ripple-container"></div>
-                                                        </button>
+                                                        <div class="row justify-content-end">
+                                                            <a rel="tooltip" class="btn btn-dark btn-link"
+                                                                href="{{ route('getshopping', $company) }}"
+                                                                data-original-title="" title="">
+                                                                <i class="material-icons">visibility</i>
+                                                                <div class="ripple-container"></div>
+                                                            </a>
+                                                            <a rel="tooltip" class="btn btn-success btn-link"
+                                                                href="{{ route('companies.edit', $company) }}"
+                                                                data-original-title="" title="">
+                                                                <i class="material-icons">edit</i>
+                                                                <div class="ripple-container"></div>
+                                                            </a>
+                                                            <button type="button" class="btn btn-danger btn-link"
+                                                                data-original-title="" title=""
+                                                                onclick="confirm('{{ __('¿Estás seguro de que deseas eliminar a este usuario?') }}') ? this.parentElement.submit() : ''">
+                                                                <i class="material-icons">close</i>
+                                                                <div class="ripple-container"></div>
+                                                            </button>
+                                                        </div>
                                                     </form>
                                                 </td>
                                             </tr>

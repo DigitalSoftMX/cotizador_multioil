@@ -47,9 +47,9 @@
                                     <thead class="text-primary">
                                         <th>{{ __('Competencia') }}</th>
                                         <th>{{ __('Terminal') }}</th>
-                                        <th>{{ __('Precio Regular') }}</th>
-                                        <th>{{ __('Precio Premium') }}</th>
-                                        <th>{{ __('Precio Diésel') }}</th>
+                                        <th>{{ __('Regular') }}</th>
+                                        <th>{{ __('Premium') }}</th>
+                                        <th>{{ __('Diésel') }}</th>
                                         <th>{{ __('Fecha de Alta') }}</th>
                                         <th>{{ __('Acciones') }}</th>
                                     </thead>
@@ -77,7 +77,7 @@
         $(".selectpicker").change(function() {
             let company_id = document.getElementById('input-company_id').value;
         });
-        
+
         $('#input-company_id').change(function() {
             let company_id = document.getElementById('input-company_id').value;
             fecha = $('#calendar_first').val();

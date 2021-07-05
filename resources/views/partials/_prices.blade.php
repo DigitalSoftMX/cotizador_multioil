@@ -13,27 +13,28 @@
     <div class="card-body">
         @include('partials._notification')
         <div class="row justify-content-center">
-            @if (!isset($price))
-                <div class="form-group{{ $errors->has('base_id') ? ' has-danger' : '' }} col-3">
-                    <select id="input-base_id" name="base_id"
-                        class="selectpicker show-menu-arrow {{ $errors->has('base_id') ? ' has-danger' : '' }}"
-                        data-style="btn-primary" data-width="100%" data-live-search="true">
-                        <option value="">{{ __('Elija el precio base') }}</option>
-                        @foreach ($bases as $base)
-                            <option value="{{ $base->id }}">{{ $base->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @if ($errors->has('base_id'))
-                        <span id="name-base_id" class="error text-danger"
-                            for="input-base_id">{{ $errors->first('base_id') }}</span>
-                    @endif
-                </div>
-            @else
-                <div class="form-group{{ $errors->has('company_id') ? ' has-danger' : '' }} col-3">
+            <div
+                class="form-group{{ $errors->has('base_id') ? ' has-danger' : '' }} col-md-{{ isset($price) ? '3' : '6' }} col-sm-12">
+                <select id="input-base_id" name="base_id"
+                    class="selectpicker show-menu-arrow {{ $errors->has('base_id') ? ' has-danger' : '' }}"
+                    data-style="btn-primary" data-width="100%" data-live-search="true">
+                    <option value="">{{ __('Elija el precio base') }}</option>
+                    @foreach ($bases as $base)
+                        <option value="{{ $base->id }}">{{ $base->name }}
+                        </option>
+                    @endforeach
+                </select>
+                @if ($errors->has('base_id'))
+                    <span id="name-base_id" class="error text-danger"
+                        for="input-base_id">{{ $errors->first('base_id') }}</span>
+                @endif
+            </div>
+            @isset($price)
+                <div class="form-group{{ $errors->has('company_id') ? ' has-danger' : '' }} col-md-3 col-sm-12">
                     <select id="input-company_id" name="company_id"
                         class="selectpicker show-menu-arrow {{ $errors->has('company_id') ? ' has-danger' : '' }}"
                         data-style="btn-primary" data-width="100%" data-live-search="true">
+                        <option value="">{{ __('Elija la empresa') }}</option>
                         @foreach ($companies as $company)
                             <option value="{{ $company->id }}" @if (($e = $price->company_id ?? '') == $company->id) selected @endif>{{ $company->name }}
                             </option>
@@ -44,12 +45,14 @@
                             for="input-company_id">{{ $errors->first('company_id') }}</span>
                     @endif
                 </div>
-            @endif
-            <div class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-3">
+            @endisset
+        </div>
+        <div class="row justify-content-center">
+            <div class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-md-3 col-sm-12">
                 <select id="input-terminal_id" name="terminal_id"
                     class="selectpicker show-menu-arrow {{ $errors->has('terminal_id') ? ' has-danger' : '' }}"
                     data-style="btn-primary" data-width="100%" data-live-search="true">
-                    <option value="0">{{ __('Elija una terminal') }}</option>
+                    <option value="">{{ __('Elija una terminal') }}</option>
                     @foreach ($terminals as $terminal)
                         <option value="{{ $terminal->id }}" @if (($t = $price->terminal_id ?? '') == $terminal->id) selected @endif>{{ $terminal->name }}
                         </option>
@@ -60,26 +63,26 @@
                         for="input-terminal_id">{{ $errors->first('terminal_id') }}</span>
                 @endif
             </div>
-            <div class="col-3">
+            <div class="col-md-3 col-sm-12">
                 <label class="label-control">{{ __('Fecha') }}</label>
                 <input class="form-control datetimepicker" id="calendar_first" name="created_at" type="text"
                     value="" /></input>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-3">
+            <div class="col-md-2 col-sm-12">
                 <label for="regular">{{ __('Regular') }}</label>
                 <input class="form-control" id="regular" name="regular" placeholder="0" type="number" step="any"
                     value="{{ old('regular', $price->regular ?? '') }}">
                 </input>
             </div>
-            <div class="col-3">
+            <div class="col-md-2 col-sm-12">
                 <label for="premium">{{ __('Premium') }}</label>
                 <input class="form-control" id="premium" name="premium" placeholder="0" type="number" step="any"
                     value="{{ old('premium', $price->premium ?? '') }}">
                 </input>
             </div>
-            <div class="col-3">
+            <div class="col-md-2 col-sm-12">
                 <label for="disel">{{ __('Diesel') }}</label>
                 <input class="form-control" id="diesel" name="diesel" placeholder="0" type="number" step="any"
                     value="{{ old('diesel', $price->diesel ?? '') }}">
@@ -87,7 +90,8 @@
             </div>
         </div>
         <div class="row justify-content-center mt-5">
-            <div class="checkbox-radios form-group{{ $errors->has('continue') ? ' has-danger' : '' }} col-3">
+            <div
+                class="checkbox-radios form-group{{ $errors->has('continue') ? ' has-danger' : '' }} col-md-3 col-sm-12">
                 <label for="bill">{{ __('Registro de precios') }}</label>
                 <div id="radiocontinue">
                     <div class="form-check-radio">
@@ -127,7 +131,7 @@
         let date = new Date();
         let register = document.getElementById('register');
         let update = document.getElementById('update');
-        let company_id = '';
+        let company = "{{ $price->company_id ?? '0' }}";
         $(document).ready(function() {
             init_calendar('calendar_first', `01-01-${date.getFullYear()}`, `12-31-${date.getFullYear()}`);
             if (id == '') {
@@ -149,44 +153,43 @@
                 return false
             }
         }
-        $('#pemexid').change(function() {
-            value();
-        });
 
         $(".selectpicker").change(function() {
-            let terminal_id = document.getElementById('input-terminal_id').value;
+            document.getElementById('input-terminal_id').value;
             if (id != '') {
-                company_id = document.getElementById('input-company_id').value;
+                document.getElementById('input-company_id').value;
             }
+            document.getElementById('input-base_id').value;
         });
 
         $('#input-terminal_id').change(function() {
             value();
         });
+        $('#input-base_id').change(function() {
+            company = document.getElementById('input-base_id').value;
+            value();
+        });
         $('#input-company_id').change(function() {
+            company = document.getElementById('input-company_id').value;
             value();
         });
         $("#calendar_first").blur(function() {
             value();
         });
-        // método para los valores de peme, terminal y fecha
+        // método para los valores de empresa principal, terminal y fecha
         function value() {
-            let pemexcheck = 0;
-            if (id != '') {
-                company_id = document.getElementById('input-company_id').value;
-                pemexcheck = company_id == '15' ? 1 : 0;
-            } else {
-                pemexcheck = $("#pemexid").is(":checked") ? 1 : 0;
-            }
-            let terminal = $('#input-terminal_id').val();
+            company == '' ? 0 : company;
+            terminal = document.getElementById('input-terminal_id').value;
             let fecha = $('#calendar_first').val();
-            getPrice(pemexcheck, terminal, fecha);
+            terminal == "" ? 0 : terminal;
+            getPrice(company, terminal, fecha);
         }
         // pregunta si existe precios con pemex, terminal y fecha
-        async function getPrice(pemex, terminal, date) {
+        async function getPrice(company, terminal, date) {
             try {
-                const resp = await fetch(`{{ url('') }}/getprice/${pemex}/${terminal}/${date}`);
+                const resp = await fetch(`{{ url('') }}/getprice/${company}/${terminal}/${date}`);
                 const data = await resp.json();
+                console.log(data);
                 next = data.price;
                 if (data.price) {
                     showNotification();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CompetitionPrice;
 use App\Events\EmailMultioil;
 use App\Exports\OrdersExport;
+use App\Fee;
 use App\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyRequest;
+use App\Order;
 use App\Repositories\Activities;
 use App\Terminal;
 use Illuminate\Http\Request;
@@ -105,5 +106,34 @@ class CompanyController extends Controller
         $request->user()->authorizeRoles(['Administrador']);
         $company->delete();
         return redirect()->route('companies.index')->withStatus('Se ha dado de baja la empresa correctamente');
+    }
+    // Estado de cuenta de la empresa
+    public function getshopping(Request $request, Company $company)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        $months = new Activities();
+        return view('companies.state', ['months' => $months->getMonths(), 'company' => $company]);
+    }
+    // Método para obtener las ventas de un mes
+    public function getshoppings(Request $request, $company, $month)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        $total = 0;
+        $sales = [];
+        foreach (Order::where([['status_id', 2], ['company_id', $company]])->whereMonth('dispatched', $month)->get() as $order) {
+            $data['date'] = $order->dispatched != null ? date('d/m/Y', strtotime($order->dispatched)) : '-';
+            $data['cfdi'] = $order->CFDI;
+            $data['product'] = strtoupper($order->product);
+            $data['liters'] = number_format($order->liters, 2);
+            $data['invoice'] = '$' . number_format($order->invoice, 2);
+            $data['payment'] = '$' . number_format($order->payments->sum('payment_guerrera'), 2);
+            $data['balance'] = '$' . number_format($t = ($order->payments->sum('payment_guerrera') - $order->invoice), 2);
+            array_push($sales, $data);
+            $total += $t;
+        }
+        return response()->json([
+            'sales' => $sales,
+            'total' => '$' . number_format($total, 2)
+        ]);
     }
 }
