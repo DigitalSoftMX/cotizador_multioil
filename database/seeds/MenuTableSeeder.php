@@ -12,116 +12,27 @@ class MenuTableSeeder extends Seeder
      */
     public function run()
     {
-        $menu = new Menu();
-        $menu->name_modulo = "dashboard";
-        $menu->desplegable = "0";
-        $menu->ruta = "home";
-        $menu->id_role = "1";
-        $menu->icono = "dashboard";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();
-        $menu->roles()->attach('1');
-        $menu->roles()->attach('2');
-
-        $menu = new Menu();
-        $menu->name_modulo = "Usuarios";
-        $menu->desplegable = "0";
-        $menu->ruta = "user";
-        $menu->id_role = "1";
-        $menu->icono = "perm_identity";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();
-        $menu->roles()->attach('1');
-
-        $menu = new Menu();
-        $menu->name_modulo = "Cotizador";
-        $menu->desplegable = "0";
-        $menu->ruta = "cotizador";
-        $menu->id_role = "1";
-        $menu->icono = "local_atm";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();
-        $menu->roles()->attach('1');
-        $menu->roles()->attach('2');
-
-        $menu = new Menu();
-        $menu->name_modulo = "Alta de Terminales";
-        $menu->desplegable = "0";
-        $menu->ruta = "terminales";
-        $menu->id_role = "1";
-        $menu->icono = "home_work";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();
-        $menu->roles()->attach('1');
-
-        $menu = new Menu();
-        $menu->name_modulo = "Alta de Empresas";
-        $menu->desplegable = "0";
-        $menu->ruta = "companies";
-        $menu->id_role = "1";
-        $menu->icono = "home_work";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();
-        $menu->roles()->attach('1');
-
-        $menu = new Menu();
-        $menu->name_modulo = "Fits";
-        $menu->desplegable = "0";
-        $menu->ruta = "fits";
-        $menu->id_role = "1";
-        $menu->icono = "import_export";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();
-        $menu->roles()->attach('1');
-
-        $menu = new Menu();
-        $menu->name_modulo = "Tabla de Descuentos Valero";
-        $menu->desplegable = "0";
-        $menu->ruta = "table_descount";
-        $menu->id_role = "1";
-        $menu->icono = "local_offer";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();
-        $menu->roles()->attach('1');
-
-        $menu = new Menu();
-        $menu->name_modulo = "Tabla de Descuentos Pemex";
-        $menu->desplegable = "0";
-        $menu->ruta = "pemex";
-        $menu->id_role = "1";
-        $menu->icono = "local_parking";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();
-        $menu->roles()->attach('1');
-
-        $menu = new Menu();
-        $menu->name_modulo = "Captura de precios pemex";
-        $menu->desplegable = "0";
-        $menu->ruta = "competencia";
-        $menu->id_role = "1";
-        $menu->icono = "thumbs_up_down";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();
-        $menu->roles()->attach('1');
-
-        $menu = new Menu();
-        $menu->name_modulo = "Historial de Actividad";
-        $menu->desplegable = "0";
-        $menu->ruta = "actividades";
-        $menu->id_role = "1";
-        $menu->icono = "history";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();
-        $menu->roles()->attach('1');
+        $menu = Menu::create(['name_modulo' => 'dashboard', 'desplegable' => 0, 'ruta' => 'home', 'id_role' => 1, 'icono' => 'dashboard']);
+        $menu->roles()->attach([1, 2, 3]);
+        $menu = Menu::create(['name_modulo' => 'Usuarios', 'desplegable' => 0, 'ruta' => 'users', 'id_role' => 1, 'icono' => 'perm_identity']);
+        $menu->roles()->attach([1]);
+        $menu = Menu::create(['name_modulo' => 'Empresas', 'desplegable' => 0, 'ruta' => 'companies', 'id_role' => 1, 'icono' => 'domain']);
+        $menu->roles()->attach([1]);
+        $menu = Menu::create(['name_modulo' => 'Terminales', 'desplegable' => 0, 'ruta' => 'terminals', 'id_role' => 1, 'icono' => 'local_gas_station']);
+        $menu->roles()->attach([1]);
+        $menu = Menu::create(['name_modulo' => 'Fee', 'desplegable' => 0, 'ruta' => 'fits', 'id_role' => 1, 'icono' => 'import_export']);
+        $menu->roles()->attach([1]);
+        $menu = Menu::create(['name_modulo' => 'Captura de precios', 'desplegable' => 0, 'ruta' => 'prices', 'id_role' => 1, 'icono' => 'paid']);
+        $menu->roles()->attach([1]);
+        $menu = Menu::create(['name_modulo' => 'Crea un pedido', 'desplegable' => 0, 'ruta' => 'orders', 'id_role' => 1, 'icono' => 'local_atm']);
+        $menu->roles()->attach([1, 2]);
+        $menu = Menu::create(['name_modulo' => 'Validación de pedidos', 'desplegable' => 0, 'ruta' => 'validations', 'id_role' => 1, 'icono' => 'fact_check']);
+        $menu->roles()->attach([1, 2]);
+        $menu = Menu::create(['name_modulo' => 'Pedido Semanal', 'desplegable' => 0, 'ruta' => 'pedidos', 'id_role' => 1, 'icono' => 'paid']);
+        $menu->roles()->attach([1, 2]);
+        $menu = Menu::create(['name_modulo' => 'Validacion P semanal', 'desplegable' => 0, 'ruta' => 'validacion', 'id_role' => 1, 'icono' => 'paid']);
+        $menu->roles()->attach([1, 2]);
+        $menu = Menu::create(['name_modulo' => 'Flete', 'desplegable' => 0, 'ruta' => 'levels', 'id_role' => 1, 'icono' => 'local_atm']);
+        $menu->roles()->attach([1, 2, 3]);
     }
 }

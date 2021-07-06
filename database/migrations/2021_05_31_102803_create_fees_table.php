@@ -20,7 +20,7 @@ class CreateFeesTable extends Migration
             $table->unsignedBigInteger('base_id')->nullable();
             $table->double('regular_fit');
             $table->double('premium_fit');
-            $table->double('disel_fit');
+            $table->double('diesel_fit');
             $table->timestamps();
 
             $table->foreign('terminal_id')->references('id')->on('terminals')

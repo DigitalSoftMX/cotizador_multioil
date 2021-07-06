@@ -28,11 +28,5 @@ class SuccessfulLogin
      */
     public function handle(Login $event)
     {
-        DB::table('login_acts')->insert(
-            ['nombre' => $event->user->name, 'email'=>$event->user->email,'inicio'=> date("Y-m-d H:i:s")]
-        );
-        //dd($event->user->name);
-        //$event->user->last_login = new DateTime;
-        //$event->user->save();
     }
 }

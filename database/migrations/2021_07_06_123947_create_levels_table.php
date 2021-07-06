@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHistorialCSTable extends Migration
+class CreateLevelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateHistorialCSTable extends Migration
      */
     public function up()
     {
-        Schema::create('historial_c_s', function (Blueprint $table) {
+        Schema::create('levels', function (Blueprint $table) {
             $table->id();
+            $table->double('kms');
+            $table->double('price');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateHistorialCSTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('historial_c_s');
+        Schema::dropIfExists('levels');
     }
 }

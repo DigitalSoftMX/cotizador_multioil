@@ -20,6 +20,7 @@ class CreateMenusTable extends Migration
             $table->string('ruta')->nullable();
             $table->integer('id_role')->nullable();
             $table->string('icono')->nullable();
+            $table->timestamps();
         });
     }
 

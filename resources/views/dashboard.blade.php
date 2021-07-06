@@ -58,7 +58,6 @@
                                     <div class="col-3">
                                         <div class="card">
                                             <div class="card-body">
-                                                {{-- <input type="color"> --}}
                                                 <h5 class="card-title text-center">Precio de gasolina</h5>
                                                 <div class="bg-success text-white">
                                                     {{ 'Regular: $' . $pricesclient->regular }}
