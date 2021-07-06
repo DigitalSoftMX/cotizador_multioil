@@ -24,16 +24,6 @@ class MenuTableSeeder extends Seeder
         $menu->roles()->attach('1');
         $menu->roles()->attach('2');
 
-        /*$menu = new Menu();
-        $menu->name_modulo = "Perfil";
-        $menu->desplegable = "0";
-        $menu->ruta = "profile";
-        $menu->id_role = "1";
-        $menu->icono = "account_circle";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();*/
-
         $menu = new Menu();
         $menu->name_modulo = "Usuarios";
         $menu->desplegable = "0";
@@ -44,17 +34,6 @@ class MenuTableSeeder extends Seeder
         $menu->updated_at = now();
         $menu->save();
         $menu->roles()->attach('1');
-
-        /*$menu = new Menu();
-        $menu->name_modulo = "Estaciones";
-        $menu->desplegable = "0";
-        $menu->ruta = "estaciones";
-        $menu->id_role = "1";
-        $menu->icono = "local_gas_station";
-        $menu->created_at = now();
-        $menu->updated_at = now();
-        $menu->save();*/
-
 
         $menu = new Menu();
         $menu->name_modulo = "Cotizador";
@@ -72,6 +51,17 @@ class MenuTableSeeder extends Seeder
         $menu->name_modulo = "Alta de Terminales";
         $menu->desplegable = "0";
         $menu->ruta = "terminales";
+        $menu->id_role = "1";
+        $menu->icono = "home_work";
+        $menu->created_at = now();
+        $menu->updated_at = now();
+        $menu->save();
+        $menu->roles()->attach('1');
+
+        $menu = new Menu();
+        $menu->name_modulo = "Alta de Empresas";
+        $menu->desplegable = "0";
+        $menu->ruta = "companies";
         $menu->id_role = "1";
         $menu->icono = "home_work";
         $menu->created_at = now();
@@ -101,8 +91,6 @@ class MenuTableSeeder extends Seeder
         $menu->save();
         $menu->roles()->attach('1');
 
-        
-
         $menu = new Menu();
         $menu->name_modulo = "Tabla de Descuentos Pemex";
         $menu->desplegable = "0";
@@ -126,7 +114,7 @@ class MenuTableSeeder extends Seeder
         $menu->roles()->attach('1');
 
         $menu = new Menu();
-        $menu->name_modulo = "Historial de Activida";
+        $menu->name_modulo = "Historial de Actividad";
         $menu->desplegable = "0";
         $menu->ruta = "actividades";
         $menu->id_role = "1";

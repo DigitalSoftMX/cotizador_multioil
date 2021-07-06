@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\EmailMultioil;
+use App\Listeners\EmailMultioilNotification;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -18,7 +20,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-
+        EmailMultioil::class => [
+            EmailMultioilNotification::class
+        ],
         'Illuminate\Auth\Events\Login' => [
             'App\Listeners\SuccessfulLogin',
         ],

@@ -15,13 +15,20 @@ class CreatePricesTable extends Migration
     {
         Schema::create('prices', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('competition_id');
-            $table->double('precio_regular', 12, 3)->nullable();
-            $table->double('precio_premium', 12, 3)->nullable();
-            $table->double('precio_disel', 12, 3)->nullable();
+            $table->unsignedBigInteger('terminal_id');
+            $table->unsignedBigInteger('company_id');
+            $table->double('regular_price')->default(0);
+            $table->double('premium_price')->default(0);
+            $table->double('diesel_price')->default(0);
             $table->timestamps();
 
-            $table->foreign('competition_id')->references('id')->on('competitions');
+            $table->foreign('terminal_id')->references('id')->on('terminals')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('company_id')->references('id')->on('companies')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

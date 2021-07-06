@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\Terminal;
 use Illuminate\Http\Request;
 use App\Http\Requests\TerminalRequest;
@@ -14,10 +15,10 @@ class TerminalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Terminal $model,Request $request)
+    public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('terminales.index', ['terminals' => $model::all()]);
+        return view('terminals.index', ['terminals' => Terminal::all()]);
     }
 
     /**
@@ -28,7 +29,7 @@ class TerminalController extends Controller
     public function create(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('terminales.create');
+        return view('terminals.create');
     }
 
     /**
@@ -37,35 +38,22 @@ class TerminalController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Terminal $model)
+    public function store(TerminalRequest $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        $model->create($request->all());
-        return redirect()->route('terminales.index')->withStatus(__('Terminal creada con éxito'));
+        Terminal::create($request->merge(['status' => 1])->all());
+        return redirect()->route('terminals.index')->withStatus(__('Terminal registrada correctamente'));
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, Terminal $terminal)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        $terminal=Terminal::findorfail($id);
-        return view('terminales.edit',compact('terminal'));
+        return view('terminals.edit', compact('terminal'));
     }
 
     /**
@@ -75,12 +63,11 @@ class TerminalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TerminalRequest $request, Terminal $terminal)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        $terminal=Terminal::findorfail($id);
         $terminal->update($request->all());
-        return redirect()->route('terminales.index')->withStatus(__('Terminal actualizada correctamente.'));
+        return redirect()->route('terminals.index')->withStatus(__('Terminal actualizada correctamente.'));
     }
 
     /**
@@ -89,11 +76,16 @@ class TerminalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, Terminal $terminal)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        $terminal=Terminal::findorfail($id);
         $terminal->delete();
-        return redirect()->route('terminales.index')->withStatus(__('Terminal eliminada exitosamente.'));
+        return redirect()->route('terminals.index')->withStatus(__('Terminal eliminada correctamente.'));
+    }
+    // funcion para obtener la lista de empresas de la terminal
+    public function getCompanies(Request $request, Terminal $terminal = null)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        return response()->json(['companies' => $terminal != null ? $terminal->companies : Company::all()]);
     }
 }

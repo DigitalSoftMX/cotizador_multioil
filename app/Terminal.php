@@ -6,52 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Terminal extends Model
 {
-
+    protected $fillable = ['latitude', 'longitude', 'name', 'status', 'postcode', 'name_road', 'n_outsice', 'town', 'state'];
+    // Relacion con los fees
     public function fits()
     {
-        return $this->hasMany('App\Fit');
+        return $this->hasMany(Fee::class);
     }
-
-    public function fit()
+    // Relacion con los precios
+    public function prices()
     {
-        return $this->belongsTo('App\Fit', 'id', 'terminal_id');
+        return $this->hasMany(CompetitionPrice::class);
     }
-
-    public function competitions()
+    // Relacion con la empresa
+    public function companies()
     {
-        return $this->hasMany('App\Competition');
+        return $this->belongsToMany(Company::class, 'companies_terminals');
     }
-
-    public function policons()
+    // Relacion con los precios
+    public function precios()
     {
-        return $this->hasMany('App\Policon');
+        return $this->hasMany(CompetitionPrice::class);
     }
-
-    public function impulsas()
-    {
-        return $this->hasMany('App\Impulsa');
-    }
-
-    public function valeros()
-    {
-        return $this->hasMany('App\Valero');
-    }
-
-    public function hamses()
-    {
-        return $this->hasMany('App\Hamse');
-    }
-
-    public function potestas()
-    {
-        return $this->hasMany('App\Potesta');
-    }
-
-    public function energos()
-    {
-        return $this->hasMany('App\Energo');
-    }
-    protected $fillable = [
-        'id', 'razon_social', 'rfc', 'nombre_terminal', 'status', 'codigo_postal', 'tipo_de_vialidad', 'nombre_de_vialidad', 'n_exterior', 'n_interior',
-    ];
 }

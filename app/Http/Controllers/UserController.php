@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\User;
 use App\Role;
-use App\Estacion;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -17,10 +16,10 @@ class UserController extends Controller
      * @param  \App\User  $model
      * @return \Illuminate\View\View
      */
-    public function index(User $model, Request $request)
+    public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('users.index', ['users' => $model->all()]);
+        return view('users.index', ['users' => User::all()]);
     }
 
     /**
@@ -28,11 +27,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create(Request $request, Role $roles)
+    public function create(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        $roles = Role::all();
-        return view('users.create',compact('roles'));
+        return view('users.create', ['roles' => Role::all(), 'companies' => Company::all()]);
     }
 
     /**
@@ -42,14 +40,23 @@ class UserController extends Controller
      * @param  \App\User  $model
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(UserRequest $request, User $model)
+    public function store(UserRequest $request)
     {
-        $model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
-        $ultimo_refistro = User::get()->last();
-        $user = User::find($ultimo_refistro->id);
-        $user->roles()->attach($request->rol);
-
-        return redirect()->route('user.index')->withStatus(__('Usuario creada con éxito'));
+        $request->user()->authorizeRoles(['Administrador']);
+        if ($request->rol == 2) {
+            request()->validate(['company_id' => 'required|integer']);
+        }
+        if ($request->rol == 4) {
+            request()->validate(['companies' => 'required']);
+        }
+        if ($request->rol == 4) {
+            $user = User::create($request->merge(['password' => bcrypt($request->password), 'active' => 1])->except(['company_id']));
+            $user->companies()->attach($request->companies);
+        } else {
+            $user = User::create($request->merge(['password' => bcrypt($request->password), 'active' => 1])->all());
+        }
+        $user->roles()->sync($request->rol);
+        return redirect()->route('users.index')->withStatus(__('Usuario registrado correctamente'));
     }
 
     /**
@@ -58,12 +65,10 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\View\View
      */
-    public function edit(User $user, Request $request, Estacion $estacion, Role $roles)
+    public function edit(Request $request, User $user)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        //$estacion = Estacion::all();
-        $roles = Role::all();
-        return view('users.edit', compact('user','roles'));
+        return view('users.edit', ['user' => $user, 'roles' => Role::all(), 'companies' => Company::all()]);
     }
 
     /**
@@ -76,16 +81,15 @@ class UserController extends Controller
     public function update(UserRequest $request, User  $user)
     {
         $request->user()->authorizeRoles(['Administrador']);
-
-        $hasPassword = $request->get('password');
-        $user->update(
-            $request->merge(['password' => Hash::make($request->get('password'))])
-                ->except([$hasPassword ? '' : 'password']
-        ));
-
-        $user->roles()->updateExistingPivot($request->rol_actual,['role_id'=>$request->rol]);
-
-        return redirect()->route('user.index')->withStatus(__('Usuario actualizado con éxito.'));
+        if ($request->rol != 1) {
+            request()->validate(['company_id' => 'required|integer']);
+        }
+        if ($request->password != null) {
+            $user->update(['password' => bcrypt($request->password)]);
+        }
+        $user->update($request->except(['active', 'password']));
+        $user->roles()->sync($request->rol);
+        return redirect()->route('users.index')->withStatus(__('Usuario actualizado correctamente.'));
     }
 
     /**
@@ -94,12 +98,10 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(User $user, Request $request)
+    public function destroy(Request $request, User $user)
     {
         $request->user()->authorizeRoles(['Administrador']);
-
         $user->delete();
-
-        return redirect()->route('user.index')->withStatus(__('Usuario eliminada exitosamente.'));
+        return redirect()->route('users.index')->withStatus(__('Usuario dado de baja correctamente.'));
     }
 }
