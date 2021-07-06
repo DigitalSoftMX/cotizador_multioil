@@ -56,12 +56,19 @@
                             <div class="row justify-content-center">
                                 @if (auth()->user()->roles->last()->id == 2)
                                     <div class="col-3">
-                                        <div class="card" style="width: 18rem;">
+                                        <div class="card">
                                             <div class="card-body">
-                                                <h5 class="card-title">Precio de gasolina</h5>
-                                                <strong>Regular: </strong> {{ $pricesclient->regular }} <br>
-                                                <strong>Premium: </strong> {{ $pricesclient->premium }} <br>
-                                                <strong>Diesel: </strong> {{ $pricesclient->diesel }}
+                                                {{-- <input type="color"> --}}
+                                                <h5 class="card-title text-center">Precio de gasolina</h5>
+                                                <div class="bg-success text-white">
+                                                    {{ 'Regular: $' . $pricesclient->regular }}
+                                                </div>
+                                                <div class="bg-danger text-white">
+                                                    {{ 'Premium: $' . $pricesclient->premium }}
+                                                </div>
+                                                <div class="bg-dark text-white">
+                                                    {{ 'Diesel: $' . $pricesclient->diesel }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

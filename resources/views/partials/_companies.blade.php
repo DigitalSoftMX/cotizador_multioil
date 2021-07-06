@@ -93,6 +93,22 @@
             </div>
         </div>
         <div class="row justify-content-center">
+            {{-- <div class="form-group{{ $errors->has('color') ? ' has-danger' : '' }} col-md-4 col-sm-12">
+                <label for="color">{{ __('Color representativo de la empresa') }}</label>
+                <div class="row">
+                    <div class="col-4">
+                        <input type="color"
+                            class="form-control{{ $errors->has('color') ? ' is-invalid' : '' }} col mt-4"
+                            id="input-color" aria-describedby="colorHelp" placeholder="Escribe el color de la empresa"
+                            value="{{ old('color', $company->color ?? '') }}" aria-required="true" name="color">
+                        @if ($errors->has('color'))
+                            <span id="color-error" class="error text-danger" for="input-color">
+                                {{ $errors->first('color') }}
+                            </span>
+                        @endif
+                    </div>
+                </div>
+            </div> --}}
             <div
                 class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-md-4 col-sm-12 checkbox-radios">
                 <label for="terminal_id">{{ __('Elije las terminales de la empresa') }}</label>

@@ -6483,8 +6483,8 @@ button.bg-secondary:focus {
 
 .bg-success {
   background-color: #01662ec7 !important;
-  border-radius: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
+  border-radius: 5px;
 }
 
 a.bg-success:hover,
@@ -6518,8 +6518,8 @@ button.bg-warning:focus {
 
 .bg-danger {
   background-color: #f44336 !important;
-  border-radius: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
+  border-radius: 5px;
 }
 
 a.bg-danger:hover,
@@ -6626,6 +6626,8 @@ button.bg-light:focus {
 
 .bg-dark {
   background-color: #343a40 !important;
+  margin-bottom: 5px;
+  border-radius: 5px;
 }
 
 a.bg-dark:hover,
