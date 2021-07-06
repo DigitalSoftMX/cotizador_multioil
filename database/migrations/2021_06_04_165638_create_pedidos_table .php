@@ -48,7 +48,6 @@ class CreatePedidosTable extends Migration
             $table->string('totalD');
             $table->string('grantotal');
             $table->unsignedBigInteger('status_id')->default(1);
-
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')

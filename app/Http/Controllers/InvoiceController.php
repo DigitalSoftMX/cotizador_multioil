@@ -21,7 +21,7 @@ class InvoiceController extends Controller
     public function edit(Request $request, Order $invoice)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('invoices.edit', ['invoice' => $invoice, 'payments' => $invoice->payments, 'sales' => Role::find(4)->users]);
+        return view('invoices.edit', ['invoice' => $invoice, 'payments' => $invoice->payments, 'sales' => Role::find(3)->users]);
     }
 
     /**

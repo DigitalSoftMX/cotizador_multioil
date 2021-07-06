@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCompetitionPricesTable extends Migration
+class CreatePricesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateCompetitionPricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('competition_prices', function (Blueprint $table) {
+        Schema::create('prices', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('terminal_id');
@@ -42,6 +42,6 @@ class CreateCompetitionPricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('competition_prices');
+        Schema::dropIfExists('prices');
     }
 }

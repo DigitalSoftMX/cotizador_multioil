@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use App\Role;
-use App\Menu;
 
 class RoleTableSeeder extends Seeder
 {
@@ -13,20 +12,8 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
-        $role = new Role();
-        $role->name = "Administrador";
-        $role->description = "Usuarion con nivel de administracion total.";
-        $role->save();
-        $role->menus()->attach(1);
-        
-        $role = new Role();
-        $role->name = "Cliente";
-        $role->description = "Usuarion con nivel medio de acceso.";
-        $role->save();
-
-        $role = new Role();
-        $role->name = "Ventas";
-        $role->description = "Usuario con nivel medio de acceso";
-        $role->save();
+        Role::create(['name' => "Administrador", 'description' => "Usuarion con nivel de administracion total."]);
+        Role::create(['name' => 'Cliente', 'description' => "Usuarion con nivel medio de acceso."]);
+        Role::create(['name' => 'Ventas', 'description' => 'Usuario con nivel medio de acceso']);
     }
 }

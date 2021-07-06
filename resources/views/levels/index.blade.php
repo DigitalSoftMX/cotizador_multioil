@@ -211,9 +211,11 @@
                     return;
                 }
             });
-            let lastLevel = levels.pop();
-            monto = distance <= lastLevel.kms ? shipping * liters : 0;
-
+            let lastLevel = levels[levels.length - 1].kms;
+            if (parseFloat(distance) <= parseFloat(lastLevel)) {
+                monto = shipping * liters;
+            }
+            // console.log(monto);
             document.getElementById("costo-envio").value = monto != 0 ?
                 '$ ' + shipping.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') :
                 'Ubicación fuera de los límites';
