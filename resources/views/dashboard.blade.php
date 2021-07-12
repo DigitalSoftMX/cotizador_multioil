@@ -55,7 +55,7 @@
                             </div>
                             <div class="row justify-content-center">
                                 @if (auth()->user()->roles->last()->id == 2)
-                                    <div class="col-3">
+                                    <div class="col-lg-3 col-md-3 col-sm-3">
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center">Precio de gasolina</h5>
@@ -121,28 +121,13 @@
 @endsection
 @push('js')
     <script>
-        let colors = [];
-        colors.push([16, 211, 25]);
-        colors.push([128, 128, 0]);
-        colors.push([0, 0, 255]);
-        colors.push([255, 195, 0]);
-        colors.push([88, 24, 69]);
-        colors.push([216, 56, 8]);
-        colors.push([16, 87, 171]);
-        colors.push([169, 216, 8]);
-        colors.push([199, 0, 57]);
-        colors.push([211, 16, 34]);
-        colors.push([211, 16, 161]);
-        colors.push([16, 176, 211]);
-        colors.push([210, 216, 8]);
-        colors.push([216, 122, 8]);
-
         let pricesR = arrayPrices('r', @json($prices));
         let pricesP = arrayPrices('p', @json($prices));
         let pricesD = arrayPrices('d', @json($prices));
 
         let chartRegular = new Chart(document.getElementById("Regular").getContext('2d'),
             configChart(pricesR, @json($days)));
+
         let chartPremium = new Chart(document.getElementById("Premium").getContext('2d'),
             configChart(pricesP, @json($days)));
         let chartDiesel = new Chart(document.getElementById("Diesel").getContext('2d'),
@@ -189,20 +174,20 @@
 
         function arrayPrices(product, array) {
             let prices = [];
-            let i = 0;
             array.forEach(element => {
                 prices.push({
-                    label: element.name,
+                    label: element.alias,
                     data: product == 'r' ? element.regular : product == 'p' ?
                         element.premium : element.diesel,
                     //Color de fondo representativo de la competencia
-                    backgroundColor: ['rgb(255, 255, 255,0)'],
+                    backgroundColor: false,
                     // Color de borde de la competencia
-                    borderColor: [`rgb(${colors[i]})`],
+                    borderColor: [`rgb(${hexToRgb(element.color)})`],
+                    fill: false,
+                    tension: 0.1,
                     // Tmaño de del borde
-                    borderWidth: 3,
+                    borderWidth: 2.5,
                 });
-                i++;
             });
             return prices;
         }
@@ -218,18 +203,26 @@
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Chart.js Line Chart'
-                        }
-                    }
+                    legend: {
+                        display: screen.width > 700 ? true : false,
+                        position: 'left',
+                        align: 'start',
+                    },
                 },
             };
             return config;
+        }
+        // Metodo para convertir de HEX a RGB
+        function hexToRgb(hex) {
+            let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            if (result) {
+                let color = [];
+                color.push(parseInt(result[1], 16));
+                color.push(parseInt(result[2], 16));
+                color.push(parseInt(result[3], 16));
+                return color;
+            }
+            return [0, 0, 0];
         }
     </script>
 @endpush

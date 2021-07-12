@@ -214,6 +214,8 @@ return [
         'sale_price' => 'precio de venta',
         'dispatched' => 'fecha de despacho',
         'main' => 'principal',
-        'base_id' => 'precio base'
+        'base_id' => 'precio base',
+        'created_at' => 'fecha',
+        'fee_id' => 'fee'
     ],
 ];

@@ -81,16 +81,22 @@ class HomeController extends Controller
             $lastDay = $lastDay->format('d');
         }
         $prices = [];
-        if ($company_id != null) {
-            $companies = Company::where('id', 2)->orWhere('id', $company_id)->get();
+        if (($user = auth()->user())->roles->first()->id != 3) {
+            if ($company_id != null) {
+                $companies = Company::where('id', 2)->orWhere('id', $company_id)->get();
+            } else {
+                $companies = Terminal::find($terminal_id)->companies;
+            }
         } else {
-            $companies = Terminal::find($terminal_id)->companies;
+            $companies = $user->companies;
         }
         foreach ($companies as $company) {
             $dataCompany = CompetitionPrice::whereDate('created_at', '>=', $start)
                 ->whereDate('created_at', '<=', date('Y') . '-' . $month . '-' . $lastDay)
                 ->where([['terminal_id', $terminal_id], ['company_id', $company->id]])->get()->sortBy('created_at');
             $data['name'] = $company->name;
+            $data['color'] = $company->color;
+            $data['alias'] = $company->alias;
             $data['regular'] = [];
             $data['premium'] = [];
             $data['diesel'] = [];

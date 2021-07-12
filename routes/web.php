@@ -43,12 +43,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('terminals', 'TerminalController', ['except' => ['show']]);
 	Route::get('getcompanies/{terminal?}', 'TerminalController@getCompanies')->name('getcompanies');
 	Route::resource('fits', 'FeeController', ['except' => ['show', 'destroy']]);
+	Route::get('getfee/{terminal}/{company}/{base}/{date?}', 'FeeController@getFees')->name('getfee');
 	Route::resource('companies', 'CompanyController');
 	Route::get('getshopping/{company}', 'CompanyController@getshopping')->name('getshopping');
 	Route::get('getshoppings/{company}/{month}', 'CompanyController@getshoppings')->name('getshoppings');
 	Route::resource('prices', 'CompetitionPriceController', ['except' => 'show', 'destroy']);
 	Route::get('getprices/{company}/{date?}', 'CompetitionPriceController@getPrices')->name('getprices');
-	Route::get('getprice/{company}/{terminal}/{date?}', 'CompetitionPriceController@getPrice')->name('getprice');
+	Route::post('getprice', 'CompetitionPriceController@getPrice')->name('getprice');
 	Route::get('getlastprice/{company}/{terminal}', 'CompetitionPriceController@getLastPrice')->name('getlastprice');
 });
 //rutas pemex
