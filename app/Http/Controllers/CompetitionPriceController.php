@@ -108,25 +108,23 @@ class CompetitionPriceController extends Controller
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate([
             'base_id' => 'required|integer',
-            'company_id' => 'required|integer',
-            'terminal_id' => 'required|integer',
             'created_at' => 'required|date',
+            'companies' => 'required|integer',
             'continue' => 'required|integer'
         ]);
-        $request->merge(['regular_sf' => $request->regular, 'premium_sf' => $request->premium, 'diesel_sf' => $request->diesel]);
         $request = $request->regular == null ? $request->merge(['regular' => 0]) : $request;
         $request = $request->premium == null ? $request->merge(['premium' => 0]) : $request;
         $request = $request->diesel == null ? $request->merge(['diesel' => 0]) : $request;
-        $request = $request->regular_sf == null ? $request->merge(['regular_Sf' => 0]) : $request;
-        $request = $request->premium_sf == null ? $request->merge(['premium_sf' => 0]) : $request;
-        $request = $request->diesel_sf == null ? $request->merge(['diesel_sf' => 0]) : $request;
-        $fee = Fee::where([['terminal_id', $request->terminal_id], ['base_id', $request->base_id], ['company_id', $request->company_id]])->get()->last();
-        $request->merge(['regular' => $fee != null ? $request->regular + $fee->regular_fit : $request->regular + 0]);
-        $request->merge(['premium' => $fee != null ? $request->premium + $fee->premium_fit : $request->premium + 0]);
-        $request->merge(['diesel' => $fee != null ? $request->diesel + $fee->diesel_fit : $request->diesel + 0]);
-        $price->update($request->all());
+        $request->merge(['regular_sf' => $request->regular, 'premium_sf' => $request->premium, 'diesel_sf' => $request->diesel, 'fee_id' => $request->companies]);
+        $fee = Fee::find($request->fee_id);
+        $request->merge([
+            'regular' => $request->regular + $fee->regular_fit,
+            'premium' => $request->premium + $fee->premium_fit,
+            'diesel' => $request->diesel + $fee->diesel_fit
+        ]);
+        $price->update($request->except(['company_id', 'terminal_id']));
         $oldPrice = CompetitionPrice::whereDate('created_at', $request->created_at)
-            ->where([['company_id', $request->company_id], ['terminal_id', $request->terminal_id]])->first();
+            ->where([['company_id', $price->company_id], ['terminal_id', $price->terminal_id]])->first();
         if ($oldPrice->id != $price->id) {
             $oldPrice->delete();
         }
@@ -146,26 +144,11 @@ class CompetitionPriceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         $price = false;
-        if ($request->date != null) {
-            if ($request->terminal != null && count($request->companies) == 0) {
-                $price = CompetitionPrice::where('terminal_id', $request->terminal)->whereDate('created_at', $request->date)->exists();
-                return response()->json(['price' => $price]);
-            }
-            if (count($request->companies) > 0) {
-                foreach ($request->companies as $company) {
-                    if ($request->terminal != null) {
-                        $price = CompetitionPrice::where([['terminal_id', $request->terminal], ['company_id', $company]])->whereDate('created_at', $request->date)->exists();
-                    } else {
-                        $price = CompetitionPrice::where('company_id', $company)->whereDate('created_at', $request->date)->exists();
-                    }
-                    if ($price)
-                        return response()->json(['price' => $price]);
-                }
-                return response()->json(['price' => $price]);
-            }
-            $price = CompetitionPrice::whereDate('created_at', $request->date)->exists();
-        }
-        return response()->json(['price' => $price]);
+        $date = false;
+        $fee = Fee::find($request->fee);
+        $price = CompetitionPrice::where([['terminal_id', $fee->terminal_id], ['company_id', $fee->company_id]])->whereDate('created_at', $request->date)->exists();
+        $date = CompetitionPrice::whereDate('created_at', $request->date)->exists();
+        return response()->json(['price' => $price, 'date' => $date]);
     }
     // Metodo para obtener el ultimo precio por terminal y empresa
     public function getLastPrice(Request $request, $company, $terminal)
