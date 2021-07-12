@@ -37,7 +37,7 @@
                             data-style="btn-primary" data-width="100%" data-live-search="true">
                             <option value="">{{ __('Elija la terminal') }}</option>
                             @foreach ($terminals as $terminal)
-                                <option value="{{ $terminal->id }}" @if (($t = $price->terminal_id ?? '') == $terminal->id) selected @endif>{{ $terminal->name }}
+                                <option value="{{ $terminal->id }}">{{ $terminal->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -214,19 +214,13 @@
             getValues();
         });
         //Verificacion de precios registrados
-        $('#input-terminal_id').change(function() {
-            getValuesToLookingForAFee();
-        });
-        $('#input-companies').change(function() {
-            getValuesToLookingForAFee();
-        });
         $("#calendar").blur(function() {
             getValuesToLookingForAFee();
         });
         button.onclick = () => {
             if (next) {
                 if (confirm(
-                        'Atención. Algunos precios se actualizarán. ¿Esta seguro de actualizarlo con los nuevos datos?'
+                        'Atención. Puede que algunos precios se actualicen. ¿Desea continuar?'
                     ))
                     return true;
                 return false
@@ -242,11 +236,16 @@
         }
         // Metodo para obtener un posible fee registrado
         function getValuesToLookingForAFee() {
-            let terminal = document.getElementById('input-terminal_id').value;
-            let companies = $('#input-companies').val();
+            let fee = '';
+            if (id != '') {
+                fee = $('input[name="companies"]:checked').val();
+            } else {
+                fee = $('input[name="companies[]"]:checked').val();
+            }
             let date = $('#calendar').val();
-            // let fee = $('input[name="fee"]:checked').val();
-            lookingForPrices(terminal, companies, date);
+            if (date != '' && fee !== undefined) {
+                lookingForPrices(date, fee);
+            }
         }
         // Obteniendo los fee
         async function getFees(terminal, company, base, date) {
@@ -266,24 +265,17 @@
                             <td>${fee.premium_fee}</td>
                             <td>${fee.diesel_fee}</td>
                             <td>${fee.date}</td>
-                            <td>
-                                <input type="checkbox" value="${fee.id}" name="companies[]">    
-                            </td>
+                            <td>${setHtmlCheckRadio(fee.id)}</td>
                         </tr>`
                     );
                 });
                 loadTable('datatables');
-                if (data.pemex) {
-                    showNotification(
-                        "<b>Atención</b> los precios se aplicarán a PEMEX y la terminal de su elección.",
-                        'warning')
-                }
             } catch (error) {
                 console.log(error)
             }
         }
         //Verificación de precio
-        async function lookingForPrices(terminal, companies, date) {
+        async function lookingForPrices(date, fee) {
             try {
                 const resp = await fetch('{{ url('') }}/getprice', {
                     headers: {
@@ -294,15 +286,16 @@
                     },
                     method: "POST",
                     body: JSON.stringify({
-                        terminal: terminal,
-                        companies: companies,
-                        date: date
+                        date: date,
+                        fee: fee
                     })
                 })
                 const data = await resp.json();
                 console.log(data);
-                if (data.price) {
-                    showNotification("<b>Atención</b> ya existen precios registrados con la misma fecha.", 'danger');
+                if (data.price || data.date) {
+                    showNotification(
+                        "<b>Atención</b> ya existen precios registrados con la misma fecha y/o empresa/terminal.",
+                        'danger');
                     next = true;
                 } else {
                     next = false;
@@ -325,6 +318,29 @@
                     align: 'center'
                 }
             });
+        }
+        // html check o radio button, registro/edicion
+        const setHtmlCheckRadio = (fee) => {
+            let stringHtml = '';
+            if (idFee == fee) {
+                stringHtml = /* html */ `
+                <input type = "radio"
+                value = "${fee}"
+                name = "companies" checked onchange="getValuesToLookingForAFee()">`
+            } else {
+                if (id != '') {
+                    stringHtml = /* html */ `
+                        <input type = "radio"
+                        value = "${fee}"
+                        name = "companies" onchange="getValuesToLookingForAFee()">`
+                } else {
+                    stringHtml = /* html */ `
+                        <input type = "checkbox"
+                        value = "${fee}"
+                        name = "companies[]" onchange="getValuesToLookingForAFee()">`
+                }
+            }
+            return stringHtml;
         }
     </script>
 @endpush
