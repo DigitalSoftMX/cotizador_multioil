@@ -25,11 +25,13 @@ class CompanyRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3',
+            'alias' => 'required|min:3',
             'rfc' => 'required|min:3',
             'delivery_address' => 'required|min:3',
             'fiscal_address' => 'required|min:3',
             'clabe' => 'required|min:3',
-            'terminal_id' => 'required'
+            'terminal_id' => 'required',
+            'color' => 'required'
         ];
     }
 }

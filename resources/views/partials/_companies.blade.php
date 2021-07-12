@@ -21,6 +21,19 @@
                     </span>
                 @endif
             </div>
+            <div class="form-group{{ $errors->has('alias') ? ' has-danger' : '' }} col-md-4 col-sm-12">
+                <label for="alias">{{ __('alias') }}</label>
+                <input type="text" class="form-control{{ $errors->has('alias') ? ' is-invalid' : '' }}" name="alias"
+                    id="input-alias" value="{{ old('alias', $company->alias ?? '') }}" aria-required="true"
+                    aria-describedby="aliasHelp" placeholder='Escribe el alias de la empresa' aria-required="true">
+                @if ($errors->has('alias'))
+                    <span id="alias-error" class="error text-danger" for="input-alias">
+                        {{ $errors->first('alias') }}
+                    </span>
+                @endif
+            </div>
+        </div>
+        <div class="row justify-content-center">
             <div class="form-group{{ $errors->has('rfc') ? ' has-danger' : '' }} col-md-4 col-sm-12">
                 <label for="rfc">{{ __('RFC') }}</label>
                 <input type="text" class="form-control{{ $errors->has('rfc') ? ' is-invalid' : '' }}" name="rfc"
@@ -32,8 +45,6 @@
                     </span>
                 @endif
             </div>
-        </div>
-        <div class="row justify-content-center">
             <div class="form-group{{ $errors->has('delivery_address') ? ' has-danger' : '' }} col-md-4 col-sm-12">
                 <label for="delivery_address">{{ __('Dirección de entrega') }}</label>
                 <input type="text" class="form-control{{ $errors->has('delivery_address') ? ' is-invalid' : '' }}"
@@ -47,6 +58,8 @@
                     </span>
                 @endif
             </div>
+        </div>
+        <div class="row justify-content-center">
             <div class="form-group{{ $errors->has('fiscal_address') ? ' has-danger' : '' }} col-md-4 col-sm-12">
                 <label for="fiscal_address">{{ __('Dirección fiscal') }}</label>
                 <input type="text" class="form-control{{ $errors->has('fiscal_address') ? ' is-invalid' : '' }}"
@@ -60,8 +73,6 @@
                     </span>
                 @endif
             </div>
-        </div>
-        <div class="row justify-content-center">
             <div class="form-group{{ $errors->has('clabe') ? ' has-danger' : '' }} col-md-4 col-sm-12">
                 <label for="clabe">{{ __('CLABE') }}</label>
                 <input type="text" class="form-control{{ $errors->has('clabe') ? ' is-invalid' : '' }}"
@@ -73,6 +84,8 @@
                     </span>
                 @endif
             </div>
+        </div>
+        <div class="row justify-content-center">
             <div
                 class="form-group{{ $errors->has('main') ? ' has-danger' : '' }} col-md-4 col-sm-12 checkbox-radios">
                 <label class="label-control" for="main">{{ __('Activar como una empresa principal') }}</label>
@@ -91,9 +104,7 @@
                     </span>
                 @endif
             </div>
-        </div>
-        <div class="row justify-content-center">
-            {{-- <div class="form-group{{ $errors->has('color') ? ' has-danger' : '' }} col-md-4 col-sm-12">
+            <div class="form-group{{ $errors->has('color') ? ' has-danger' : '' }} col-md-4 col-sm-12">
                 <label for="color">{{ __('Color representativo de la empresa') }}</label>
                 <div class="row">
                     <div class="col-4">
@@ -108,7 +119,9 @@
                         @endif
                     </div>
                 </div>
-            </div> --}}
+            </div>
+        </div>
+        <div class="row justify-content-center">
             <div
                 class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-md-4 col-sm-12 checkbox-radios">
                 <label for="terminal_id">{{ __('Elije las terminales de la empresa') }}</label>

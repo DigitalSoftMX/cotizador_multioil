@@ -23,6 +23,7 @@ class CreatePricesTable extends Migration
             $table->double('regular_sf')->default(0);
             $table->double('premium_sf')->default(0);
             $table->double('diesel_sf')->default(0);
+            $table->unsignedBigInteger('fee_id');
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')
@@ -32,6 +33,10 @@ class CreatePricesTable extends Migration
             $table->foreign('terminal_id')->references('id')->on('terminals')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            $table->foreign('fee_id')->references('id')->on('fees')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

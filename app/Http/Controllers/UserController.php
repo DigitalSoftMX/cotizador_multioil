@@ -30,7 +30,9 @@ class UserController extends Controller
     public function create(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('users.create', ['roles' => Role::all(), 'companies' => Company::all()]);
+        $pemex = Company::where('name', 'like', '%pemex%')->first();
+        return view('users.create', ['roles' => Role::all(), 'companies' =>
+        $pemex != null ? Company::where('id', '!=', $pemex->id)->get() : Company::where('main', 0)->get()]);
     }
 
     /**
@@ -46,10 +48,10 @@ class UserController extends Controller
         if ($request->rol == 2) {
             request()->validate(['company_id' => 'required|integer']);
         }
-        if ($request->rol == 4) {
+        if ($request->rol == 3) {
             request()->validate(['companies' => 'required']);
         }
-        if ($request->rol == 4) {
+        if ($request->rol == 3) {
             $user = User::create($request->merge(['password' => bcrypt($request->password), 'active' => 1])->except(['company_id']));
             $user->companies()->attach($request->companies);
         } else {
@@ -68,7 +70,9 @@ class UserController extends Controller
     public function edit(Request $request, User $user)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('users.edit', ['user' => $user, 'roles' => Role::all(), 'companies' => Company::all()]);
+        $pemex = Company::where('name', 'like', '%pemex%')->first();
+        return view('users.edit', ['user' => $user, 'roles' => Role::all(), 'companies' =>
+        $pemex != null ? Company::where('id', '!=', $pemex->id)->get() : Company::where('main', 0)->get()]);
     }
 
     /**
@@ -89,6 +93,24 @@ class UserController extends Controller
         }
         $user->update($request->except(['active', 'password']));
         $user->roles()->sync($request->rol);
+        if ($request->rol != 2)
+            $user->update(['company_id', null]);
+        if ($request->rol == 3) {
+            foreach ($user->companies as $company) {
+                if (!in_array($company->id, $request->companies)) {
+                    $user->companies()->detach($company->id);
+                }
+            }
+            foreach ($request->companies as $company) {
+                if (!$user->companies->contains($company)) {
+                    $user->companies()->attach($company);
+                }
+            }
+        } else {
+            foreach ($user->companies as $company) {
+                $user->companies()->detach($company->id);
+            }
+        }
         return redirect()->route('users.index')->withStatus(__('Usuario actualizado correctamente.'));
     }
 
