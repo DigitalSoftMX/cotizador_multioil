@@ -64,7 +64,7 @@ class CompetitionPriceController extends Controller
                 'terminal_id' => $fit->terminal_id,
                 'regular' => $request->regular_sf + $fit->regular_fit,
                 'premium' => $request->premium_sf + $fit->premium_fit,
-                'diesel' => $request->premium_sf + $fit->diesel_fit,
+                'diesel' => $request->diesel_sf + $fit->diesel_fit,
                 'fee_id' => $fee
             ]);
             // existencia de un precio
