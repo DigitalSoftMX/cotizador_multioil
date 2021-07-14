@@ -83,7 +83,7 @@ class HomeController extends Controller
         $prices = [];
         if (($user = auth()->user())->roles->first()->id != 3) {
             if ($company_id != null) {
-                $companies = Company::where('id', 2)->orWhere('id', $company_id)->get();
+                $companies = Company::where('id', 15)->orWhere('id', $company_id)->get();
             } else {
                 $companies = Terminal::find($terminal_id)->companies;
             }
