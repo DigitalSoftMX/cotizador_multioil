@@ -9,7 +9,7 @@
                 <form class="form" method="POST" action="{{ route('login') }}">
                     @csrf
                     <img class="card-img-top mb-5" src="{{ asset('material/img/multioillogone.png') }}">
-                    <div class="card card-login card-hidden mt-5">
+                    <div class="card card-login card-hidden mt-1">
 
                         <div class="card-header card-header-primary text-center">
                             <h4 class="card-title"><strong>{{ __('Iniciar Sesión') }}</strong></h4>
