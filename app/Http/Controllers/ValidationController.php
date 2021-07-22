@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\EmailMultioil;
 use App\Http\Controllers\Controller;
 use App\Order;
+use Exception;
 use Illuminate\Http\Request;
 
 class ValidationController extends Controller
@@ -27,7 +28,10 @@ class ValidationController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         $order->update(['status_id' => 2]);
-        event(new EmailMultioil($order, 2));
+        try {
+            event(new EmailMultioil($order, 2));
+        } catch (Exception $th) {
+        }
         return redirect()->back()->withStatus('Pedido autorizado correctamente');
     }
     // denegar un pedido
@@ -37,7 +41,10 @@ class ValidationController extends Controller
         if ($request->message == null)
             return redirect()->back()->withStatus('Ingrese el motivo por el cual se deniega el pedido')->withColor('danger');
         $order->update(['status_id' => 3]);
-        event(new EmailMultioil($order, 3, $request->message));
+        try {
+            event(new EmailMultioil($order, 3, $request->message));
+        } catch (Exception $th) {
+        }
         return redirect()->back()->withStatus('Pedido denegado')->withColor('danger');
     }
 }
