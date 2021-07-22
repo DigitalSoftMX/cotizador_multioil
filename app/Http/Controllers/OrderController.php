@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\CompetitionPrice;
 use App\Events\EmailMultioil;
 use App\Exports\OrdersExport;
-use App\Fee;
 use App\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use App\Repositories\Activities;
 use App\Terminal;
+use App\User;
 use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -82,5 +82,33 @@ class OrderController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         return Excel::download(new OrdersExport(2), 'Ventas.xlsx');
+    }
+    // Vista para el estado de cuenta de un comisionista
+    public function getShoppingsCommision(Request $request, User $user)
+    {
+        $request->user()->authorizeRoles(['Administrador', 'Ventas']);
+        $months = new Activities();
+        return view('orders.commission', ['user' => $user, 'activePage' => auth()->user()->roles->first()->id == 3 ? 'Estado de cuenta' : 'Usuarios', 'months' => $months->getMonths()]);
+    }
+    // Obtener el estado de cuenta de un comisionista
+    public function commission(Request $request, User $user, $month)
+    {
+        $request->user()->authorizeRoles(['Administrador', 'Ventas']);
+        $total = 0;
+        $sales = [];
+        foreach (Order::where([['status_id', 2], ['user_id', $user->id]])->whereMonth('dispatched', $month)->get() as $order) {
+            $data['date'] = $order->dispatched != null ? date('d/m/Y', strtotime($order->dispatched)) : '-';
+            $data['cfdi'] = $order->CFDI;
+            $data['product'] = strtoupper($order->product);
+            $data['liters'] = number_format($order->liters, 2);
+            $data['centsPerLiter'] = '$' . number_format($order->commission, 2);
+            $data['commission'] = '$' . number_format($sum = $order->commission * $order->liters, 2);
+            array_push($sales, $data);
+            $total += $sum;
+        }
+        return response()->json([
+            'sales' => $sales,
+            'total' => '$' . number_format($total, 2)
+        ]);
     }
 }

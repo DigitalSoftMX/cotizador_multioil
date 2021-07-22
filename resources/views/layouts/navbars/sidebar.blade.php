@@ -27,6 +27,11 @@
                                 <i class="material-icons">{{ $menu->icono }}</i>
                                 <p>{{ __($menu->name_modulo) }}</p>
                             </a>
+                        @elseif (auth()->user()->roles->first()->id==3 && $menu->ruta=='getcommision')
+                            <a class="nav-link" href="{{ route($menu->ruta,auth()->user()->id) }}">
+                                <i class="material-icons">{{ $menu->icono }}</i>
+                                <p>{{ __($menu->name_modulo) }}</p>
+                            </a>
                         @else
                             <a class="nav-link" href="{{ url($menu->ruta) }}">
                                 <i class="material-icons">{{ $menu->icono }}</i>
