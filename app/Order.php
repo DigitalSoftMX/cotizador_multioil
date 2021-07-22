@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $fillable = ['company_id', 'terminal_id', 'freight', 'name_freight', 'secure', 'price', 'sale_price', 'liters', 'product', 'total', 'date', 'dispatched', 'dispatched_liters', 'invoice', 'CFDI', 'pdf', 'xml', 'status_id', 'commission', 'user_id'];
+    protected $fillable = ['company_id', 'terminal_id', 'freight', 'name_freight', 'secure', 'price', 'sale_price', 'liters', 'product', 'total', 'date', 'dispatched', 'dispatched_liters', 'invoice', 'CFDI', 'pdf', 'xml', 'status_id', 'commission', 'user_id', 'invoicepayment', 'invoicecfdi', 'invoicepdf', 'invoicexml'];
     // Relacion con las empresas
     public function company()
     {

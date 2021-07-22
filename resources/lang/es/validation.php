@@ -216,6 +216,10 @@ return [
         'main' => 'principal',
         'base_id' => 'precio base',
         'created_at' => 'fecha',
-        'fee_id' => 'fee'
+        'fee_id' => 'fee',
+        'invoicepayment' => 'cantidad facturada',
+        'invoicecfdi' => 'factura',
+        'file_invoicepdf' => 'archivo pdf',
+        'file_invoicexml' => 'archivo xml',
     ],
 ];

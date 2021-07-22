@@ -110,14 +110,18 @@ class CompanyController extends Controller
     // Estado de cuenta de la empresa
     public function getshopping(Request $request, Company $company)
     {
-        $request->user()->authorizeRoles(['Administrador']);
+        $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         $months = new Activities();
-        return view('companies.state', ['months' => $months->getMonths(), 'company' => $company]);
+        return view('companies.state', [
+            'months' => $months->getMonths(),
+            'company' => $company,
+            'activePage' => auth()->user()->roles->first()->id == 2 ? 'Estado de cuenta' : 'Empresas'
+        ]);
     }
     // Método para obtener las ventas de un mes
     public function getshoppings(Request $request, $company, $month)
     {
-        $request->user()->authorizeRoles(['Administrador']);
+        $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         $total = 0;
         $sales = [];
         foreach (Order::where([['status_id', 2], ['company_id', $company]])->whereMonth('dispatched', $month)->get() as $order) {

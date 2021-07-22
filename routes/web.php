@@ -64,7 +64,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('orders', 'OrderController', ['except' => ['create', 'edit', 'destroy']]);
 	Route::resource('orders/{order}/payments', 'PaymentController');
 	Route::resource('invoices', 'InvoiceController', ['only' => ['edit', 'update']]);
-	Route::get('downloadfile/{order}/{file}', 'InvoiceController@download')->name('download');
+	Route::post('invoice/{invoice}', 'InvoiceController@updateinvoice')->name('invoice');
+	Route::get('downloadfile/{order}/{file}/{type}', 'InvoiceController@download')->name('download');
 	Route::get('excel', 'OrderController@downloadExcel')->name('excel');
 	Route::get('sales', 'OrderController@downloadSales')->name('sales');
 	Route::get('excel2', 'PedidoController@downloadExcel')->name('excel2');

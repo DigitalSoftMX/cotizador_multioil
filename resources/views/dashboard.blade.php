@@ -23,6 +23,14 @@
                                     </div>
                                 </div>
                             @endif
+                            @if (auth()->user()->roles->first()->id == 2)
+                                <div class="row">
+                                    <div class="col-md-12 text-right">
+                                        <a href="{{ route('getshopping', auth()->user()->company_id) }}"
+                                            class="btn btn-sm btn-success">{{ __('Ver mi estado de cuenta') }}</a>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="row justify-content-md-start">
                                 <div class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-sm-3">
                                     <select id="input-terminal_id" name="terminal_id"
@@ -60,13 +68,13 @@
                                             <div class="card-body">
                                                 <h5 class="card-title text-center">Precio de gasolina</h5>
                                                 <div class="bg-success text-white">
-                                                    {{ 'Regular: $' . $pricesclient->regular }}
+                                                    {{ 'Regular: $' . ($pricesclient != null ? $pricesclient->regular : 0) }}
                                                 </div>
                                                 <div class="bg-danger text-white">
-                                                    {{ 'Premium: $' . $pricesclient->premium }}
+                                                    {{ 'Regular: $' . ($pricesclient != null ? $pricesclient->premium : 0) }}
                                                 </div>
                                                 <div class="bg-dark text-white">
-                                                    {{ 'Diesel: $' . $pricesclient->diesel }}
+                                                    {{ 'Regular: $' . ($pricesclient != null ? $pricesclient->diesel : 0) }}
                                                 </div>
                                             </div>
                                         </div>
