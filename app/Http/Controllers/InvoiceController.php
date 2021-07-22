@@ -20,8 +20,11 @@ class InvoiceController extends Controller
      */
     public function edit(Request $request, Order $invoice)
     {
-        $request->user()->authorizeRoles(['Administrador']);
-        return view('invoices.edit', ['invoice' => $invoice, 'payments' => $invoice->payments, 'sales' => Role::find(3)->users]);
+        $request->user()->authorizeRoles(['Administrador', 'Cliente']);
+        return view(
+            'invoices.edit',
+            ['invoice' => $invoice, 'payments' => $invoice->payments, 'sales' => Role::find(3)->users]
+        );
     }
 
     /**
@@ -45,10 +48,25 @@ class InvoiceController extends Controller
         $invoice->update($request->only(['dispatched', 'dispatched_liters', 'invoice', 'CFDI', 'sale_price', 'name_freight', 'price', 'total']));
         return redirect()->back()->withStatus('Datos de facturación actualizados correctamente');
     }
-    // descarga de archivo pdf o xml
-    public function download(Request $request, Order $order, $file)
+    // Actualización de facturación Valero - Guerrera
+    public function updateinvoice(Request $request, Order $invoice)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return Response::download(public_path() . $order->$file, "Factura {$order->company->name}.$file");
+        request()->validate(['invoicepayment' => 'required|numeric', 'invoicecfdi' => 'required|string|min:3']);
+        if ($invoice->pdf == null)
+            request()->validate(['file_invoicepdf' => 'required|file|mimes:pdf']);
+        if ($invoice->xml == null)
+            request()->validate(['file_invoicexml' => 'required|file|mimes:xml']);
+        $savingFile = new Activities();
+        $savingFile->saveFile($request, $invoice, 'invoicepdf');
+        $savingFile->saveFile($request, $invoice, 'invoicexml');
+        $invoice->update($request->only(['invoicepayment', 'invoicecfdi']));
+        return redirect()->back()->withStatus('Datos de facturación Valero - Guerrera actualizados correctamente');
+    }
+    // descarga de archivo pdf o xml
+    public function download(Request $request, Order $order, $file, $type)
+    {
+        $request->user()->authorizeRoles(['Administrador', 'Cliente']);
+        return Response::download(public_path() . $order->$file, "Factura {$order->company->name}.$type");
     }
 }

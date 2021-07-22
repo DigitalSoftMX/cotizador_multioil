@@ -34,5 +34,7 @@ class MenuTableSeeder extends Seeder
         $menu->roles()->attach([1, 2]);
         $menu = Menu::create(['name_modulo' => 'Flete', 'desplegable' => 0, 'ruta' => 'levels', 'id_role' => 1, 'icono' => 'local_atm']);
         $menu->roles()->attach([1, 2, 3]);
+        $menu = Menu::create(['name_modulo' => 'Estado de cuenta', 'desplegable' => 0, 'ruta' => 'getshopping', 'id_role' => 1, 'icono' => 'article']);
+        $menu->roles()->attach([1, 2, 3]);
     }
 }

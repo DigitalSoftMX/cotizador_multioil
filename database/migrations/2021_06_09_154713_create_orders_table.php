@@ -33,6 +33,10 @@ class CreateOrdersTable extends Migration
             $table->string('pdf')->nullable();
             $table->string('xml')->nullable();
             $table->double('commission')->nullable();
+            $table->double('invoicepayment')->nullable();
+            $table->string('invoicecfdi')->nullable();
+            $table->string('invoicepdf')->nullable();
+            $table->string('invoicexml')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('status_id')->default(1);
             $table->timestamps();
