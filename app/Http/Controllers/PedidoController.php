@@ -9,6 +9,7 @@ use App\Events\EmailMultioil;
 use App\Terminal;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PedidoRequest;
+use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -54,9 +55,11 @@ class PedidoController extends Controller
         $datosPedido = $request->except('_token');
         Pedido::insert($datosPedido);
         $pedido = Pedido::all()->last();
-        event(new EmailMultioil($pedido, 4));
+        try {
+            event(new EmailMultioil($pedido, 4));
+        } catch (Exception $th) {
+        }
         return redirect()->back()->withStatus('Pedido realizado correctamente');
-        return response()->json($datosPedido);
     }
 
     /**

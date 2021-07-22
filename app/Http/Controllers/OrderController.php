@@ -52,7 +52,7 @@ class OrderController extends Controller
         try {
             event(new EmailMultioil($request, 1));
         } catch (Exception $e) {
-            return redirect()->back()->withStatus('No existe un usuario asociado a la empresa seleccionada')->withColor('danger');
+            // return redirect()->back()->withStatus('No existe un usuario asociado a la empresa seleccionada')->withColor('danger');
         }
         $register = new Activities();
         if ($request->total_r)
