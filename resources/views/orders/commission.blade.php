@@ -21,7 +21,9 @@
                         </div>
                         <div class="card-body">
                             <div class="row justify-content-center">
-                                <h4>{{ __('Empresa: ') }}<strong>{{ $company->name }}</strong></h4>
+                                <h4>
+                                    {{ __('Comisionista: ') }}<strong>{{ "{$user->name} {$user->app_name} {$user->apm_name}" }}</strong>
+                                </h4>
                             </div>
                             <div class="form-group{{ $errors->has('month_id') ? ' has-danger' : '' }} col-md-3 col-sm-12">
                                 <label class="form-check-label">{{ __('Ventas del mes:') }}</label>
@@ -46,9 +48,8 @@
                                         <th>{{ __('Factura') }}</th>
                                         <th>{{ __('Producto') }}</th>
                                         <th>{{ __('Litros') }}</th>
-                                        <th>{{ __('Cantidad facturada') }}</th>
-                                        <th>{{ __('Pago') }}</th>
-                                        <th>{{ __('Saldo') }}</th>
+                                        <th>{{ __('Centavos por litro') }}</th>
+                                        <th>{{ __('Comisión') }}</th>
                                     </thead>
                                     <tbody></tbody>
                                 </table>
@@ -69,6 +70,7 @@
     <script src="{{ asset('js/ventas.js') }}"></script>
     <script>
         let month = "{{ date('m') }}";
+        let user = "{{ $user->id }}";
         $(document).ready(function() {
             loadTable('datatables');
             getSales();
@@ -82,7 +84,7 @@
         });
         async function getSales() {
             try {
-                const resp = await fetch(`{{ url('') }}/getshoppings/{{ $company->id }}/${month}`);
+                const resp = await fetch(`{{ url('') }}/commission/${user}/${month}`);
                 const data = await resp.json();
                 console.log(data);
                 destruir_table("datatables");
@@ -94,9 +96,8 @@
                             <td> ${sale.cfdi} </td>
                             <td> ${sale.product} </td>
                             <td> ${sale.liters} </td>
-                            <td> ${sale.invoice} </td>
-                            <td> ${sale.payment} </td>
-                            <td> ${sale.balance} </td>
+                            <td> ${sale.centsPerLiter} </td>
+                            <td> ${sale.commission} </td>
                         </tr>`
                     );
                 });

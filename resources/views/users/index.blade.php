@@ -42,6 +42,14 @@
                                                         <form action="{{ route('users.destroy', $user) }}" method="post">
                                                             @csrf
                                                             @method('delete')
+                                                            @if ($user->roles->first()->id == 3)
+                                                                <a rel="tooltip" class="btn btn-dark btn-link"
+                                                                    href="{{ route('getcommision', $user) }}"
+                                                                    data-original-title="" title="">
+                                                                    <i class="material-icons">visibility</i>
+                                                                    <div class="ripple-container"></div>
+                                                                </a>
+                                                            @endif
                                                             <a rel="tooltip" class="btn btn-success btn-link"
                                                                 href="{{ route('users.edit', $user) }}"
                                                                 data-original-title="" title="">
@@ -83,6 +91,5 @@
         $(document).ready(function() {
             loadTable('datatables');
         });
-
     </script>
 @endpush

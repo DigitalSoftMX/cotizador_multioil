@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'd8487ffdd1d56b54adcc81640126d5e5dce00585',
+    'reference' => 'a8fabf04f23671205b7fc42d683b7fdedcab58f2',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -141,12 +141,12 @@ private static $installed = array (
     ),
     'facade/ignition' => 
     array (
-      'pretty_version' => '2.10.2',
-      'version' => '2.10.2.0',
+      'pretty_version' => '2.11.2',
+      'version' => '2.11.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '43688227bbf27c43bc1ad83af224f135b6ef0ff4',
+      'reference' => '7c4e7a7da184cd00c7ce6eacc590200bb9672de7',
     ),
     'facade/ignition-contracts' => 
     array (
@@ -168,12 +168,12 @@ private static $installed = array (
     ),
     'filp/whoops' => 
     array (
-      'pretty_version' => '2.13.0',
-      'version' => '2.13.0.0',
+      'pretty_version' => '2.14.0',
+      'version' => '2.14.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '2edbc73a4687d9085c8f20f398eebade844e8424',
+      'reference' => 'fdf92f03e150ed84d5967a833ae93abffac0315b',
     ),
     'fruitcake/laravel-cors' => 
     array (
@@ -473,7 +473,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'd8487ffdd1d56b54adcc81640126d5e5dce00585',
+      'reference' => 'a8fabf04f23671205b7fc42d683b7fdedcab58f2',
     ),
     'laravel/tinker' => 
     array (
@@ -504,12 +504,12 @@ private static $installed = array (
     ),
     'league/commonmark' => 
     array (
-      'pretty_version' => '1.6.5',
-      'version' => '1.6.5.0',
+      'pretty_version' => '1.6.6',
+      'version' => '1.6.6.0',
       'aliases' => 
       array (
       ),
-      'reference' => '44ffd8d3c4a9133e4bd0548622b09c55af39db5f',
+      'reference' => 'c4228d11e30d7493c6836d20872f9582d8ba6dcf',
     ),
     'league/flysystem' => 
     array (
@@ -531,12 +531,12 @@ private static $installed = array (
     ),
     'maatwebsite/excel' => 
     array (
-      'pretty_version' => '3.1.31',
-      'version' => '3.1.31.0',
+      'pretty_version' => '3.1.32',
+      'version' => '3.1.32.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'cbe6370af70f93bd017f77ef92d32bd492a47fcb',
+      'reference' => '9dc29b63a77fb7f2f514ef754af3a1b57e83cadf',
     ),
     'maennchen/zipstream-php' => 
     array (
@@ -576,12 +576,12 @@ private static $installed = array (
     ),
     'monolog/monolog' => 
     array (
-      'pretty_version' => '2.2.0',
-      'version' => '2.2.0.0',
+      'pretty_version' => '2.3.1',
+      'version' => '2.3.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '1cb1cde8e8dd0f70cc0fe51354a59acad9302084',
+      'reference' => '9738e495f288eec0b187e310b7cdbbb285777dbe',
     ),
     'myclabs/deep-copy' => 
     array (
@@ -598,12 +598,12 @@ private static $installed = array (
     ),
     'myclabs/php-enum' => 
     array (
-      'pretty_version' => '1.8.1',
-      'version' => '1.8.1.0',
+      'pretty_version' => '1.8.3',
+      'version' => '1.8.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '55555d31a622b4bc9662664132a0533ae6ef47b1',
+      'reference' => 'b942d263c641ddb5190929ff840c68f78713e937',
     ),
     'nesbot/carbon' => 
     array (
@@ -616,12 +616,12 @@ private static $installed = array (
     ),
     'nikic/php-parser' => 
     array (
-      'pretty_version' => 'v4.10.5',
-      'version' => '4.10.5.0',
+      'pretty_version' => 'v4.12.0',
+      'version' => '4.12.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '4432ba399e47c66624bc73c8c0f811e5c109576f',
+      'reference' => '6608f01670c3cc5079e18c1dab1104e002579143',
     ),
     'nunomaduro/collision' => 
     array (
@@ -643,12 +643,12 @@ private static $installed = array (
     ),
     'phar-io/manifest' => 
     array (
-      'pretty_version' => '2.0.1',
-      'version' => '2.0.1.0',
+      'pretty_version' => '2.0.3',
+      'version' => '2.0.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '85265efd3af7ba3ca4b2a2c34dbfc5788dd29133',
+      'reference' => '97803eca37d319dfa7826cc2437fc020857acb53',
     ),
     'phar-io/version' => 
     array (
@@ -724,12 +724,12 @@ private static $installed = array (
     ),
     'phpunit/php-file-iterator' => 
     array (
-      'pretty_version' => '2.0.3',
-      'version' => '2.0.3.0',
+      'pretty_version' => '2.0.4',
+      'version' => '2.0.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '4b49fb70f067272b659ef0174ff9ca40fdaa6357',
+      'reference' => '28af674ff175d0768a5a978e6de83f697d4a7f05',
     ),
     'phpunit/php-text-template' => 
     array (
@@ -760,12 +760,12 @@ private static $installed = array (
     ),
     'phpunit/phpunit' => 
     array (
-      'pretty_version' => '8.5.17',
-      'version' => '8.5.17.0',
+      'pretty_version' => '8.5.18',
+      'version' => '8.5.18.0',
       'aliases' => 
       array (
       ),
-      'reference' => '79067856d85421c56d413bd238d4e2cd6b0e54da',
+      'reference' => 'bd5fc77c869e8dd65040dacbad170f074c13796c',
     ),
     'psr/container' => 
     array (
@@ -846,8 +846,8 @@ private static $installed = array (
     array (
       'provided' => 
       array (
-        0 => '1.0.0',
-        1 => '1.0',
+        0 => '1.0',
+        1 => '1.0.0',
       ),
     ),
     'psr/simple-cache' => 
