@@ -1,6 +1,7 @@
 <thead class=" text-primary">
     <th class="text-center">{{ __('Empresa') }}</th>
     <th class="text-center">{{ __('Datos del pedido') }}</th>
+    <th class="text-center">{{ __('Fecha de solicitud') }}</th>
     <th class="text-center">{{ __('Fecha de entrega') }}</th>
     <th class="text-right">{{ __('Acciones') }}</th>
 </thead>
@@ -18,6 +19,7 @@
                         </tr>
                     </table>
                 </td>
+                <td class="text-center">{{ $order->created_at->format('Y-m-d H:i') }}</td>
                 <td class="text-center">{{ date('Y-m-d', strtotime($order->date)) }}</td>
                 <td class="td-actions justify-content-end">
                     <a rel="tooltip" class="btn btn-dark btn-link" href="" data-original-title="" title=""
