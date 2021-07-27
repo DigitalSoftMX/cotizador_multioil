@@ -1,6 +1,7 @@
 <thead class=" text-primary">
     <th class="text-center">{{ __('Empresa') }}</th>
     <th class="text-center">{{ __('Datos del pedido') }}</th>
+    {{-- <th class="text-center">{{ __('Fecha de solicitud') }}</th> --}}
     <th class="text-center">{{ __('Fechas de entrega') }}</th>
     <th class="text-right">{{ __('Acciones') }}</th>
 </thead>
@@ -34,6 +35,7 @@
 
                     </table>
                 </td>
+                {{-- <td class="text-center">{{ $pedido->created_at }}</td> --}}
                 <td class="text-center">Lunes: {{ date('Y-m-d', strtotime($pedido->monday)) }} al Sábado:
                     {{ date('Y-m-d', strtotime($pedido->saturday)) }}</td>
                 <td class="td-actions justify-content-end">
@@ -42,7 +44,7 @@
                         <i class="material-icons">visibility</i>
                         <div class="ripple-container"></div>
                     </a>
-                    
+
                     {{-- modal --}}
                     @include('partials._modalS',[$id=$pedido->id.'see',$see=true])
                     @if (auth()->user()->roles->first()->id == 1)

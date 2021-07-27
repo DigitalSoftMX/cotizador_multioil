@@ -21,6 +21,8 @@
             </div>
             <div class="modal-body">
                 @if ($see)
+                    <strong class="font-weight-bold">Fecha de solicitud:</strong>
+                    {{ $order->created_at->format('Y-m-d H:i') }}<br>
                     <strong class="font-weight-bold">Fecha de entrega:
                     </strong>{{ date('Y-m-d', strtotime($order->date)) }}<br>
                     <strong class="font-weight-bold">Terminal: </strong>{{ $order->terminal->name }}<br>
