@@ -30,7 +30,7 @@
                                         <th>{{ __('Nombre') }}</th>
                                         <th>{{ __('RFC') }}</th>
                                         <th>{{ __('Dirección de entrega') }}</th>
-                                        <th>{{ __('Dirección fiscal') }}</th>
+                                        <th>{{ __('Correo electrónico') }}</th>
                                         <th>{{ __('# Terminales') }}</th>
                                         <th>{{ __('Status') }}</th>
                                         <th>{{ __('Fecha de Alta') }}</th>
@@ -42,9 +42,9 @@
                                                 <td>{{ $company->name }}</td>
                                                 <td>{{ $company->rfc }}</td>
                                                 <td>{{ $company->delivery_address }}</td>
-                                                <td>{{ $company->fiscal_address }}</td>
+                                                <td>{{ $company->email }}</td>
                                                 <td>{{ $company->terminals->count() }}</td>
-                                                <td>{{ $company->status == 0 ? 'activo' : 'inactivo' }}</td>
+                                                <td>{{ $company->active == '1' ? 'Activo' : 'Inactivo' }}</td>
                                                 <td>{{ $company->created_at->format('Y/m/d') }}</td>
                                                 <td class="td-actions">
                                                     <form action="{{ route('companies.destroy', $company) }}"
@@ -64,9 +64,9 @@
                                                                 <i class="material-icons">edit</i>
                                                                 <div class="ripple-container"></div>
                                                             </a>
-                                                            <button type="button" class="btn btn-danger btn-link"
+                                                            <button type="submit" class="btn btn-danger btn-link"
                                                                 data-original-title="" title=""
-                                                                onclick="confirm('{{ __('¿Estás seguro de que deseas eliminar a este usuario?') }}') ? this.parentElement.submit() : ''">
+                                                                onclick="confirm('{{ __('¿Estás seguro de que deseas eliminar a esta empresa?') }}') ? this.parentElement.submit() : ''">
                                                                 <i class="material-icons">close</i>
                                                                 <div class="ripple-container"></div>
                                                             </button>

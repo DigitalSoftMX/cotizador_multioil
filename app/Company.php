@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-    protected $fillable = ['name', 'alias', 'rfc', 'delivery_address', 'fiscal_address', 'clabe', 'color', 'main', 'active'];
+    protected $fillable = ['name', 'alias', 'rfc', 'delivery_address', 'email', 'color', 'main', 'active'];
     // Relacion con las terminales
     public function terminals()
     {

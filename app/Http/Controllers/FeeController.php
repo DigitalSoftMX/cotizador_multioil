@@ -70,6 +70,13 @@ class FeeController extends Controller
         $fit->update($request->all());
         return redirect()->route('fits.index')->withStatus(__('FEE actualizado correctamente'));
     }
+    // Dar de baja un fee
+    public function destroy(Request $request, Fee $fit)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        $fit->update(['active' => 0]);
+        return redirect()->route('fits.index')->withStatus(__('FEE dado de baja correctamente'));
+    }
     // Método para obtener los fee, por terminal, empresa, precio base y/o fecha
     public function getFees(Request $request, $terminal, $company, $base, $date = null)
     {

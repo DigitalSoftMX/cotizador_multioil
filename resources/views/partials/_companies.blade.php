@@ -60,47 +60,15 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="form-group{{ $errors->has('fiscal_address') ? ' has-danger' : '' }} col-md-4 col-sm-12">
-                <label for="fiscal_address">{{ __('Dirección fiscal') }}</label>
-                <input type="text" class="form-control{{ $errors->has('fiscal_address') ? ' is-invalid' : '' }}"
-                    name="fiscal_address" id="input-fiscal_address"
-                    value="{{ old('fiscal_address', $company->fiscal_address ?? '') }}" aria-required="true"
-                    aria-describedby="fiscal_addressHelp" placeholder='Escribe la dirección fiscal de la empresa'
+            <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }} col-md-4 col-sm-12">
+                <label for="email">{{ __('Correo electrónico') }}</label>
+                <input type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
+                    id="input-email" value="{{ old('email', $company->email ?? '') }}" aria-required="true"
+                    aria-describedby="emailHelp" placeholder='Escribe el correo electrónico de la empresa'
                     aria-required="true">
-                @if ($errors->has('fiscal_address'))
-                    <span id="fiscal_address-error" class="error text-danger" for="input-fiscal_address">
-                        {{ $errors->first('fiscal_address') }}
-                    </span>
-                @endif
-            </div>
-            <div class="form-group{{ $errors->has('clabe') ? ' has-danger' : '' }} col-md-4 col-sm-12">
-                <label for="clabe">{{ __('CLABE') }}</label>
-                <input type="text" class="form-control{{ $errors->has('clabe') ? ' is-invalid' : '' }}"
-                    id="input-clabe" aria-describedby="clabeHelp" placeholder="Escribe el CLABE de la empresa"
-                    value="{{ old('clabe', $company->clabe ?? '') }}" aria-required="true" name="clabe">
-                @if ($errors->has('clabe'))
-                    <span id="clabe-error" class="error text-danger" for="input-clabe">
-                        {{ $errors->first('clabe') }}
-                    </span>
-                @endif
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div
-                class="form-group{{ $errors->has('main') ? ' has-danger' : '' }} col-md-4 col-sm-12 checkbox-radios">
-                <label class="label-control" for="main">{{ __('Activar como una empresa principal') }}</label>
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="1" name="main" id="mainid" @if ($company->main ?? '' == 1) checked @endif>
-                        {{ 'Activar' }}
-                        <span class="form-check-sign">
-                            <span class="check"></span>
-                        </span>
-                    </label>
-                </div>
-                @if ($errors->has('main'))
-                    <span id="main-error" class="error text-danger" for="input-main">
-                        {{ $errors->first('main') }}
+                @if ($errors->has('email'))
+                    <span id="email-error" class="error text-danger" for="input-email">
+                        {{ $errors->first('email') }}
                     </span>
                 @endif
             </div>
@@ -122,6 +90,24 @@
             </div>
         </div>
         <div class="row justify-content-center">
+            <div
+                class="form-group{{ $errors->has('main') ? ' has-danger' : '' }} col-md-4 col-sm-12 checkbox-radios">
+                <label class="label-control" for="main">{{ __('Activar como una empresa principal') }}</label>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="1" name="main" id="mainid" @if ($company->main ?? '' == 1) checked @endif>
+                        {{ 'Activar' }}
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                    </label>
+                </div>
+                @if ($errors->has('main'))
+                    <span id="main-error" class="error text-danger" for="input-main">
+                        {{ $errors->first('main') }}
+                    </span>
+                @endif
+            </div>
             <div
                 class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-md-4 col-sm-12 checkbox-radios">
                 <label for="terminal_id">{{ __('Elije las terminales de la empresa') }}</label>

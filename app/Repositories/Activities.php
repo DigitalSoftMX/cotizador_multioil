@@ -18,11 +18,11 @@ class Activities
         foreach (Terminal::all() as $terminal) {
             if ($company_id == null) {
                 foreach (Company::all() as $company) {
-                    $fee = $terminal->fits->where('company_id', $company->id)->last();
+                    $fee = $terminal->fits->where('company_id', $company->id)->where('active', 1)->last();
                     $fees = $fee != null ? $this->dataFees($fee, $fees) : $fees;
                 }
             } else {
-                $fee = $terminal->fits->where('company_id', $company_id)->last();
+                $fee = $terminal->fits->where('company_id', $company_id)->where('active', 1)->last();
                 $fees = $fee != null ? $this->dataFees($fee, $fees) : $fees;
             }
         }

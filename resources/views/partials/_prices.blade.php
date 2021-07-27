@@ -179,6 +179,9 @@
         </div>
     </div>
     <div class="card-footer justify-content-center">
+        @if (!isset($price))
+            <div id="companies"></div>
+        @endif
         <button id="button" type="submit" class="btn btn-primary">{{ __('Registrar') }}
         </button>
     </div>
@@ -190,6 +193,8 @@
         let date = new Date();
         let id = "{{ $price ?? '' }}";
         let idFee = "{{ $price->fee_id ?? '' }}";
+        let notification = 0;
+        let companies = [];
         $(document).ready(function() {
             loadTable('datatables');
             init_calendar('calendar_first', `01-01-${date.getFullYear()}`, `12-31-${date.getFullYear()}`);
@@ -235,12 +240,26 @@
             getFees(terminal, company, base, date != '' ? date : null);
         }
         // Metodo para obtener un posible fee registrado
-        function getValuesToLookingForAFee() {
-            let fee = '';
+        function getValuesToLookingForAFee(fee = '') {
+            // let fee = '';
             if (id != '') {
                 fee = $('input[name="companies"]:checked').val();
             } else {
-                fee = $('input[name="companies[]"]:checked').val();
+                if (fee != '') {
+                    if (document.getElementById('fee_' + fee).checked) {
+                        companies.push(fee);
+                    } else {
+                        companies = companies.filter(function(item) {
+                            return item !== fee
+                        })
+                    }
+                    document.getElementById('companies').innerHTML = '';
+                    companies.forEach(id => {
+                        document.getElementById('companies').innerHTML += /* html */ `
+                    <input type="hidden" name="companies[]" value="${id}">
+                    `
+                    });
+                }
             }
             let date = $('#calendar').val();
             if (date != '' && fee !== undefined) {
@@ -292,10 +311,11 @@
                 })
                 const data = await resp.json();
                 console.log(data);
-                if (data.price || data.date) {
+                if ((data.price || data.date) && notification == 0) {
                     showNotification(
                         "<b>Atención</b> ya existen precios registrados con la misma fecha y/o empresa/terminal.",
                         'danger');
+                    notification++;
                     next = true;
                 } else {
                     next = false;
@@ -326,18 +346,18 @@
                 stringHtml = /* html */ `
                 <input type = "radio"
                 value = "${fee}"
-                name = "companies" checked onchange="getValuesToLookingForAFee()">`
+                name = "companies" checked onchange="getValuesToLookingForAFee(${fee})">`
             } else {
                 if (id != '') {
                     stringHtml = /* html */ `
                         <input type = "radio"
                         value = "${fee}"
-                        name = "companies" onchange="getValuesToLookingForAFee()">`
+                        name = "companies" onchange="getValuesToLookingForAFee(${fee})">`
                 } else {
                     stringHtml = /* html */ `
-                        <input type = "checkbox"
+                        <input type = "checkbox" id="fee_${fee}"
                         value = "${fee}"
-                        name = "companies[]" onchange="getValuesToLookingForAFee()">`
+                        name = "empresas[]" onchange="getValuesToLookingForAFee(${fee})">`
                 }
             }
             return stringHtml;

@@ -93,6 +93,7 @@
 
         async function getFees(company_id) {
             try {
+                console.log(`{{ url('') }}/companies/${company_id}`);
                 const data = await fetch(`{{ url('') }}/companies/${company_id}`);
                 response = await data.json();
                 destruir_table("datatables");
@@ -107,12 +108,24 @@
                             <td> ${fee.premium_fit} </td>
                             <td> ${fee.diesel_fit} </td>
                             <td> ${fee.created_at} </td>
-                            <td>
-                                <a rel="tooltip" class="btn btn-success btn-link"
-                                    href="{{ url('') }}/fits/${fee.id}/edit" data-original-title="" title="">
-                                    <i class="material-icons">edit</i>
-                                    <div class="ripple-container"></div>
-                                </a>
+                            <td class="td-actions">
+                                <form action="{{ url('') }}/fits/${fee.id}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <div class="row justify-content-end">
+                                        <a rel="tooltip" class="btn btn-success btn-link"
+                                            href="{{ url('') }}/fits/${fee.id}/edit" data-original-title="" title="">
+                                            <i class="material-icons">edit</i>
+                                            <div class="ripple-container"></div>
+                                        </a>
+                                        <button type="submit" class="btn btn-danger btn-link"
+                                            data-original-title="" title=""
+                                            onclick="confirm('{{ __('¿Estás seguro de que deseas eliminar a este fee?') }}') ? this.parentElement.submit() : ''">
+                                            <i class="material-icons">close</i>
+                                            <div class="ripple-container"></div>
+                                        </button>
+                                    </div>
+                                </form>
                             </td>
                         </tr>`
                     );

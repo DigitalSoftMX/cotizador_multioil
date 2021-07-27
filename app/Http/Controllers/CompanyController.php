@@ -20,7 +20,7 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('companies.index', ['companies' => Company::all()]);
+        return view('companies.index', ['companies' => Company::where('active', 1)->get()]);
     }
 
     /**
@@ -104,7 +104,7 @@ class CompanyController extends Controller
     public function destroy(Request $request, Company $company)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        $company->delete();
+        $company->update(['active' => 0]);
         return redirect()->route('companies.index')->withStatus('Se ha dado de baja la empresa correctamente');
     }
     // Estado de cuenta de la empresa

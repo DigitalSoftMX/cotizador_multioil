@@ -2,10 +2,15 @@
     aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header row">
                 @if ($see)
-                    <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle">
+                    <h5 class="modal-title font-weight-bold col-12" id="exampleModalLongTitle">
                         {{ __('Detalles del pedido') }}</h5>
+                    @if ($order->reason != null)
+                        <h5 class="bg-danger text-white col-12">
+                            {{ __('Motivo de negación:') }} {{ $order->reason }}
+                        </h5>
+                    @endif
                 @else
                     <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle">
                         {{ __('Escriba el motivo por el cual se niega el pedido') }}</h5>

@@ -168,8 +168,9 @@
                     @endif
                 </td>
                 <td>
-                    @if ($order->commission != null)
-                        {{ '$' . number_format($order->commission * $litrosDespachados, 2) }}
+                    @if ($order->commission_two != null)
+                        {{ '$' . number_format($utilidadComisionista2 = $order->commission_two * $litrosDespachados - $pagoFletera / 2, 2) }}
+                        {{-- {{ '$' . number_format($order->commission * $litrosDespachados, 2) }} --}}
                     @endif
                 </td>
                 <td>{{ '$' . number_format($utilidadGuerrera = $comision * 0.2, 2) }}</td>
