@@ -53,14 +53,13 @@ class InvoiceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate(['invoicepayment' => 'required|numeric', 'invoicecfdi' => 'required|string|min:3']);
-        if ($invoice->pdf == null)
+        if ($invoice->invoicepdf == null)
             request()->validate(['file_invoicepdf' => 'required|file|mimes:pdf']);
-        if ($invoice->xml == null)
+        if ($invoice->invoicexml == null)
             request()->validate(['file_invoicexml' => 'required|file|mimes:xml']);
         $savingFile = new Activities();
         $savingFile->saveFile($request, $invoice, 'invoicepdf');
         $savingFile->saveFile($request, $invoice, 'invoicexml');
-        $invoice->update($request->only(['invoicepayment', 'invoicecfdi']));
         return redirect()->back()->withStatus('Datos de facturación Valero - Guerrera actualizados correctamente');
     }
     // descarga de archivo pdf o xml
