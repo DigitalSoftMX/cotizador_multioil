@@ -33,11 +33,14 @@ class CreateOrdersTable extends Migration
             $table->string('pdf')->nullable();
             $table->string('xml')->nullable();
             $table->double('commission')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->double('commission_two')->nullable();
+            $table->unsignedBigInteger('middleman_id')->nullable();
             $table->double('invoicepayment')->nullable();
             $table->string('invoicecfdi')->nullable();
             $table->string('invoicepdf')->nullable();
             $table->string('invoicexml')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->string('reason')->nullable();
             $table->unsignedBigInteger('status_id')->default(1);
             $table->timestamps();
 
@@ -54,6 +57,10 @@ class CreateOrdersTable extends Migration
                 ->onDelete('cascade');
 
             $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('middleman_id')->references('id')->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

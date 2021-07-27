@@ -44,6 +44,7 @@
                             <div class="table-responsive">
                                 <table id="datatables" class="table">
                                     <thead class=" text-primary text-center">
+                                        <th>{{ __('Empresa') }}</th>
                                         <th>{{ __('Fecha de carga') }}</th>
                                         <th>{{ __('Factura') }}</th>
                                         <th>{{ __('Producto') }}</th>
@@ -92,6 +93,7 @@
                 data.sales.forEach(sale => {
                     $("#datatables").find('tbody').append( /* html */
                         `<tr class='text-center'>
+                            <td> ${sale.company}</td>
                             <td> ${sale.date} </td>
                             <td> ${sale.cfdi} </td>
                             <td> ${sale.product} </td>

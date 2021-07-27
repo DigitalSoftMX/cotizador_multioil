@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Fee extends Model
 {
-    protected $fillable = ['terminal_id', 'company_id', 'base_id', 'regular_fit', 'premium_fit', 'diesel_fit', 'created_at'];
+    protected $fillable = ['terminal_id', 'company_id', 'base_id', 'regular_fit', 'premium_fit', 'diesel_fit', 'active', 'created_at'];
     // conexion con las empresas
     public function companies()
     {

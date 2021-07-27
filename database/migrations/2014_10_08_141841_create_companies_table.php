@@ -19,8 +19,7 @@ class CreateCompaniesTable extends Migration
             $table->string('alias');
             $table->string('rfc');
             $table->string('delivery_address');
-            $table->string('fiscal_address');
-            $table->string('clabe');
+            $table->string('email')->unique();
             $table->integer('main')->default(0);
             $table->string('color')->nullable();
             $table->integer('active')->default(1);

@@ -45,7 +45,7 @@
                                             <select id="input-company_id" name="company_id"
                                                 class="selectpicker show-menu-arrow {{ $errors->has('company_id') ? ' has-danger' : '' }}"
                                                 data-style="btn-primary" data-width="100%" data-live-search="true">
-                                                <option value="">Elija un empresa</option>
+                                                <option value="">{{ __('Elija un empresa') }}</option>
                                             </select>
                                             @if ($errors->has('company_id'))
                                                 <span id="name-company_id" class="error text-danger"
@@ -59,7 +59,7 @@
                                     <div class="col-3">
                                         <label class="label-control">{{ __('Fecha de entrega') }}</label>
                                         <input class="form-control datetimepicker" id="calendar_first" name="date"
-                                            type="text" value="" /></input>
+                                            type="text" value="" readonly/></input>
                                     </div>
                                 </div>
                                 <div class="row justify-content-center mt-5">

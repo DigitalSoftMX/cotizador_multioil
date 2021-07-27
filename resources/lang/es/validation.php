@@ -221,5 +221,7 @@ return [
         'invoicecfdi' => 'factura',
         'file_invoicepdf' => 'archivo pdf',
         'file_invoicexml' => 'archivo xml',
+        'commission_two' => 'comisión',
+        'middleman_id' => 'comisionista dos'
     ],
 ];

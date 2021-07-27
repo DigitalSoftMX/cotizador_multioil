@@ -27,7 +27,7 @@ class ValidationController extends Controller
     public function accept(Request $request, Order $order)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        $order->update(['status_id' => 2]);
+        $order->update(['status_id' => 2, 'reason' => null]);
         try {
             event(new EmailMultioil($order, 2));
         } catch (Exception $th) {
@@ -40,7 +40,7 @@ class ValidationController extends Controller
         $request->user()->authorizeRoles(['Administrador']);
         if ($request->message == null)
             return redirect()->back()->withStatus('Ingrese el motivo por el cual se deniega el pedido')->withColor('danger');
-        $order->update(['status_id' => 3]);
+        $order->update(['status_id' => 3, 'reason' => $request->message]);
         try {
             event(new EmailMultioil($order, 3, $request->message));
         } catch (Exception $th) {

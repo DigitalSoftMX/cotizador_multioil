@@ -67,8 +67,13 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        request()->validate(['commission' => 'required|numeric', 'user_id' => 'required|integer']);
-        $order->update($request->only('commission', 'user_id'));
+        if ($request->commission != null || $request->user_id != null)
+            request()->validate(['commission' => 'required|numeric', 'user_id' => 'required|integer']);
+        if ($request->commission_two != null || $request->middleman_id != null)
+            request()->validate(['commission_two' => 'required|numeric', 'middleman_id' => 'required|integer',]);
+        if ($request->user_id == $request->middleman_id)
+            return redirect()->back()->withStatus('Los comisionistas deben ser diferentes')->withColor('danger');
+        $order->update($request->only('commission', 'user_id', 'commission_two', 'middleman_id'));
         return redirect()->back()->withStatus('Comisión del pedido agregado correctamente');
     }
     // Generar excel
@@ -81,6 +86,7 @@ class OrderController extends Controller
     public function downloadSales(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
+        // return view('exports.sales', ['orders' => Order::where('status_id', 2)->get()]);
         return Excel::download(new OrdersExport(2), 'Ventas.xlsx');
     }
     // Vista para el estado de cuenta de un comisionista
@@ -97,6 +103,7 @@ class OrderController extends Controller
         $total = 0;
         $sales = [];
         foreach (Order::where([['status_id', 2], ['user_id', $user->id]])->whereMonth('dispatched', $month)->get() as $order) {
+            $data['company'] = $order->company->name;
             $data['date'] = $order->dispatched != null ? date('d/m/Y', strtotime($order->dispatched)) : '-';
             $data['cfdi'] = $order->CFDI;
             $data['product'] = strtoupper($order->product);

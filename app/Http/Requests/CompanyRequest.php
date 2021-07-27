@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Company;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CompanyRequest extends FormRequest
 {
@@ -28,10 +30,11 @@ class CompanyRequest extends FormRequest
             'alias' => 'required|min:3',
             'rfc' => 'required|min:3',
             'delivery_address' => 'required|min:3',
-            'fiscal_address' => 'required|min:3',
-            'clabe' => 'required|min:3',
             'terminal_id' => 'required',
-            'color' => 'required'
+            'color' => 'required',
+            'email' => [
+                'required', 'email', Rule::unique((new Company)->getTable())->ignore($this->route()->company->id ?? null)
+            ],
         ];
     }
 }

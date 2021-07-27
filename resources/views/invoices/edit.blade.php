@@ -92,7 +92,7 @@
                                                                 <div
                                                                     class="form-group{{ $errors->has('commission') ? ' has-danger' : '' }} col-lg-4 col-sm-12">
                                                                     <label
-                                                                        for="commission">{{ __('Comisión del cliente') }}</label>
+                                                                        for="commission">{{ __('Comisión del comisionista') }}</label>
                                                                     <input type="number"
                                                                         class="form-control{{ $errors->has('commission') ? ' is-invalid' : '' }}"
                                                                         id="input-commission"
@@ -115,7 +115,7 @@
                                                                         data-style="btn-primary" data-width="100%"
                                                                         data-live-search="true">
                                                                         <option value="">
-                                                                            {{ __('Elija un vendedor') }}
+                                                                            {{ __('Elija un comisionista') }}
                                                                         </option>
                                                                         @foreach ($sales as $sale)
                                                                             <option value="{{ $sale->id }}" @if ($invoice->user_id == $sale->id) selected @endif>
@@ -125,6 +125,46 @@
                                                                     @if ($errors->has('user_id'))
                                                                         <span id="name-user_id" class="error text-danger"
                                                                             for="input-user_id">{{ $errors->first('user_id') }}</span>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <div class="row justify-content-center">
+                                                                <div
+                                                                    class="form-group{{ $errors->has('commission_two') ? ' has-danger' : '' }} col-lg-4 col-sm-12">
+                                                                    <label
+                                                                        for="commission_two">{{ __('Comisión del segundo comisionista') }}</label>
+                                                                    <input type="number"
+                                                                        class="form-control{{ $errors->has('commission_two') ? ' is-invalid' : '' }}"
+                                                                        id="input-commission_two"
+                                                                        aria-describedby="commission_twoHelp"
+                                                                        placeholder="Escribe la cantidad del pago"
+                                                                        value="{{ old('commission_two', $invoice->commission_two) }}"
+                                                                        aria-required="true" name="commission_two" step="any">
+                                                                    @if ($errors->has('commission_two'))
+                                                                        <span id="commission_two-error"
+                                                                            class="error text-danger"
+                                                                            for="input-commission_two">
+                                                                            {{ $errors->first('commission_two') }}
+                                                                        </span>
+                                                                    @endif
+                                                                </div>
+                                                                <div
+                                                                    class="form-group{{ $errors->has('middleman_id') ? ' has-danger' : '' }} col-lg-4 col-sm-12">
+                                                                    <select id="input-middleman_id" name="middleman_id"
+                                                                        class="selectpicker show-menu-arrow {{ $errors->has('middleman_id') ? ' has-danger' : '' }}"
+                                                                        data-style="btn-primary" data-width="100%"
+                                                                        data-live-search="true">
+                                                                        <option value="">
+                                                                            {{ __('Elija un comisionista') }}
+                                                                        </option>
+                                                                        @foreach ($sales as $sale)
+                                                                            <option value="{{ $sale->id }}" @if ($invoice->middleman_id == $sale->id) selected @endif>
+                                                                                {{ $sale->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                    @if ($errors->has('middleman_id'))
+                                                                        <span id="name-middleman_id" class="error text-danger"
+                                                                            for="input-middleman_id">{{ $errors->first('middleman_id') }}</span>
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -212,13 +252,11 @@
                                         </div>
                                     </div>
                                     @if (($rol = auth()->user()->roles->first()->id) == 1)
-                                        <form method="post" action="{{ route('invoice', $invoice) }}"
-                                            autocomplete="off" class="form-horizontal" enctype="multipart/form-data">
+                                        <form method="post" action="{{ route('invoice', $invoice) }}" autocomplete="off"
+                                            class="form-horizontal" enctype="multipart/form-data">
                                             @csrf
                                             @include('partials._invoice_data',[$rol])
                                         </form>
-                                    @else
-                                        @include('partials._invoice_data',[$rol])
                                     @endif
                                 </div>
                             </div>

@@ -182,7 +182,7 @@
                     document.getElementById('companies').style.display = 'block';
                     document.getElementById('companiescheck').style.display = 'none';
                     break;
-                case '4':
+                case '3':
                     document.getElementById('companies').style.display = 'none';
                     document.getElementById('companiescheck').style.display = 'block';
                     break;
