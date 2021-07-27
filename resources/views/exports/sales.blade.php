@@ -171,11 +171,11 @@
                 <td>
                     @if ($order->commission_two != null)
                         {{-- {{ '$' . number_format($utilidadComisionista2 = $order->commission_two * $litrosDespachados - $pagoFletera / 2, 2) }} --}}
-                        {{ '$' . number_format($order->commission_two * $litrosDespachados, 2) }}
+                        {{ '$' . number_format($utilidadComisionista2 = $order->commission_two * $litrosDespachados, 2) }}
                     @endif
                 </td>
-                <td>{{ '$' . number_format($utilidadGuerrera = $comision * 0.2, 2) }}</td>
-                <td>{{ '$' . number_format($utilidadMultioil = $comision * 0.8, 2) }}</td>
+                <td>{{ '$' . number_format($utilidadGuerrera = ($comision - $utilidadComisionista1 - $utilidadComisionista2) * 0.2, 2) }}</td>
+                <td>{{ '$' . number_format($utilidadMultioil = ($comision - $utilidadComisionista1 - $utilidadComisionista2) * 0.8, 2) }}</td>
                 <td>{{ '$' . number_format($utilidadMultioilSinIVA = $utilidadMultioil / 1.16, 2) }}</td>
                 <td>{{ '$' . number_format($diferenciaUtilidad = $utilidadMultioil - $utilidadMultioilSinIVA, 2) }}
                 </td>
