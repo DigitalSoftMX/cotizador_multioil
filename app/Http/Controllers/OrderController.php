@@ -25,11 +25,14 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
-
-        // Enviar notificacion de horario L-V 9am 12 pm solo cliente
-        // Verificacion por now php
         if (auth()->user()->company_id != null) {
-            return view('orders.index', ['terminals' => Terminal::all(), 'company' => auth()->user()->company]);
+            $lock = false;
+            $start = '09:00';
+            $end = '12:00';
+            if (date('N') > 5 || now()->format('H:i') < $start || now()->format('H:i') > $end) {
+                $lock = true;
+            }
+            return view('orders.index', ['terminals' => Terminal::all(), 'company' => auth()->user()->company, 'lock' => $lock]);
         }
         return view('orders.index', ['terminals' => Terminal::all()]);
     }
@@ -42,8 +45,17 @@ class OrderController extends Controller
     public function store(OrderRequest $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
-        // Verificar horario de atencion si lo salta el backend lo rechaza
-        // Verificacion por now php
+        if (auth()->user()->roles->first()->id == 2) {
+            $lock = false;
+            $start = '09:00';
+            $end = '12:00';
+            if (date('N') > 5 || now()->format('H:i') < $start || now()->format('H:i') > $end) {
+                $lock = true;
+            }
+            if ($lock) {
+                return redirect()->back()->withStatus('Los pedidos solo se pueden realizar de lunes a viernes de 9:00 am a 12:00 pm')->withColor('danger');
+            }
+        }
         $request = $request->liters_r == null ? $request->merge(['liters_r' => 0]) : $request;
         $request = $request->liters_p == null ? $request->merge(['liters_p' => 0]) : $request;
         $request = $request->liters_d == null ? $request->merge(['liters_d' => 0]) : $request;

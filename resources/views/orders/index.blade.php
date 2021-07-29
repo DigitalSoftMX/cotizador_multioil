@@ -19,6 +19,16 @@
                                         class="btn btn-sm btn-success">{{ __('Ir a la lista de pedidos') }}</a>
                                 </div>
                             </div>
+                            @if ($lock)
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="alert alert-warning">
+                                            <span><strong>{{ __('Recuerda que la solicitud de pedidos solo se puede realizar de lunes a viernes en el horario de 9:00 am a 12:00 pm') }}</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                             <form id="form" method="post" action="{{ route('orders.store') }}" autocomplete="off"
                                 class="form-horizontal">
                                 @csrf
@@ -59,7 +69,7 @@
                                     <div class="col-3">
                                         <label class="label-control">{{ __('Fecha de entrega') }}</label>
                                         <input class="form-control datetimepicker" id="calendar_first" name="date"
-                                            type="text" value="" readonly/></input>
+                                            type="text" value="" readonly /></input>
                                     </div>
                                 </div>
                                 <div class="row justify-content-center mt-5">

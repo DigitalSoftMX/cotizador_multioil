@@ -47,4 +47,10 @@ class ValidationController extends Controller
         }
         return redirect()->back()->withStatus('Pedido denegado')->withColor('danger');
     }
+    // Regresar un pedido a pendiente cuando ya fue autorizado
+    public function restore(Request $request, Order $order)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        return $order;
+    }
 }
