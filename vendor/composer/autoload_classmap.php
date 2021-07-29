@@ -53,6 +53,7 @@ return array(
     'App\\Http\\Requests\\ProfileRequest' => $baseDir . '/app/Http/Requests/ProfileRequest.php',
     'App\\Http\\Requests\\TerminalRequest' => $baseDir . '/app/Http/Requests/TerminalRequest.php',
     'App\\Http\\Requests\\UserRequest' => $baseDir . '/app/Http/Requests/UserRequest.php',
+    'App\\LastLogin' => $baseDir . '/app/LastLogin.php',
     'App\\Level' => $baseDir . '/app/Level.php',
     'App\\Listeners\\EmailMultioilNotification' => $baseDir . '/app/Listeners/EmailMultioilNotification.php',
     'App\\Listeners\\SuccessfulLogin' => $baseDir . '/app/Listeners/SuccessfulLogin.php',

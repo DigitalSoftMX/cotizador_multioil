@@ -75,6 +75,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('validations', 'ValidationController', ['only' => ['index']]);
 	Route::post('validations/accept/{order}', 'ValidationController@accept')->name('accept');
 	Route::post('validations/deny/{order}', 'ValidationController@deny')->name('deny');
+	Route::post('validations/restore/{order}', 'ValidationController@restore')->name('restore');
 	Route::post('validacion/accept/{pedido}', 'validacionSController@accept')->name('accepts');
 	Route::post('validacion/deny/{pedido}', 'validacionSController@deny')->name('denys');
 });
@@ -82,4 +83,5 @@ Route::group(['middleware' => 'auth'], function () {
 //rutas cotizador
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('levels', 'LevelController', ['except' => ['show']]);
+	Route::get('logins', 'LastLoginController@index')->name('logins.index');
 });

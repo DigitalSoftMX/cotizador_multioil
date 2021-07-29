@@ -58,6 +58,18 @@
                                 @include('partials._modal',[$id=$order->id,$see=false])
                             </form>
                         @endif
+                        {{-- @if ($status == 2)
+                            <form action="{{ route('restore', $order) }}" method="post">
+                                @csrf
+                                <button type="button" class="btn btn-danger btn-link" data-original-title="" title=""
+                                    data-toggle="modal" data-target="#exampleModalLong{{ $order->id }}">
+                                    <i class="material-icons">replay</i>
+                                    <div class="ripple-container"></div>
+                                </button>
+                                
+                                @include('partials._modal',[$id=$order->id,$see=false])
+                            </form>
+                        @endif --}}
                     @endif
                 </td>
             </tr>

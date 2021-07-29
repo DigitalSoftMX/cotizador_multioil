@@ -12,8 +12,16 @@
                         </h5>
                     @endif
                 @else
-                    <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle">
-                        {{ __('Escriba el motivo por el cual se niega el pedido') }}</h5>
+                    @if ($status == 2)
+                        <h6 class="text-danger">
+                            {{__('Atención: este pedido actualizará su estado a pendiente')}}
+                        </h6>
+                        <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle">
+                            {{ __('Escriba el motivo por el cual el pedido cambia su estado a "PENDIENTE"') }}</h5>
+                    @else
+                        <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle">
+                            {{ __('Escriba el motivo por el cual se niega el pedido') }}</h5>
+                    @endif
                 @endif
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
