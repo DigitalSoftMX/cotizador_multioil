@@ -73,6 +73,7 @@ class HomeController extends Controller
     // precios por empresa
     private function getPrices($terminal_id, $month, $company_id = null)
     {
+        $pemex = Company::where('name', 'like', '%pemex%')->first();
         $start = date('Y') . '-' . $month . '-01';
         $lastDay = date('d');
         if ($month != date('m')) {
@@ -83,12 +84,13 @@ class HomeController extends Controller
         $prices = [];
         if (($user = auth()->user())->roles->first()->id != 3) {
             if ($company_id != null) {
-                $companies = Company::where('id', 15)->orWhere('id', $company_id)->get();
+                $companies = Company::where('id', $pemex->id)->orWhere('id', $company_id)->get();
             } else {
                 $companies = Terminal::find($terminal_id)->companies;
             }
         } else {
             $companies = $user->companies;
+            $companies->prepend($pemex);
         }
         foreach ($companies as $company) {
             $dataCompany = CompetitionPrice::whereDate('created_at', '>=', $start)

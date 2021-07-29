@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('getshopping/{company}', 'CompanyController@getshopping')->name('getshopping');
 	Route::get('getshoppings/{company}/{month}', 'CompanyController@getshoppings')->name('getshoppings');
 	Route::get('getcommision/{user}', 'OrderController@getShoppingsCommision')->name('getcommision');
+	Route::get('commissionexcel/{user}', 'OrderController@commissionexcel')->name('commissionexcel');
 	Route::get('commission/{user}/{month}', 'OrderController@commission')->name('commission');
 	Route::resource('prices', 'CompetitionPriceController', ['except' => 'show', 'destroy']);
 	Route::get('getprices/{company}/{date?}', 'CompetitionPriceController@getPrices')->name('getprices');
