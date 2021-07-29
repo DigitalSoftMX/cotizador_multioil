@@ -25,6 +25,12 @@
                                     {{ __('Comisionista: ') }}<strong>{{ "{$user->name} {$user->app_name} {$user->apm_name}" }}</strong>
                                 </h4>
                             </div>
+                            <div class="row">
+                                <div class="col-12 text-right">
+                                    <a href="{{ route('commissionexcel', $user) }}"
+                                        class="btn btn-sm btn-success">{{ __('Descargar excel') }}</a>
+                                </div>
+                            </div>
                             <div class="form-group{{ $errors->has('month_id') ? ' has-danger' : '' }} col-md-3 col-sm-12">
                                 <label class="form-check-label">{{ __('Ventas del mes:') }}</label>
                                 <select id="input-month_id" name="month_id"

@@ -25,6 +25,9 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
+
+        // Enviar notificacion de horario L-V 9am 12 pm solo cliente
+        // Verificacion por now php
         if (auth()->user()->company_id != null) {
             return view('orders.index', ['terminals' => Terminal::all(), 'company' => auth()->user()->company]);
         }
@@ -39,6 +42,8 @@ class OrderController extends Controller
     public function store(OrderRequest $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
+        // Verificar horario de atencion si lo salta el backend lo rechaza
+        // Verificacion por now php
         $request = $request->liters_r == null ? $request->merge(['liters_r' => 0]) : $request;
         $request = $request->liters_p == null ? $request->merge(['liters_p' => 0]) : $request;
         $request = $request->liters_d == null ? $request->merge(['liters_d' => 0]) : $request;
@@ -117,5 +122,12 @@ class OrderController extends Controller
             'sales' => $sales,
             'total' => '$' . number_format($total, 2)
         ]);
+    }
+    // método para descargar excel con las comisiones de un ususario ventas
+    public function commissionexcel(Request $request, User $user)
+    {
+        $request->user()->authorizeRoles(['Administrador', 'Ventas']);
+        // return view('exports.commissionsales', ['orders' => $user->orders->where('status_id', 2)]);
+        return Excel::download(new OrdersExport(3, $user), "Comisiones de {$user->name} {$user->app_name}.xlsx");
     }
 }
