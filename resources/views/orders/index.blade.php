@@ -69,7 +69,7 @@
                                     <div class="col-3">
                                         <label class="label-control">{{ __('Fecha de entrega') }}</label>
                                         <input class="form-control datetimepicker" id="calendar_first" name="date"
-                                            type="text" value="" readonly /></input>
+                                            type="text" value="" @if ($day != 5) readonly @endif /></input>
                                     </div>
                                 </div>
                                 <div class="row justify-content-center mt-5">
@@ -188,8 +188,6 @@
 @endsection
 @push('js')
     <script>
-        let date = new Date();
-        let actualOrder = `${date.getMonth() + 1}-${date.getDate() + 1}-${date.getFullYear()}`;
         let total_regular = 0;
         let total_premium = 0;
         let total_diesel = 0;
@@ -197,7 +195,8 @@
         let freight = 0;
         let secure = 0;
         let company_client = "{{ $company->id ?? '' }}"
-        init_calendar('calendar_first', actualOrder, actualOrder);
+        let actualOrder = '';
+        init_calendar('calendar_first', "{{ $datestart }}", "{{ $dateend }}");
         // calculo de precio total pedido
         $(document).on("keyup", "#liters_r", function() {
             totalPrice('r')
@@ -317,6 +316,7 @@
 
         function ticket() {
             try {
+                actualOrder = document.getElementById('calendar_first').value;
                 let terminal = document.getElementById('input-terminal_id').value;
                 let company = company_client == '' ? document.getElementById('input-company_id').value : company_client;
                 let litersR = document.getElementById('liters_r').value;

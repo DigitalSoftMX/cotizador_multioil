@@ -25,6 +25,8 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
+        $datestart = date("m-d-Y", strtotime(date('Y-m-d') . "+ 1 days"));
+        $dateend = date("m-d-Y", strtotime(date('Y-m-d') . (date('N') == 5) ? "+ 3 days" : '+1 days'));
         $lock = false;
         if (auth()->user()->company_id != null) {
             $start = '09:00';
@@ -32,9 +34,15 @@ class OrderController extends Controller
             if (date('N') > 5 || now()->format('H:i') < $start || now()->format('H:i') > $end) {
                 $lock = true;
             }
-            return view('orders.index', ['terminals' => Terminal::all(), 'company' => auth()->user()->company, 'lock' => $lock]);
+            return view(
+                'orders.index',
+                ['terminals' => Terminal::all(), 'company' => auth()->user()->company, 'lock' => $lock, 'day' => date('N'), 'datestart' => $datestart, 'dateend' => $dateend]
+            );
         }
-        return view('orders.index', ['terminals' => Terminal::all(), 'lock' => $lock]);
+        return view(
+            'orders.index',
+            ['terminals' => Terminal::all(), 'lock' => $lock, 'day' => date('N'), 'datestart' => $datestart, 'dateend' => $dateend]
+        );
     }
     /**
      * Store a newly created resource in storage.
@@ -45,7 +53,13 @@ class OrderController extends Controller
     public function store(OrderRequest $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
+        $datestart = date("Y-m-d", strtotime(date('Y-m-d') . "+ 1 days"));
+        $dateend = date("Y-m-d", strtotime(date('Y-m-d') . (date('N') == 5) ? "+ 3 days" : '+1 days'));
+        if ($request->date < $datestart || $request->date > $dateend) {
+            return redirect()->back()->withStatus('Elija una fecha que se encuentre dentro del rango del calendario')->withColor('danger');
+        }
         if (auth()->user()->roles->first()->id == 2) {
+            $lock = false;
             $start = '09:00';
             $end = '12:00';
             if (date('N') > 5 || now()->format('H:i') < $start || now()->format('H:i') > $end) {
@@ -64,11 +78,14 @@ class OrderController extends Controller
             'total_p' => $request->liters_p * (($price != null ? $price->premium : 0)),
             'total_d' => $request->liters_d * (($price != null ? $price->diesel : 0)),
         ]);
-        $request->merge(['total' => ($request->total_r + $request->total_p + $request->total_d), 'date' => now()->modify('+1 day')->format('Y-m-d'), 'status_id' => 1]);
+        if (date('N') != 5) {
+            $request->merge(['total' => ($request->total_r + $request->total_p + $request->total_d), 'date' => now()->modify('+1 day')->format('Y-m-d'), 'status_id' => 1]);
+        } else {
+            $request->merge(['total' => ($request->total_r + $request->total_p + $request->total_d), 'status_id' => 1]);
+        }
         try {
             event(new EmailMultioil($request, 1));
         } catch (Exception $e) {
-            // return redirect()->back()->withStatus('No existe un usuario asociado a la empresa seleccionada')->withColor('danger');
         }
         $register = new Activities();
         if ($request->total_r)
