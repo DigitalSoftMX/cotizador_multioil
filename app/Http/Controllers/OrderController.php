@@ -25,8 +25,8 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
+        $lock = false;
         if (auth()->user()->company_id != null) {
-            $lock = false;
             $start = '09:00';
             $end = '12:00';
             if (date('N') > 5 || now()->format('H:i') < $start || now()->format('H:i') > $end) {
@@ -34,7 +34,7 @@ class OrderController extends Controller
             }
             return view('orders.index', ['terminals' => Terminal::all(), 'company' => auth()->user()->company, 'lock' => $lock]);
         }
-        return view('orders.index', ['terminals' => Terminal::all()]);
+        return view('orders.index', ['terminals' => Terminal::all(), 'lock' => $lock]);
     }
     /**
      * Store a newly created resource in storage.
@@ -46,7 +46,6 @@ class OrderController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         if (auth()->user()->roles->first()->id == 2) {
-            $lock = false;
             $start = '09:00';
             $end = '12:00';
             if (date('N') > 5 || now()->format('H:i') < $start || now()->format('H:i') > $end) {

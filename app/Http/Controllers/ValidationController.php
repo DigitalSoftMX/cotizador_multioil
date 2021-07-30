@@ -51,6 +51,13 @@ class ValidationController extends Controller
     public function restore(Request $request, Order $order)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return $order;
+        if ($request->message == null)
+            return redirect()->back()->withStatus('Ingrese el motivo por el cual se deniega el pedido')->withColor('danger');
+        $order->update(['status_id' => 1, 'reason' => $request->message]);
+        try {
+            event(new EmailMultioil($order, 7, $request->message));
+        } catch (Exception $th) {
+        }
+        return redirect()->back()->withStatus('El pedido cambio su estado a pendientes')->withColor('warning');
     }
 }

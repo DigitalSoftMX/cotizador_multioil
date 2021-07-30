@@ -8,13 +8,14 @@
                         {{ __('Detalles del pedido') }}</h5>
                     @if ($order->reason != null)
                         <h5 class="bg-danger text-white col-12">
-                            {{ __('Motivo de negación:') }} {{ $order->reason }}
+                            {{ $order->status_id == 1 ? __('Motivo de cambio a pendiente') : __('Motivo de negación:') }}
+                            {{ $order->reason }}
                         </h5>
                     @endif
                 @else
                     @if ($status == 2)
                         <h6 class="text-danger">
-                            {{__('Atención: este pedido actualizará su estado a pendiente')}}
+                            {{ __('Atención: este pedido actualizará su estado a pendiente y el cliente será notificado') }}
                         </h6>
                         <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle">
                             {{ __('Escriba el motivo por el cual el pedido cambia su estado a "PENDIENTE"') }}</h5>
@@ -70,7 +71,7 @@
                     <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal"
                         id="cancel">{{ __('Cancelar') }}</button>
                     <button type="submit" class="btn btn-danger btn-lg"
-                        id="accept">{{ __('Denegar pedido') }}</button>
+                        id="accept">{{ $status == 2 ? 'Cambiar a Pendiente' : 'Denegar pedido' }}</button>
                 @endif
             </div>
         </div>

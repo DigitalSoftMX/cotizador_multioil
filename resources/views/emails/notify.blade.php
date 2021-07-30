@@ -10,7 +10,11 @@
 
 <body>
     <br>
-    {{ isset($m) ? 'Su pedido ha sido denegado.' : 'Su pedido ha sido aceptado.' }} <br><br>
+    @if ($order->status_id == 1)
+        {{ __('Su pedido ha cambiado su estatus a "Pendiente"') }} <br> <br>
+    @else
+        {{ isset($m) ? 'Su pedido ha sido denegado.' : 'Su pedido ha sido aceptado.' }} <br><br>
+    @endif
     @isset($m)
         <b>Motivo: </b> <b style="color:red;">{{ $m }}</b> <br>
     @endisset

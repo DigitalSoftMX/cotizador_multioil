@@ -58,7 +58,7 @@
                                 @include('partials._modal',[$id=$order->id,$see=false])
                             </form>
                         @endif
-                        {{-- @if ($status == 2)
+                        @if ($status == 2)
                             <form action="{{ route('restore', $order) }}" method="post">
                                 @csrf
                                 <button type="button" class="btn btn-danger btn-link" data-original-title="" title=""
@@ -66,10 +66,10 @@
                                     <i class="material-icons">replay</i>
                                     <div class="ripple-container"></div>
                                 </button>
-                                
+                                {{-- modal --}}
                                 @include('partials._modal',[$id=$order->id,$see=false])
                             </form>
-                        @endif --}}
+                        @endif
                     @endif
                 </td>
             </tr>
