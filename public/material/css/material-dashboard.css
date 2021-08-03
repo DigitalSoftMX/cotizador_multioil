@@ -9073,7 +9073,13 @@ a.text-primary:focus {
 }
 
 .text-secondary {
-  color: #6c757d !important;
+  color: #900C3F !important;
+}
+.text-orange {
+  color: #FF5733 !important;
+}
+.text-purple {
+  color: #8E44AD !important;
 }
 
 a.text-secondary:hover,
@@ -13828,7 +13834,7 @@ fieldset[disabled] .form-group .form-control {
 }
 
 .off-canvas-sidebar .navbar .navbar-collapse .navbar-nav .nav-item .nav-link:hover {
-  background: rgba(200, 200, 200, 0.2);
+  background: rgba(100, 100, 100, 0.2);
 }
 
 .off-canvas-sidebar .navbar.navbar-transparent {
