@@ -71,10 +71,10 @@
                                                     {{ 'Regular: $' . ($pricesclient != null ? $pricesclient->regular : 0) }}
                                                 </div>
                                                 <div class="bg-danger text-white">
-                                                    {{ 'Regular: $' . ($pricesclient != null ? $pricesclient->premium : 0) }}
+                                                    {{ 'Premium: $' . ($pricesclient != null ? $pricesclient->premium : 0) }}
                                                 </div>
                                                 <div class="bg-dark text-white">
-                                                    {{ 'Regular: $' . ($pricesclient != null ? $pricesclient->diesel : 0) }}
+                                                    {{ 'Diésel: $' . ($pricesclient != null ? $pricesclient->diesel : 0) }}
                                                 </div>
                                             </div>
                                         </div>
