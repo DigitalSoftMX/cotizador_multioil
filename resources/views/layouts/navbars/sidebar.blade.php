@@ -21,20 +21,20 @@
         <ul class="nav">
             @for ($i = 0; $i < count($menus); $i++)
                 @foreach ($menus[$i] as $menu) 
-                    <li class="nav-item{{ $activePage == $menu->name_modulo ? ' active' : '' }}">
+                    <li class="nav-item {{ $activePage == $menu->name_modulo ? 'active' : '' }}">
                         @if (auth()->user()->roles->first()->id==2 && $menu->ruta=='getshopping')
                             <a class="nav-link" href="{{ route($menu->ruta,auth()->user()->company_id) }}">
-                                <i class="material-icons">{{ $menu->icono }}</i>
+                                <i class="material-icons text-{{$menu->color}}">{{ $menu->icono }}</i>
                                 <p>{{ __($menu->name_modulo) }}</p>
                             </a>
                         @elseif (auth()->user()->roles->first()->id==3 && $menu->ruta=='getcommision')
                             <a class="nav-link" href="{{ route($menu->ruta,auth()->user()->id) }}">
-                                <i class="material-icons">{{ $menu->icono }}</i>
+                                <i class="material-icons text-{{$menu->color}}">{{ $menu->icono }}</i>
                                 <p>{{ __($menu->name_modulo) }}</p>
                             </a>
                         @else
                             <a class="nav-link" href="{{ url($menu->ruta) }}">
-                                <i class="material-icons">{{ $menu->icono }}</i>
+                                <i class="material-icons text-{{$menu->color}}">{{ $menu->icono }}</i>
                                 <p>{{ __($menu->name_modulo) }}</p>
                             </a>
                         @endif
