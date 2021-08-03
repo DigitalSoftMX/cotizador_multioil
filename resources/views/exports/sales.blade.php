@@ -235,6 +235,7 @@
                         try {
                             echo '$'. number_format($precioEnFactura=$cantidadFacturadaValeroGuerrera/$litrosDespachados,2);
                         } catch (\Throwable $th) {
+                            $precioEnFactura=0;
                             echo '';
                         }
                     @endphp
