@@ -202,6 +202,7 @@
                         try {
                             echo '$' . number_format((($diferenciaPrecio * $order->dispatched_liters) / ($order->sale_price * $order->dispatched_liters)) * 100, 2) . '%';
                         } catch (\Throwable $th) {
+                            $diferenciaPrecio=0;
                             echo '';
                         }
                     @endphp
