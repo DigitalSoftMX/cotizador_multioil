@@ -76,6 +76,9 @@
                                                 <div class="bg-dark text-white" id="dieselprice">
                                                     {{ 'Diésel: $' . ($pricesclient != null ? $pricesclient->diesel : 0) }}
                                                 </div>
+                                                <p class="text-justify">
+                                                    {{ __('Costo de producto en terminal de abastecimiento. No incluye flete.') }}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
