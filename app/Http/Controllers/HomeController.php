@@ -35,19 +35,22 @@ class HomeController extends Controller
         for ($i = 1; $i <= (int)date('d'); $i++) {
             array_push($days, $i);
         }
+        $pricesClient = null;
         $terminal = Terminal::all()->first();
         if (auth()->user()->company_id != null) {
             $prices = $terminal != null ? $this->getPrices($terminal->id, date('m'), auth()->user()->company_id) : [];
+            $pricesClient = auth()->user()->company->prices->where('terminal_id', $terminal->id)->last();
         } else {
             $prices = $terminal != null ? $this->getPrices($terminal->id, date('m')) : [];
         }
+        // return $prices;
         return view('dashboard', [
             'months' => $months,
             'actualMonth' => date('m'),
             'terminals' => Terminal::all(),
             'days' => $days,
             'prices' => $prices,
-            'pricesclient' => auth()->user()->roles->last()->id == 2 ? auth()->user()->company->prices->last() : ''
+            'pricesclient' => $pricesClient
         ]);
     }
     // respuesta json precios por terminal
@@ -65,9 +68,13 @@ class HomeController extends Controller
         for ($i = 1; $i <= (int)$lastDay; $i++) {
             array_push($days, $i);
         }
+        $pricesClient = null;
+        if (auth()->user()->company_id != null)
+            $pricesClient = auth()->user()->company->prices->where('terminal_id', $terminal_id)->last();
         return response()->json([
             'days' => $days,
-            'prices' => $this->getPrices($terminal_id, $month, auth()->user()->company_id != null ? auth()->user()->company_id : null)
+            'prices' => $this->getPrices($terminal_id, $month, auth()->user()->company_id != null ? auth()->user()->company_id : null),
+            'pricesclient' => $pricesClient
         ]);
     }
     // precios por empresa
