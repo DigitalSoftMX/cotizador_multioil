@@ -19,6 +19,7 @@
                                         <th>{{ __('Email') }}</th>
                                         <th>{{ __('Teléfono') }}</th>
                                         <th>{{ __('Rol') }}</th>
+                                        <th>{{ __('Fecha') }}</th>
                                     </thead>
                                     <tbody>
                                         @foreach ($logins as $login)
@@ -29,6 +30,7 @@
                                                 <td>{{ $login->user->email }}</td>
                                                 <td>{{ $login->user->phone }}</td>
                                                 <td>{{ $login->user->roles()->first()->name ?? '' }}</td>
+                                                <td>{{ $login->created_at->format('Y/m/d H:i') }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

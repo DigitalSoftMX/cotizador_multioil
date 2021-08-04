@@ -21,7 +21,7 @@ class LevelController extends Controller
             'levels.index',
             [
                 'terminals' => Terminal::where([['latitude', '!=', null], ['longitude', '!=', null]])->get(),
-                'levels' => Level::all()
+                'levels' => Level::orderBy('kms', 'asc')->get()
             ]
         );
     }
