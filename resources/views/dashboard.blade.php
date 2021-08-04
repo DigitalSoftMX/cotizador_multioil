@@ -67,13 +67,13 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center">Precio de gasolina</h5>
-                                                <div class="bg-success text-white">
+                                                <div class="bg-success text-white" id="regularprice">
                                                     {{ 'Regular: $' . ($pricesclient != null ? $pricesclient->regular : 0) }}
                                                 </div>
-                                                <div class="bg-danger text-white">
+                                                <div class="bg-danger text-white" id="premiumprice">
                                                     {{ 'Premium: $' . ($pricesclient != null ? $pricesclient->premium : 0) }}
                                                 </div>
-                                                <div class="bg-dark text-white">
+                                                <div class="bg-dark text-white" id="dieselprice">
                                                     {{ 'Diésel: $' . ($pricesclient != null ? $pricesclient->diesel : 0) }}
                                                 </div>
                                             </div>
@@ -161,6 +161,17 @@
                 const resp = await fetch('{{ url('') }}/pricesterminal/' + terminal + '/' + month);
                 const prices = await resp.json();
                 console.log(prices);
+                if (prices.pricesclient != null) {
+                    document.getElementById('regularprice').innerHTML = `Regular: $${prices.pricesclient.regular}`;
+                    document.getElementById('premiumprice').innerHTML = `Premium: $${prices.pricesclient.premium}`;
+                    document.getElementById('dieselprice').innerHTML = `Diesel: $${prices.pricesclient.diesel}`;
+                } else {
+                    if ("{{ auth()->user()->roles->first()->id == 2 }}") {
+                        document.getElementById('regularprice').innerHTML = `Regular: $0`;
+                        document.getElementById('premiumprice').innerHTML = `Premium: $0`;
+                        document.getElementById('dieselprice').innerHTML = `Diesel: $0`;
+                    }
+                }
                 chartRegular.destroy();
                 chartPremium.destroy();
                 chartDiesel.destroy();
