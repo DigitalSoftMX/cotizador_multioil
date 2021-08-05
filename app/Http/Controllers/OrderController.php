@@ -29,9 +29,7 @@ class OrderController extends Controller
         $dateend = date("m-d-Y", strtotime(date('Y-m-d') . (date('N') == 5) ? "+ 3 days" : '+1 days'));
         $lock = false;
         if (auth()->user()->company_id != null) {
-            $start = '09:00';
-            $end = '12:00';
-            if (date('N') > 5 || now()->format('H:i') < $start || now()->format('H:i') > $end) {
+            if (date('N') > 5) {
                 $lock = true;
             }
             return view(
@@ -60,13 +58,11 @@ class OrderController extends Controller
         }
         if (auth()->user()->roles->first()->id == 2) {
             $lock = false;
-            $start = '09:00';
-            $end = '12:00';
-            if (date('N') > 5 || now()->format('H:i') < $start || now()->format('H:i') > $end) {
+            if (date('N') > 5) {
                 $lock = true;
             }
             if ($lock) {
-                return redirect()->back()->withStatus('Los pedidos solo se pueden realizar de lunes a viernes de 9:00 am a 12:00 pm')->withColor('danger');
+                return redirect()->back()->withStatus('Los pedidos solo se pueden realizar de lunes a viernes')->withColor('danger');
             }
         }
         $request = $request->liters_r == null ? $request->merge(['liters_r' => 0]) : $request;

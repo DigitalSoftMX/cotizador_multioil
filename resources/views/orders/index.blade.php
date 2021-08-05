@@ -23,7 +23,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="alert alert-warning">
-                                            <span><strong>{{ __('Recuerda que la solicitud de pedidos solo se puede realizar de lunes a viernes en el horario de 9:00 am a 12:00 pm') }}</strong>
+                                            <span><strong>{{ __('Recuerda que la solicitud de pedidos solo se puede realizar de lunes a viernes') }}</strong>
                                             </span>
                                         </div>
                                     </div>
