@@ -15,7 +15,7 @@
                                 <div class="row">
                                     <div class="col-12 text-right">
                                         <a href="{{ route('levels.create') }}"
-                                            class="btn btn-sm btn-primary">{{ __('Agregar nivel km-precio') }}</a>
+                                            class="btn btn-sm btn-primary">{{ __('Ver unidades-km-precio') }}</a>
                                     </div>
                                 </div>
                             @endif
@@ -42,10 +42,8 @@
                                         class="selectpicker show-menu-arrow {{ $errors->has('liters') ? ' has-danger' : '' }}"
                                         data-style="btn-primary" data-width="100%" data-live-search="true">
                                         <option value="">{{ __('Elija la cantidad en litros') }}</option>
-                                        <option value="4000">{{ __('4,000 Lts') }}</option>
-                                        <option value="21000">{{ __('21,000 Lts') }}</option>
+                                        <option value="20000">{{ __('20,000 Lts') }}</option>
                                         <option value="31000">{{ __('31,000 Lts') }}</option>
-                                        <option value="42000">{{ __('42,000 Lts') }}</option>
                                         <option value="62000">{{ __('62,000 Lts') }}</option>
                                     </select>
                                 </div>
@@ -196,36 +194,78 @@
             let shipping = 0;
             let distance = parseFloat(total_km);
             let liters = document.getElementById("liters").value;
-            let levels = @json($levels);
-            if (levels.length == 0) {
+            let pipa = @json($pipa);
+            let sencillo = @json($sencillo);
+            let full = @json($full);
+            /* if (levels.length == 0) {
                 document.getElementById("costo-envio").value = 'No es posible realizar el cálculo';
                 document.getElementById("monto-total").value = 'No es posible realizar el cálculo';
                 document.getElementById("distancia-recorrer").value = 'No es posible realizar el cálculo';
                 alert('Debe haber al menos una relación entre kms y precios');
                 return;
-            }
+            } */
             let monto = 0;
-            levels.forEach(level => {
-                if (level.kms <= distance) {
-                    shipping = level.price;
-                    return;
+            liters = parseInt(liters);
+            if (parseFloat(distance) >= 281) {
+                let cents = 0;
+                let pricePerKms = 0;
+                if (liters == 20000) {
+                    cents = 0.86;
+                }
+                if (liters == 31000) {
+                    cents = 0.59;
+                }
+                if (liters == 62000) {
+                    cents = 0.6;
+                }
+                pricePerKms = (cents * distance) / 281;
+                monto = pricePerKms * liters
+                console.log(pricePerKms);
+                writeValues(monto, pricePerKms, distance);
+            } else {
+                if (liters == 20000) {
+                    calculePrice(pipa, distance, liters)
+                }
+                if (liters == 31000) {
+                    calculePrice(sencillo, distance, liters)
+                }
+                if (liters == 62000) {
+                    calculePrice(full, distance, liters)
+                }
+            }
+        }
+
+        function calculePrice(truck, distance, liters) {
+            let pricePerKms = 0;
+            let range = 0;
+            let monto = 0
+            truck.forEach(price => {
+                if (price.kms <= distance) {
+                    pricePerKms = price.price
+                    range = price.kms;
                 }
             });
-            let lastLevel = levels[levels.length - 1].kms;
-            if (parseFloat(distance) <= parseFloat(lastLevel)) {
-                monto = shipping * liters;
+            if (pricePerKms != 0) {
+                monto = distance * pricePerKms;
+                writeValues(monto, (monto / liters), distance);
+            } else {
+                let lastPrice = truck[truck.length - 1].price;
+                monto = distance * lastPrice;
+                writeValues(monto, (monto / liters), distance);
             }
-            // console.log(monto);
+        }
+
+        function writeValues(monto, pricePerKms, distance) {
             document.getElementById("costo-envio").value = monto != 0 ?
-                '$ ' + shipping.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') :
+                '$ ' + pricePerKms.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') :
                 'Ubicación fuera de los límites';
+
+            document.getElementById("distancia-recorrer").value = monto != 0 ?
+                distance + ' kms' : 'Ubicación fuera de los límites';
 
             document.getElementById("monto-total").value = monto != 0 ?
                 '$ ' + monto.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') +
                 " (Precio sin IVA)" : 'Ubicación fuera de los límites';
-
-            document.getElementById("distancia-recorrer").value = monto != 0 ?
-                total_km + ' kms' : 'Ubicación fuera de los límites';
         }
     </script>
 @endpush
