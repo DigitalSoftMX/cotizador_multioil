@@ -21,6 +21,9 @@ class LevelController extends Controller
             'levels.index',
             [
                 'terminals' => Terminal::where([['latitude', '!=', null], ['longitude', '!=', null]])->get(),
+                'pipa' => Level::where('truck_id', 1)->orderBy('kms', 'asc')->get(),
+                'sencillo' => Level::where('truck_id', 2)->orderBy('kms', 'asc')->get(),
+                'full' => Level::where('truck_id', 3)->orderBy('kms', 'asc')->get(),
                 'levels' => Level::orderBy('kms', 'asc')->get()
             ]
         );
@@ -46,7 +49,7 @@ class LevelController extends Controller
     public function store(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        request()->validate(['kms' => 'required|numeric', 'price' => 'required|numeric']);
+        request()->validate(['truck_id' => 'required|integer', 'kms' => 'required|numeric', 'price' => 'required|numeric']);
         Level::create($request->all());
         return redirect()->route('levels.create')->withStatus('Nivel kilómetro - precio agregado correctamente');
     }
@@ -60,7 +63,7 @@ class LevelController extends Controller
     public function edit(Request $request, Level $level)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('levels.create', ['levels' => Level::all(), 'route' => 'levels.update', 'method' => 'put', 'l' => $level]);
+        return view('levels.edit', ['level' => $level]);
     }
 
     /**
@@ -73,7 +76,7 @@ class LevelController extends Controller
     public function update(Request $request, Level $level)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        request()->validate(['kms' => 'required|numeric', 'price' => 'required|numeric']);
+        request()->validate(['truck_id' => 'required|integer', 'kms' => 'required|numeric', 'price' => 'required|numeric']);
         $level->update($request->all());
         return redirect()->route('levels.create')->withStatus('Nivel actualizado correctamente');
     }
