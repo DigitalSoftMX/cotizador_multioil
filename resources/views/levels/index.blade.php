@@ -197,16 +197,9 @@
             let pipa = @json($pipa);
             let sencillo = @json($sencillo);
             let full = @json($full);
-            /* if (levels.length == 0) {
-                document.getElementById("costo-envio").value = 'No es posible realizar el cálculo';
-                document.getElementById("monto-total").value = 'No es posible realizar el cálculo';
-                document.getElementById("distancia-recorrer").value = 'No es posible realizar el cálculo';
-                alert('Debe haber al menos una relación entre kms y precios');
-                return;
-            } */
             let monto = 0;
             liters = parseInt(liters);
-            if (parseFloat(distance) >= 281) {
+            if (parseFloat(distance) > 85) {
                 let cents = 0;
                 let pricePerKms = 0;
                 if (liters == 20000) {
