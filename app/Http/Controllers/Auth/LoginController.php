@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\LastLogin;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -41,6 +43,21 @@ class LoginController extends Controller
 
     public function authenticated(Request $request, $user)
     {
-        LastLogin::create(['user_id'=> $user->id]);
+        LastLogin::create(['user_id' => $user->id]);
+    }
+
+    protected function sendLoginResponse(Request $request)
+    {
+        $request->session()->regenerate();
+        $previous_session = Auth::User()->session_id;
+        if ($previous_session) {
+            Session::getHandler()->destroy($previous_session);
+        }
+        Auth::user()->session_id = Session::getId();
+        Auth::user()->save();
+        $this->clearLoginAttempts($request);
+
+        return $this->authenticated($request, $this->guard()->user())
+            ?: redirect()->intended($this->redirectPath());
     }
 }
