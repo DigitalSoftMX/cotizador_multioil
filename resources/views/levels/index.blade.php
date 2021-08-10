@@ -230,22 +230,12 @@
 
         function calculePrice(truck, distance, liters) {
             let pricePerKms = 0;
-            let range = 0;
-            let monto = 0
             truck.forEach(price => {
-                if (price.kms <= distance) {
+                if (price.kms >= distance && pricePerKms == 0) {
                     pricePerKms = price.price
-                    range = price.kms;
                 }
             });
-            if (pricePerKms != 0) {
-                monto = distance * pricePerKms;
-                writeValues(monto, (monto / liters), distance);
-            } else {
-                let lastPrice = truck[truck.length - 1].price;
-                monto = distance * lastPrice;
-                writeValues(monto, (monto / liters), distance);
-            }
+            writeValues(pricePerKms, (pricePerKms / liters), distance);
         }
 
         function writeValues(monto, pricePerKms, distance) {
