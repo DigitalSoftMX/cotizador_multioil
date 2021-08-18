@@ -37,9 +37,11 @@ class OrderController extends Controller
                 ['terminals' => Terminal::all(), 'company' => auth()->user()->company, 'lock' => $lock, 'day' => date('N'), 'datestart' => $datestart, 'dateend' => $dateend]
             );
         }
+        $datestart = '01-01-' . date("Y");
+        $dateend = '12-31-' . date("Y");
         return view(
             'orders.index',
-            ['terminals' => Terminal::all(), 'lock' => $lock, 'day' => date('N'), 'datestart' => $datestart, 'dateend' => $dateend]
+            ['terminals' => Terminal::all(), 'lock' => $lock, 'day' => 5, 'datestart' => $datestart, 'dateend' => $dateend]
         );
     }
     /**
@@ -51,11 +53,12 @@ class OrderController extends Controller
     public function store(OrderRequest $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
-        $datestart = date("Y-m-d", strtotime(date('Y-m-d') . "+ 1 days"));
+        request()->validate(['date' => 'required|date']);
+        /* $datestart = date("Y-m-d", strtotime(date('Y-m-d') . "+ 1 days"));
         $dateend = date("Y-m-d", strtotime(date('Y-m-d') . (date('N') == 5) ? "+ 3 days" : '+1 days'));
         if ($request->date < $datestart || $request->date > $dateend) {
             return redirect()->back()->withStatus('Elija una fecha que se encuentre dentro del rango del calendario')->withColor('danger');
-        }
+        } */
         if (auth()->user()->roles->first()->id == 2) {
             $lock = false;
             if (date('N') > 5) {
@@ -75,7 +78,8 @@ class OrderController extends Controller
             'total_d' => $request->liters_d * (($price != null ? $price->diesel : 0)),
         ]);
         if (date('N') != 5) {
-            $request->merge(['total' => ($request->total_r + $request->total_p + $request->total_d), 'date' => now()->modify('+1 day')->format('Y-m-d'), 'status_id' => 1]);
+            // $request->merge(['total' => ($request->total_r + $request->total_p + $request->total_d), 'date' => now()->modify('+1 day')->format('Y-m-d'), 'status_id' => 1]);
+            $request->merge(['total' => ($request->total_r + $request->total_p + $request->total_d)]);
         } else {
             $request->merge(['total' => ($request->total_r + $request->total_p + $request->total_d), 'status_id' => 1]);
         }
