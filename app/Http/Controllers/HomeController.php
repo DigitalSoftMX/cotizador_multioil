@@ -32,7 +32,7 @@ class HomeController extends Controller
         $activity = new Activities();
         $months = $activity->getMonths();
         $days = [];
-        for ($i = 1; $i <= (int)date('d'); $i++) {
+        for ($i = 1; $i <= (int)date('d', strtotime(now() . "+ 1 day")); $i++) {
             array_push($days, $i);
         }
         $pricesClient = null;
@@ -57,7 +57,7 @@ class HomeController extends Controller
     public function getPricesJson(Request $request, $terminal_id, $month)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente', 'Ventas']);
-        $lastDay = date('d');
+        $lastDay = date('d', strtotime(now() . "+ 1 day"));
         if ($month != date('m')) {
             $lastDay = new DateTime(date('Y') . '-' . $month . '-01');
             $lastDay->modify('last day of this month');
@@ -67,6 +67,12 @@ class HomeController extends Controller
         $days = [];
         for ($i = 1; $i <= (int)$lastDay; $i++) {
             array_push($days, $i);
+        }
+        if ($month != date('m')) {
+            $lastDay = new DateTime(date('Y') . '-' . $month . '-01');
+            $lastDay->modify('last day of this month');
+            $lastDay = date("d", strtotime($lastDay->format('Y-m-d') . "+ 1 days"));
+            array_push($days, (int)$lastDay);
         }
         $pricesClient = null;
         if (auth()->user()->company_id != null)
