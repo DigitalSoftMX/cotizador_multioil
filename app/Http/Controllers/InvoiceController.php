@@ -37,13 +37,15 @@ class InvoiceController extends Controller
     public function update(InvoiceRequest $request, Order $invoice)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        if ($invoice->pdf == null)
-            request()->validate(['file_pdf' => 'required|file|mimes:pdf']);
-        if ($invoice->xml == null)
-            request()->validate(['file_xml' => 'required|file|mimes:xml']);
         $savingFile = new Activities();
-        $savingFile->saveFile($request, $invoice, 'pdf');
-        $savingFile->saveFile($request, $invoice, 'xml');
+        if ($request->file("file_pdf")) {
+            request()->validate(['file_pdf' => 'required|file|mimes:pdf']);
+            $savingFile->saveFile($request, $invoice, 'pdf');
+        }
+        if ($request->file("file_xml")) {
+            request()->validate(['file_xml' => 'required|file|mimes:xml']);
+            $savingFile->saveFile($request, $invoice, 'xml');
+        }
         $request->merge(['total' => $request->price * $invoice->liters]);
         $invoice->update($request->only(['dispatched', 'dispatched_liters', 'invoice', 'CFDI', 'sale_price', 'name_freight', 'price', 'total']));
         return redirect()->back()->withStatus('Datos de facturación actualizados correctamente');
@@ -53,13 +55,16 @@ class InvoiceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate(['invoicepayment' => 'required|numeric', 'invoicecfdi' => 'required|string|min:3']);
-        if ($invoice->invoicepdf == null)
-            request()->validate(['file_invoicepdf' => 'required|file|mimes:pdf']);
-        if ($invoice->invoicexml == null)
-            request()->validate(['file_invoicexml' => 'required|file|mimes:xml']);
         $savingFile = new Activities();
-        $savingFile->saveFile($request, $invoice, 'invoicepdf');
-        $savingFile->saveFile($request, $invoice, 'invoicexml');
+        if ($request->file("file_invoicepdf")) {
+            request()->validate(['file_invoicepdf' => 'required|file|mimes:pdf']);
+            $savingFile->saveFile($request, $invoice, 'invoicepdf');
+        }
+        if ($request->file("file_invoicexml")) {
+            request()->validate(['file_invoicexml' => 'required|file|mimes:xml']);
+            $savingFile->saveFile($request, $invoice, 'invoicexml');
+        }
+        $invoice->update($request->only(['invoicepayment', 'invoicecfdi']));
         return redirect()->back()->withStatus('Datos de facturación Valero - Guerrera actualizados correctamente');
     }
     // descarga de archivo pdf o xml
