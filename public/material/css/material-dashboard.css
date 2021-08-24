@@ -3230,8 +3230,8 @@ fieldset:disabled a.btn {
 .btn-light:not(:disabled):not(.disabled).active,
 .show>.btn-light.dropdown-toggle {
   color: #212529;
-  background-color: #dae0e5;
-  border-color: #d3d9df;
+  /*background-color: #dae0e5;
+  border-color: #d3d9df;*/
 }
 
 .btn-light:not(:disabled):not(.disabled):active:focus,
@@ -9822,10 +9822,12 @@ a.text-dark:focus {
 
 .btn,
 .btn.btn-default {
-  color: #fff;
-  background-color: #999999;
+  color: #000;
+  font-weight: bold;
+  background-color: #fff;
   border-color: #999999;
-  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  /*box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  */
 }
 
 .btn:hover,
@@ -9841,8 +9843,8 @@ a.text-dark:focus {
 .btn.btn-default:focus,
 .btn.btn-default.focus,
 .btn.btn-default:hover {
-  color: #fff;
-  background-color: #919191;
+  color: #000;
+  background-color: transparent;
   border-color: #7a7a7a;
 }
 
@@ -9854,10 +9856,10 @@ a.text-dark:focus {
 .btn.btn-default.active,
 .open>.btn.btn-default.dropdown-toggle,
 .show>.btn.btn-default.dropdown-toggle {
-  color: #fff;
-  background-color: #919191;
+  color: #000;
+  /*background-color: #919191;
   border-color: #7a7a7a;
-  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);
+  box-shadow: 0 2px 2px 0 rgba(153, 153, 153, 0.14), 0 3px 1px -2px rgba(153, 153, 153, 0.2), 0 1px 5px 0 rgba(153, 153, 153, 0.12);*/
 }
 
 .btn:active:hover,
@@ -9884,8 +9886,8 @@ a.text-dark:focus {
 .show>.btn.btn-default.dropdown-toggle:hover,
 .show>.btn.btn-default.dropdown-toggle:focus,
 .show>.btn.btn-default.dropdown-toggle.focus {
-  color: #fff;
-  background-color: #919191;
+  color: #000;
+  background-color: transparent;
   border-color: #595959;
 }
 
@@ -9908,16 +9910,16 @@ a.text-dark:focus {
 .btn.btn-default.disabled.focus,
 .btn.btn-default:disabled:focus,
 .btn.btn-default:disabled.focus {
-  background-color: #999999;
-  border-color: #999999;
+  /*background-color: #999999;
+  border-color: #999999;*/
 }
 
 .btn.disabled:hover,
 .btn:disabled:hover,
 .btn.btn-default.disabled:hover,
 .btn.btn-default:disabled:hover {
-  background-color: #999999;
-  border-color: #999999;
+  /*background-color: #999999;
+  border-color: #999999;*/
 }
 
 .btn:focus,
@@ -9926,7 +9928,8 @@ a.text-dark:focus {
 .btn.btn-default:focus,
 .btn.btn-default:active,
 .btn.btn-default:hover {
-  box-shadow: 0 14px 26px -12px rgba(153, 153, 153, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(153, 153, 153, 0.2);
+  /*box-shadow: 0 14px 26px -12px rgba(153, 153, 153, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(153, 153, 153, 0.2);
+  */
 }
 
 .btn.btn-link,
@@ -14179,8 +14182,8 @@ h2.title {
 .nav-tabs .nav-item .nav-link,
 .nav-tabs .nav-item .nav-link:hover,
 .nav-tabs .nav-item .nav-link:focus {
-  border: 0 !important;
-  color: #fff !important;
+ 
+  /*color: #fff !important;*/
   font-weight: 500;
 }
 
@@ -14195,6 +14198,7 @@ h2.title {
 
 .nav-tabs .nav-item .nav-link.active {
   background-color: rgba(255, 255, 255, 0.2);
+  border-bottom: 3px solid blue !important;
   transition: 0.3s background-color 0.2s;
 }
 
@@ -15895,11 +15899,13 @@ thead.thead-inverse th,
   border: 0;
   margin-bottom: 30px;
   margin-top: 30px;
-  border-radius: 6px;
+  border-radius: 20px;
   color: #333333;
   background: #fff;
   width: 100%;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  /*box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  */
 }
 
 .card .card-category:not([class*="text-"]) {
@@ -16099,7 +16105,7 @@ thead.thead-inverse th,
 .card .card-header-primary .card-icon,
 .card .card-header-primary:not(.card-header-icon):not(.card-header-text),
 .card .card-header-primary .card-text {
-  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
+  /*box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);*/
 }
 
 .card .card-header-danger .card-icon,
@@ -16229,7 +16235,7 @@ thead.thead-inverse th,
 }
 
 .card {
-  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+  /*box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);*/
 }
 
 .card .table tr:first-child td {
@@ -18188,8 +18194,8 @@ a .material-icons {
   left: 0;
   z-index: 2;
   width: 260px;
-  background-color: #ffffff;
-  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  background-color: #235ea5;
+  /*box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);*/
 }
 
 .sidebar .caret {
@@ -18303,6 +18309,7 @@ a .material-icons {
 .sidebar .nav li .dropdown-menu a:hover,
 .sidebar .nav li .dropdown-menu a:focus,
 .sidebar .nav li.active>[data-toggle="collapse"] {
+  background: url('../material/img/curve.svg') no-repeat;
   background-color: rgba(200, 200, 200, 0.2);
   color: #3C4858;
   box-shadow: none;
@@ -18351,7 +18358,7 @@ a .material-icons {
   line-height: 30px;
   width: 30px;
   text-align: center;
-  color: #a9afbb;
+  color: #ffffff;
 }
 
 .sidebar .nav li a,
@@ -18613,8 +18620,8 @@ a .material-icons {
 }
 
 .sidebar[data-color="orange"] li.active>a {
-  background-color: #00ACE8;
-  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px #13529E;
+  /*background-color: #00ACE8;*/
+  /*box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px #13529E;*/
 }
 
 .sidebar[data-color="danger"] li.active>a {
@@ -18704,6 +18711,12 @@ a .material-icons {
   -webkit-transition-timing-function: linear, linear, ease;
   transition-timing-function: linear, linear, ease;
   -webkit-overflow-scrolling: touch;
+
+}
+
+.sidebar{
+  /*border-radius: 0px 30px 30px 0px;*/
+  overflow: hidden;
 }
 
 .visible-on-sidebar-regular {
@@ -19454,9 +19467,9 @@ a .material-icons {
 
 .fixed-plugin .btn:hover,
 .fixed-plugin .btn.btn-default:hover {
-  color: #fff;
-  background-color: #919191;
-  border-color: #7a7a7a;
+  color: #000;
+  background-color: transparent;
+  /*border-color: #7a7a7a;*/
 }
 
 .fixed-plugin .btn:focus,
@@ -19465,9 +19478,9 @@ a .material-icons {
 .fixed-plugin .btn.btn-default:focus,
 .fixed-plugin .btn.btn-default.focus,
 .fixed-plugin .btn.btn-default:hover {
-  color: #fff;
-  background-color: #919191;
-  border-color: #7a7a7a;
+  color: #000;
+  background-color: transparent;
+  /*border-color: #7a7a7a;*/
 }
 
 .fixed-plugin .btn:active,
@@ -19516,7 +19529,7 @@ a .material-icons {
 .open>.fixed-plugin .btn.dropdown-toggle.bmd-btn-icon,
 .open>.fixed-plugin .btn.btn-default.dropdown-toggle.bmd-btn-icon {
   color: inherit;
-  background-color: #999999;
+  /*background-color: #999999;*/
 }
 
 .open>.fixed-plugin .btn.dropdown-toggle.bmd-btn-icon:hover,
@@ -19550,7 +19563,8 @@ a .material-icons {
 .fixed-plugin .btn.btn-default:focus,
 .fixed-plugin .btn.btn-default:active,
 .fixed-plugin .btn.btn-default:hover {
-  box-shadow: 0 14px 26px -12px rgba(153, 153, 153, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(153, 153, 153, 0.2);
+  /*box-shadow: 0 14px 26px -12px rgba(153, 153, 153, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(153, 153, 153, 0.2);
+  */
 }
 
 .fixed-plugin .btn.btn-link,
@@ -29871,12 +29885,12 @@ select.selectpicker {
 }
 
 .nav-item.active a p, .nav-item.active a .material-icons {
-    color: #ffffff !important;
+    color:#ffffff!important;
     font-weight: bold;
 }
 
 .nav-item a p{
-  color: #343434 !important;
+  color: #ffffff !important;
 }
 
 #Calcular {
@@ -29895,9 +29909,9 @@ select.selectpicker {
 }
 
 .nav-link.active {
-    border-radius: 5px !important;
+    /*border-radius: 5px !important;
     background-color: #00ace8  !important;
-    color: white !important;
+    color: white !important;*/
 }
 
 .btn.btn-info.float-left {
@@ -29920,4 +29934,11 @@ select.selectpicker {
 .mostrar{
   display: block;
 }
+
+/*background menu activo*/
+
+.wavemenu{
+  background: url(../img/curve.svg) no-repeat;
+}
+
 

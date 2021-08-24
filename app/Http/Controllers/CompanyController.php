@@ -140,4 +140,15 @@ class CompanyController extends Controller
             'total' => '$' . number_format($total, 2)
         ]);
     }
+
+     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showClientChart(Request $request, $id)
+    {
+        return view('companies.show',['company_id' => $id,]);
+    }
 }

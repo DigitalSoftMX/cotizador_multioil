@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('getfee/{terminal}/{company}/{base}/{date?}', 'FeeController@getFees')->name('getfee');
 	Route::resource('companies', 'CompanyController');
 	Route::get('getshopping/{company}', 'CompanyController@getshopping')->name('getshopping');
+	Route::get('showcompanie/{id}', 'CompanyController@showClientChart')->name('showcompanie');
 	Route::get('getshoppings/{company}/{month}', 'CompanyController@getshoppings')->name('getshoppings');
 	Route::get('getcommision/{user}', 'OrderController@getShoppingsCommision')->name('getcommision');
 	Route::get('commissionexcel/{user}', 'OrderController@commissionexcel')->name('commissionexcel');
@@ -64,6 +65,8 @@ Route::group(['middleware' => 'auth'], function () {
 //rutas cotizador
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('pricesterminal/{terminal_id}/{month}/{company?}', 'HomeController@getPricesJson')->name('pricesterminal');
+	Route::get('monthstothepresentliters/', 'HomeController@monthsToThePresentLiters')->name('monthstothepresentliters');
+	Route::get('monthsdaysproduct/', 'HomeController@monthsDaysProduct')->name('monthsdaysproduct');
 	Route::resource('orders', 'OrderController', ['except' => ['create', 'edit', 'destroy']]);
 	Route::resource('orders/{order}/payments', 'PaymentController');
 	Route::resource('invoices', 'InvoiceController', ['only' => ['edit', 'update']]);
