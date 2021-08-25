@@ -56,6 +56,9 @@ class HomeController extends Controller
             'prices' => $prices,
             'pricesclient' => $pricesClient,
             'totalOrders' => Order::where('status_id', 2)->count(),
+            'totalCompanys' => Company::count(),
+            'totalLiters' => Order::where([['status_id', 2]])->sum('dispatched_liters'),
+            'totalMoney' => Order::where([['status_id', 2]])->sum('total')
         ]);
     }
     // respuesta json precios por terminal
@@ -267,6 +270,7 @@ class HomeController extends Controller
             
             $interval = new DateInterval('P1D');
             $daterange = new DatePeriod($begin, $interval ,$end);
+            //dd($daterange);
             
             foreach($daterange as $date){
                 array_push($liters_mouths_regular, Order::where([['created_at', 'like', '%' . $date->format("Y-m-d") . '%'], ['status_id', 2],['product','regular'],['company_id',$request->id]])->sum('dispatched_liters'));
@@ -286,7 +290,7 @@ class HomeController extends Controller
         }else if($request->days == 3){
             $begin = new DateTime( $request->min );
             $end = new DateTime( $request->max );
-            $end = $end->modify( '+0 day' );
+            $end = $end->modify( '+1 day' );
             
             $interval = new DateInterval('P1M');
             $daterange = new DatePeriod($begin, $interval ,$end);

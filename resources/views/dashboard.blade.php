@@ -116,38 +116,39 @@
         </div>
     </div>
 
-    
-    <div class="content">
+    @if (auth()->user()->roles->first()->id == 1)
+    <div class="content pt-0 mt-0">
        
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card card-stats">
+        <div class="container-fluid pt-0 mt-0">
+            <div class="row pt-0 mt-0">
+                <div class="col-md-12 pt-0 mt-0">
+                    <div class="card card-stats pt-0 mt-0">
                         <div class="card-body">
                             <div class="row">
+                                <div class="col-md-3">
+                                    <div class="statistics text-center">
+                                        <h3 class="info-title">{{$totalCompanys}}</h3>
+                                        <h6 class="stats-title">Clientes totales</h6>
+                                    </div>
+                                </div>
                                 <div class="col-md-3 ju">
                                     <div class="statistics text-center">
                                         <h3 class="info-title">{{$totalOrders}}</h3>
-                                        <h6 class="stats-title">Total de pedidos</h6>
+                                        <h6 class="stats-title">pedidos totales</h6>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="statistics text-center">
                                         <h3 class="info-title">
-                                        <small>$</small>3,521</h3>
-                                        <h6 class="stats-title">Today Revenue</h6>
+                                        <!--small>$</small-->{{ $totalLiters }}</h3>
+                                        <h6 class="stats-title">Litros totales</h6>
                                     </div>
                                 </div>
+                               
                                 <div class="col-md-3">
                                     <div class="statistics text-center">
-                                        <h3 class="info-title">562</h3>
-                                        <h6 class="stats-title">Customers</h6>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="statistics text-center">
-                                        <h3 class="info-title">353</h3>
-                                        <h6 class="stats-title">Support Requests</h6>
+                                        <h3 class="info-title"><small>$</small>{{number_format($totalMoney,2)}}</h3>
+                                        <h6 class="stats-title">total</h6>
                                     </div>
                                 </div>
                             </div>
@@ -318,6 +319,7 @@
         </div>
         
     </div>
+    @endif
 @endsection
 @push('js')
     <script>
@@ -375,10 +377,11 @@
 
 
         function initChartsT(){
+            const yourDate =  new Date().toLocaleDateString('en-ZA');
             //console.log('{{url('/')}}');
             myFunction();
             chartProducts(0,'','','',45,'{{url('/')}}');
-            chartTransport(4,'2021-07-01','2021-07-30','{{url('/')}}');
+            chartTransport(4,formatDate(sumarDias(new Date(), -30)) ,yourDate,'{{url('/')}}');
         }
 
         // esto activa el scroll de la tarjeta
