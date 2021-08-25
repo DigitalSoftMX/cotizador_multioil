@@ -276,6 +276,45 @@
                 </div>
             </div>
 
+            <!--div class="row">
+                <div class="col-sm-6">
+                    <div class="card" style="height: 60vh;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-7">
+                                    <p class="h4 font-weight-bold pt-2">Total importe factura la guerrera </p>
+                                </div>
+                                <div class="col-5">
+                                    <input type="text" name="daterange" class="pt-2" style="border: none; border-bottom: 2px solid #000;"/>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane active show" id="profil">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card" style="height: 60vh;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-7">
+                                    <p class="h4 font-weight-bold pt-2">Total importe factura Valero</p>
+                                </div>
+                                <div class="col-5">
+                                    <input type="text" name="daterange" class="pt-2" style="border: none; border-bottom: 2px solid #000;"/>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane active show" id="profil">
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div-->
+
         </div>
         
     </div>
@@ -321,8 +360,8 @@
                 
             }
         }, function(start, end, label) {
-            const val = document.getElementById("chsngeDaysMounts").value;
-            chartProducts(val,start.format('YYYY-MM-DD') ,end.format('YYYY-MM-DD'),19);
+            //const val = document.getElementById("chsngeDaysMounts").value;
+            chartTransport(4,start.format('YYYY-MM-DD') ,end.format('YYYY-MM-DD'),'{{url('/')}}');
             //console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
         });
     });
@@ -331,14 +370,15 @@
 
         selectElement.addEventListener('change', (event) => {
             const val = document.getElementById("chsngeDaysMounts").value;
-            chartProducts(val);
+            chartProducts(val,'','','',45,'{{url('/')}}');
         });
 
 
         function initChartsT(){
+            //console.log('{{url('/')}}');
             myFunction();
-            chartProducts(0,'','','',45);
-            chartTransport(2,'2021-08-01','2021-08-30',19);
+            chartProducts(0,'','','',45,'{{url('/')}}');
+            chartTransport(4,'2021-07-01','2021-07-30','{{url('/')}}');
         }
 
         // esto activa el scroll de la tarjeta

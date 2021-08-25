@@ -149,6 +149,8 @@ class CompanyController extends Controller
      */
     public function showClientChart(Request $request, $id)
     {
-        return view('companies.show',['company_id' => $id,]);
+        $company = Company::find($id);
+        //dd($company->name);
+        return view('companies.show',['company_id' => $id, 'company' => $company]);
     }
 }

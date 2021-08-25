@@ -7,6 +7,7 @@ use App\CompetitionPrice;
 use App\Repositories\Activities;
 use App\Terminal;
 use App\Order;
+use App\Payment;
 use DateTime;
 use Illuminate\Http\Request;
 use DatePeriod;
@@ -301,6 +302,26 @@ class HomeController extends Controller
             array_push($result,$liters_mouths_regular);
             array_push($result,$liters_mouths_premium);
             array_push($result,$liters_mouths_diesel);
+            
+            array_push($result,$days);
+
+            return $result;
+        }else if($request->days == 4){
+            $begin = new DateTime( $request->min );
+            $end = new DateTime( $request->max );
+            $end = $end->modify( '+0 day' );
+            
+            $interval = new DateInterval('P1D');
+            $daterange = new DatePeriod($begin, $interval ,$end);
+            
+            foreach($daterange as $date){
+                array_push($liters_mouths_regular, Payment::where([['created_at', 'like', '%' . $date->format("Y-m-d") . '%']])->sum('payment_freight'));
+                
+                array_push($days,  $date->format("d"));
+            }
+
+            array_push($result,$liters_mouths_regular);
+            
             
             array_push($result,$days);
 
