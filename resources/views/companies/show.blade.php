@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'Empresas', 'titlePage' => __('Gráficas del cliente')])
+@extends('layouts.app', ['activePage' => 'Empresas', 'titlePage' => __('Gráficas del cliente '.$company->name.'')])
 
 @section('content')
     <div class="content">
@@ -113,7 +113,7 @@
                 }
             }, function(start, end, label) {
                 const val = document.getElementById("chsngeDaysMounts").value;
-                chartProducts(val,start.format('YYYY-MM-DD') ,end.format('YYYY-MM-DD'),19);
+                chartProducts(val,start.format('YYYY-MM-DD') ,end.format('YYYY-MM-DD'),{{$company_id}},40,'{{url('/')}}');
                 //console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
             });
         });
@@ -122,7 +122,7 @@
             const yourDate =  new Date().toLocaleDateString('en-ZA');
             //console.log(yourDate); // 2020/08/19 (year/month/day) notice the different locale
             //yourDate.toISOString().split('T')[0]
-            chartProducts(2,formatDate(sumarDias(new Date(), -30)) ,yourDate,{{$company_id}},40);
+            chartProducts(2,formatDate(sumarDias(new Date(), -30)) ,yourDate ,{{$company_id}},40,'{{url('/')}}');
         }
     </script>
 @endpush

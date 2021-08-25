@@ -130,10 +130,13 @@
         let colorsCharts = ["#24a326", "#d90016","242121"];
         //litros vendidos por mes
          
-        function chartProducts(opt, min, max,id, height) {
+        function chartProducts(opt, min, max,id, height, urlL) {
             const products = [];
             const Http = new XMLHttpRequest();
-            const url = '../monthsdaysproduct?days='+opt+'&min='+min+'&max='+max+'&id='+id;
+            //local
+            //const url = urlL+'/monthsdaysproduct?days='+opt+'&min='+min+'&max='+max+'&id='+id;
+            //server
+            const url = urlL+'/monthsdaysproduct?days='+opt+'&min='+min+'&max='+max+'&id='+id;
             Http.open("GET", url);
             Http.send();
 
@@ -147,15 +150,15 @@
                     products.push(status[2]);
                     $("#profile").append('<canvas id="chartBigProducts"></canvas>');
                     initDashboardPageCharts("chartBigProducts",status[3], status[0], height, '#24a326','36, 163, 38',3, 'prod', colorsCharts,products, 'line');
-                    //console.log(status);
+                    console.log(status);
                 }
             }
         }
 
-        function chartTransport(opt, min, max,id) {
-            const products = [];
+        function chartTransport(opt, min, max,urlL) {
+           
             const Http = new XMLHttpRequest();
-            const url = '../monthsdaysproduct?days='+opt+'&min='+min+'&max='+max+'&id='+id;
+            const url = urlL+'/monthsdaysproduct?days='+opt+'&min='+min+'&max='+max;
             Http.open("GET", url);
             Http.send();
 
@@ -164,15 +167,15 @@
                     var status = JSON.parse(Http.responseText);
                     var el = document.getElementById('chartBigTransport');
                     el.remove(); 
-                    products.push(status[0]);
-                    products.push(status[1]);
-                    products.push(status[2]);
+                   
                     $("#profil").append('<canvas id="chartBigTransport"></canvas>');
-                    initDashboardPageCharts("chartBigTransport",status[3], status[0], 50, '#235ea5','36, 163, 38',3, 'prod', colorsCharts,null,'bar');
+                    initDashboardPageCharts("chartBigTransport",status[1], status[0], 50, '#235ea5','36, 163, 38',0, 'prod', colorsCharts,null,'bar');
                     //console.log(status);
                 }
             }
         }
+
+       
 
         function myFunction() {
             const Http = new XMLHttpRequest();
