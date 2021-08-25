@@ -133,7 +133,10 @@
         function chartProducts(opt, min, max,id, height, urlL) {
             const products = [];
             const Http = new XMLHttpRequest();
-            const url = urlL+'/monthsdaysproduct?days='+opt+'&min='+min+'&max='+max+'&id='+id;
+            //local
+            //const url = urlL+'/monthsdaysproduct?days='+opt+'&min='+min+'&max='+max+'&id='+id;
+            //server
+            const url = urlL+'/public/monthsdaysproduct?days='+opt+'&min='+min+'&max='+max+'&id='+id;
             Http.open("GET", url);
             Http.send();
 
@@ -155,7 +158,7 @@
         function chartTransport(opt, min, max,urlL) {
            
             const Http = new XMLHttpRequest();
-            const url = urlL+'/monthsdaysproduct?days='+opt+'&min='+min+'&max='+max;
+            const url = urlL+'/public/monthsdaysproduct?days='+opt+'&min='+min+'&max='+max;
             Http.open("GET", url);
             Http.send();
 
