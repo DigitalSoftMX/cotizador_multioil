@@ -128,7 +128,7 @@ class CompanyController extends Controller
             $data['date'] = $order->dispatched != null ? date('d/m/Y', strtotime($order->dispatched)) : '-';
             $data['cfdi'] = $order->CFDI;
             $data['product'] = strtoupper($order->product);
-            $data['liters'] = number_format($order->liters, 2);
+            $data['liters'] = number_format($order->dispatched_liters, 2);
             $data['invoice'] = '$' . number_format($order->invoice, 2);
             $data['payment'] = '$' . number_format($order->payments->sum('payment_guerrera'), 2);
             $data['balance'] = '$' . number_format($t = ($order->payments->sum('payment_guerrera') - $order->invoice), 2);
@@ -141,7 +141,7 @@ class CompanyController extends Controller
         ]);
     }
 
-     /**
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -149,6 +149,6 @@ class CompanyController extends Controller
      */
     public function showClientChart(Request $request, $id)
     {
-        return view('companies.show',['company_id' => $id,]);
+        return view('companies.show', ['company_id' => $id,]);
     }
 }
