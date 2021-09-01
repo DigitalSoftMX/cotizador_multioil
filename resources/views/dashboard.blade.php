@@ -368,13 +368,14 @@
         });
     });
         
-        const selectElement = document.querySelector('#chsngeDaysMounts');
+        @if (auth()->user()->roles->last()->id == 1)
+            const selectElement = document.querySelector('#chsngeDaysMounts');
 
-        selectElement.addEventListener('change', (event) => {
-            const val = document.getElementById("chsngeDaysMounts").value;
-            chartProducts(val,'','','',45,'{{url('/')}}');
-        });
-
+            selectElement.addEventListener('change', (event) => {
+                const val = document.getElementById("chsngeDaysMounts").value;
+                chartProducts(val,'','','',45,'{{url('/')}}');
+            });
+        @endif
 
         function initChartsT(){
             const yourDate =  new Date().toLocaleDateString('en-ZA');
