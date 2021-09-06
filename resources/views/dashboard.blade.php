@@ -6,27 +6,7 @@
         <div class="row">
             <div class="card-body">
                 <div class="row justify-content-center">
-                    @if (auth()->user()->roles->last()->id == 2)
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Precio de gasolina</h5>
-                                    <div class="bg-success text-white" id="regularprice">
-                                        {{ 'Regular: $' . ($pricesclient != null ? $pricesclient->regular : 0) }}
-                                    </div>
-                                    <div class="bg-danger text-white" id="premiumprice">
-                                        {{ 'Premium: $' . ($pricesclient != null ? $pricesclient->premium : 0) }}
-                                    </div>
-                                    <div class="bg-dark text-white" id="dieselprice">
-                                        {{ 'Diésel: $' . ($pricesclient != null ? $pricesclient->diesel : 0) }}
-                                    </div>
-                                    <p class="text-justify">
-                                        {{ __('Costo de producto en terminal de abastecimiento. No incluye flete.') }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
+                   
                     <div id="carouselExampleIndicators0" class="carousel slide col-lg-12 col-md-12 col-sm-12"
                         data-ride="carousel">
                         <div class="carousel-inner">
@@ -112,6 +92,28 @@
                     </div> 
                     @endif
                 </div>
+
+                @if (auth()->user()->roles->last()->id == 2)
+                <div class="col-lg-3 col-md-3 col-sm-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Precio de gasolina</h5>
+                            <div class="bg-success text-white" id="regularprice">
+                                {{ 'Regular: $' . ($pricesclient != null ? $pricesclient->regular : 0) }}
+                            </div>
+                            <div class="bg-danger text-white" id="premiumprice">
+                                {{ 'Premium: $' . ($pricesclient != null ? $pricesclient->premium : 0) }}
+                            </div>
+                            <div class="bg-dark text-white" id="dieselprice">
+                                {{ 'Diésel: $' . ($pricesclient != null ? $pricesclient->diesel : 0) }}
+                            </div>
+                            <p class="text-justify">
+                                {{ __('Costo de producto en terminal de abastecimiento. No incluye flete.') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
