@@ -82,8 +82,8 @@
                                                             <h5 class="modal-title" id="exampleModalLongTitle">
                                                                 <strong>{{ ($invoice->commission != null ? 'Actualización' : 'Registro') . __(' de comisión') }}</strong>
                                                             </h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
+                                                            <button type="button" class="close"
+                                                                data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
@@ -118,7 +118,8 @@
                                                                             {{ __('Elija un comisionista') }}
                                                                         </option>
                                                                         @foreach ($sales as $sale)
-                                                                            <option value="{{ $sale->id }}" @if ($invoice->user_id == $sale->id) selected @endif>
+                                                                            <option value="{{ $sale->id }}"
+                                                                                @if ($invoice->user_id == $sale->id) selected @endif>
                                                                                 {{ $sale->name }}</option>
                                                                         @endforeach
                                                                     </select>
@@ -139,7 +140,8 @@
                                                                         aria-describedby="commission_twoHelp"
                                                                         placeholder="Escribe la cantidad del pago"
                                                                         value="{{ old('commission_two', $invoice->commission_two) }}"
-                                                                        aria-required="true" name="commission_two" step="any">
+                                                                        aria-required="true" name="commission_two"
+                                                                        step="any">
                                                                     @if ($errors->has('commission_two'))
                                                                         <span id="commission_two-error"
                                                                             class="error text-danger"
@@ -158,12 +160,14 @@
                                                                             {{ __('Elija un comisionista') }}
                                                                         </option>
                                                                         @foreach ($sales as $sale)
-                                                                            <option value="{{ $sale->id }}" @if ($invoice->middleman_id == $sale->id) selected @endif>
+                                                                            <option value="{{ $sale->id }}"
+                                                                                @if ($invoice->middleman_id == $sale->id) selected @endif>
                                                                                 {{ $sale->name }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     @if ($errors->has('middleman_id'))
-                                                                        <span id="name-middleman_id" class="error text-danger"
+                                                                        <span id="name-middleman_id"
+                                                                            class="error text-danger"
                                                                             for="input-middleman_id">{{ $errors->first('middleman_id') }}</span>
                                                                     @endif
                                                                 </div>
@@ -206,13 +210,13 @@
                                                     <div class="col-12 text-right">
                                                         <button type="button" class="btn btn-sm btn-primary"
                                                             data-toggle="modal"
-                                                            data-target=".bd-example-modal-lg-payment">{{ __('Agregar pago') }}</button>
-                                                        @include('partials._paymentmodal',[$type='payment'])
+                                                            data-target=".bd-example-modal-lg-register">{{ __('Agregar pago') }}</button>
+                                                        @include('partials._paymentmodal',[$type='register'])
                                                     </div>
                                                 </div>
                                             @endif
                                             <div class="table-responsive">
-                                                <table id="datatables" class="table">
+                                                <table {{-- id="datatables" --}} class="table">
                                                     <thead class=" text-primary">
                                                         <th>{{ __('Cliente La Guerrera') }}</th>
                                                         <th>{{ __('La Guerrera Valero') }}</th>
@@ -241,7 +245,7 @@
                                                                             <i class="material-icons">edit</i>
                                                                             <div class="ripple-container"></div>
                                                                         </button>
-                                                                        @include('partials._paymentmodal',[$type='payment'.$payment->id])
+                                                                        @include('partials._paymentmodal',[$type="payment$payment->id"])
                                                                     </td>
                                                                 @endif
                                                             </tr>
