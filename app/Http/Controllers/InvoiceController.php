@@ -47,7 +47,7 @@ class InvoiceController extends Controller
             $savingFile->saveFile($request, $invoice, 'xml');
         }
         $request->merge(['total' => $request->price * $invoice->liters]);
-        $invoice->update($request->only(['dispatched', 'dispatched_liters', 'invoice', 'CFDI', 'sale_price', 'name_freight', 'price', 'total']));
+        $invoice->update($request->only(['dispatched', 'dispatched_liters', 'root_liters', 'invoice', 'CFDI', 'sale_price', 'name_freight', 'price', 'total']));
         return redirect()->back()->withStatus('Datos de facturación actualizados correctamente');
     }
     // Actualización de facturación Valero - Guerrera

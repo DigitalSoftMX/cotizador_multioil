@@ -15,54 +15,64 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            @include('partials._notification')
+                            @include('partials.notification')
                             <div class="row">
-                                <label class="col-12">
-                                    <h5><strong>{{ __('Datos del pedido:') }}</strong></h5>
-                                </label>
-                                <label class="col-md-4 col-sm-12">
-                                    <h6>{{ 'Empresa: ' . $invoice->company->name }}</h6>
-                                    <h6>{{ 'Terminal: ' . $invoice->terminal->name }}</h6>
-                                    <h6>{{ 'Producto: ' }} {{ $invoice->product }}
-                                        {{ 'litros: ' }}
-                                        {{ number_format($invoice->liters, 0) . ' lts' }} <br>
-                                        {{ 'importe: ' }}
-                                        {{ '$ ' . number_format($invoice->total, 2) }}
-                                    </h6>
-                                </label>
-                                <div class="col-md-4 col-sm-12">
-                                    <label>
-                                        <h6>Cantidad a pagar:</h6>
-                                    </label>
-                                    <strong>
-                                        {{ '$ ' . number_format($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total, 2) }}
-                                    </strong><br>
-                                    <label>
-                                        <h6>Cantidad pagada:</h6>
-                                    </label>
-                                    <strong>{{ '$ ' . number_format($invoice->payments->sum('payment_guerrera'), 2) }}</strong>
-                                    <br>
-                                    <label>
-                                        <h6>Cantidad restante:</h6>
-                                    </label>
-                                    <strong
-                                        style="{{ ($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total) - $invoice->payments->sum('payment_guerrera') > 0 ? 'color:red;' : 'color:blue;' }}">
-                                        {{ '$ ' . number_format(($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total) - $invoice->payments->sum('payment_guerrera'), 2) }}
-                                    </strong>
-                                </div>
-                                <div class="col-md-4 col-sm-12">
-                                    <label>
-                                        <h6>Cliente La Guerrera:</h6>
-                                    </label>
-                                    <strong>{{ '$ ' . number_format($invoice->payments->sum('payment_guerrera'), 2) }}</strong><br>
-                                    <label>
-                                        <h6>Cliente La Guerrera Valero:</h6>
-                                    </label>
-                                    <strong>{{ '$ ' . number_format($invoice->payments->sum('payment_g_valero'), 2) }}</strong><br>
-                                    <label>
-                                        <h6>Fletera:</h6>
-                                    </label>
-                                    <strong>{{ '$ ' . number_format($invoice->payments->sum('payment_freight'), 2) }}</strong><br>
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="card-title">
+                                                <strong>{{ __('Datos del pedido:') }}</strong>
+                                            </h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12 col-md-4">
+                                                    <h6>{{ 'Empresa: ' . $invoice->company->name }}</h6>
+                                                    <h6>{{ 'Terminal: ' . $invoice->terminal->name }}</h6>
+                                                    <h6>{{ 'Producto: ' }} {{ $invoice->product }}
+                                                        {{ 'litros: ' }}
+                                                        {{ number_format($invoice->liters, 0) . ' lts' }} <br>
+                                                        {{ 'importe: ' }}
+                                                        {{ '$ ' . number_format($invoice->total, 2) }}
+                                                    </h6>
+                                                </div>
+                                                <div class="col-12 col-md-4">
+                                                    <label>
+                                                        <h6>Cantidad a pagar:</h6>
+                                                    </label>
+                                                    <strong>
+                                                        {{ '$ ' . number_format($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total, 2) }}
+                                                    </strong><br>
+                                                    <label>
+                                                        <h6>Cantidad pagada:</h6>
+                                                    </label>
+                                                    <strong>{{ '$ ' . number_format($invoice->payments->sum('payment_guerrera'), 2) }}</strong>
+                                                    <br>
+                                                    <label>
+                                                        <h6>Cantidad restante:</h6>
+                                                    </label>
+                                                    <strong
+                                                        style="{{ ($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total) - $invoice->payments->sum('payment_guerrera') > 0 ? 'color:red;' : 'color:blue;' }}">
+                                                        {{ '$ ' . number_format(($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total) - $invoice->payments->sum('payment_guerrera'), 2) }}
+                                                    </strong>
+                                                </div>
+                                                <div class="col-12 col-md-4">
+                                                    <label>
+                                                        <h6>Cliente La Guerrera:</h6>
+                                                    </label>
+                                                    <strong>{{ '$ ' . number_format($invoice->payments->sum('payment_guerrera'), 2) }}</strong><br>
+                                                    <label>
+                                                        <h6>Cliente La Guerrera Valero:</h6>
+                                                    </label>
+                                                    <strong>{{ '$ ' . number_format($invoice->payments->sum('payment_g_valero'), 2) }}</strong><br>
+                                                    <label>
+                                                        <h6>Fletera:</h6>
+                                                    </label>
+                                                    <strong>{{ '$ ' . number_format($invoice->payments->sum('payment_freight'), 2) }}</strong><br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             @if (auth()->user()->roles->first()->id == 1)
@@ -189,7 +199,7 @@
                             <div class="row">
                                 <div class="col-md-4 col-ms-12">
                                     @if (($rol = auth()->user()->roles->first()->id) == 1)
-                                        <form method="post" action="{{ route('invoices.update', $invoice) }}"
+                                        <form id="invoice" method="post" action="{{ route('invoices.update', $invoice) }}"
                                             autocomplete="off" class="form-horizontal" enctype="multipart/form-data">
                                             @method('put')
                                             @csrf

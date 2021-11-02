@@ -12,7 +12,7 @@
                             </p>
                         </div>
                         <div class="card-body">
-                            @include('partials._notification')
+                            @include('partials.notification')
                             <div class="row">
                                 <div class="col-md-12 text-right">
                                     <a href="{{ route('validations.index') }}"
@@ -37,7 +37,7 @@
                                         <select id="input-terminal_id" name="terminal_id"
                                             class="selectpicker show-menu-arrow {{ $errors->has('terminal_id') ? ' has-danger' : '' }}"
                                             data-style="btn-primary" data-width="100%" data-live-search="true">
-                                            <option value="">{{ __('Elija una terminal') }}</option>
+                                            <option value="" selected disabled>{{ __('Elija una terminal') }}</option>
                                             @foreach ($terminals as $terminal)
                                                 <option id="t_{{ $terminal->id }}" value="{{ $terminal->id }}">
                                                     {{ $terminal->name }}
@@ -55,7 +55,7 @@
                                             <select id="input-company_id" name="company_id"
                                                 class="selectpicker show-menu-arrow {{ $errors->has('company_id') ? ' has-danger' : '' }}"
                                                 data-style="btn-primary" data-width="100%" data-live-search="true">
-                                                <option value="">{{ __('Elija un empresa') }}</option>
+                                                <option value="" selected disabled>{{ __('Elija un empresa') }}</option>
                                             </select>
                                             @if ($errors->has('company_id'))
                                                 <span id="name-company_id" class="error text-danger"
@@ -70,10 +70,10 @@
                                         <label class="label-control">{{ __('Fecha de entrega') }}</label>
                                         <input class="form-control datetimepicker" id="calendar_first" name="date"
                                             type="text" value="" @if ($day != 5) readonly @endif /></input>
-                                            @if ($errors->has('date'))
-                                                <span id="name-date" class="error text-danger"
-                                                    for="input-date">{{ $errors->first('date') }}</span>
-                                            @endif
+                                        @if ($errors->has('date'))
+                                            <span id="name-date" class="error text-danger"
+                                                for="input-date">{{ $errors->first('date') }}</span>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="row justify-content-center mt-5">
@@ -174,8 +174,8 @@
                                                     <div class="modal-footer">
                                                         <button id="btnCancel" type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">{{ __('Cancelar pedido') }}</button>
-                                                        <button type="submit" id="btnSubmit"
-                                                            class="btn btn-primary">{{ __('Confirmar pedido') }}</button>
+                                                        <button type="button" id="btnSubmit" class="btn btn-primary"
+                                                            onclick="disabledButton('btnSubmit','form')">{{ __('Confirmar pedido') }}</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -371,7 +371,7 @@
                             <th colspan="3" class="text-right">Total: </th>
                             <th>${total}</th>
                         </tr>
-                        </table>
+                    </table>
                     <strong class="font-weight-bold"> ¿Requiere flete? : </strong>${freight==0?'No':'Si'}<br>
                     <strong class="font-weight-bold"> ¿Seguro de flete? : </strong>${secure==0?'No':'Si'}<br>`;
             } catch (error) {
