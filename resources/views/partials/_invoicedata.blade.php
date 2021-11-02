@@ -32,7 +32,8 @@
                 <label for="price">{{ __('Precio de compra') }}</label>
                 <input type="number" class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}"
                     id="input-price" aria-describedby="priceHelp" placeholder="Escribe el precio de compra por litro"
-                    value="{{ old('price', $invoice->price) }}" aria-required="true" name="price" step="any" @if ($rol != 1) readonly @endif>
+                    value="{{ old('price', $invoice->price) }}" aria-required="true" name="price" step="any"
+                    @if ($rol != 1) readonly @endif>
                 @if ($errors->has('price'))
                     <span id="price-error" class="error text-danger" for="input-price">
                         {{ $errors->first('price') }}
@@ -60,12 +61,26 @@
                 <label for="dispatched_liters">{{ __('Litros despachados') }}</label>
                 <input type="number" class="form-control{{ $errors->has('dispatched_liters') ? ' is-invalid' : '' }}"
                     id="input-dispatched_liters" aria-describedby="dispatched_litersHelp"
-                    placeholder="Escribe la cantidad de litros despachados"
+                    placeholder="Escribe los litros despachados"
                     value="{{ old('dispatched_liters', $invoice->dispatched_liters) }}" aria-required="true"
                     name="dispatched_liters" step="any" @if ($rol != 1) readonly @endif>
                 @if ($errors->has('dispatched_liters'))
                     <span id="dispatched_liters-error" class="error text-danger" for="input-dispatched_liters">
                         {{ $errors->first('dispatched_liters') }}
+                    </span>
+                @endif
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="form-group{{ $errors->has('root_liters') ? ' has-danger' : '' }} col-12">
+                <label for="root_liters">{{ __('Litros vendedor root') }}</label>
+                <input type="number" class="form-control{{ $errors->has('root_liters') ? ' is-invalid' : '' }}"
+                    id="input-root_liters" aria-describedby="root_litersHelp" placeholder="Escribe los litros root"
+                    value="{{ old('root_liters', $invoice->root_liters) }}" aria-required="true" name="root_liters"
+                    step="any" @if ($rol != 1) readonly @endif>
+                @if ($errors->has('root_liters'))
+                    <span id="root_liters-error" class="error text-danger" for="input-root_liters">
+                        {{ $errors->first('root_liters') }}
                     </span>
                 @endif
             </div>
@@ -89,7 +104,8 @@
                 <label for="CFDI">{{ __('Factura') }}</label>
                 <input type="text" class="form-control{{ $errors->has('CFDI') ? ' is-invalid' : '' }}"
                     id="input-CFDI" aria-describedby="CFDIHelp" placeholder="Escribe la factura"
-                    value="{{ old('CFDI', $invoice->CFDI) }}" aria-required="true" name="CFDI" step="any" @if ($rol != 1) readonly @endif>
+                    value="{{ old('CFDI', $invoice->CFDI) }}" aria-required="true" name="CFDI" step="any"
+                    @if ($rol != 1) readonly @endif>
                 @if ($errors->has('CFDI'))
                     <span id="CFDI-error" class="error text-danger" for="input-CFDI">
                         {{ $errors->first('CFDI') }}
@@ -136,7 +152,8 @@
                 </div>
             </div>
             <div class="card-footer justify-content-center">
-                <button type="submit" class="btn btn-primary">{{ __('Actualizar datos del pedido') }}</button>
+                <button id="send" type="button" class="btn btn-primary"
+                    onclick="disabledButton('send','invoice')">{{ __('Actualizar datos del pedido') }}</button>
             </div>
         @endif
     </div>

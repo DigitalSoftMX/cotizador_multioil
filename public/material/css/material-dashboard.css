@@ -2916,6 +2916,7 @@ select.form-control-lg:not([size]):not([multiple]),
 }
 
 .btn {
+  border-radius: 25px !important;
   display: inline-block;
   font-weight: 400;
   text-align: center;
@@ -13973,7 +13974,7 @@ fieldset[disabled] .form-group .form-control {
 
 .nav-pills .nav-item .nav-link.active {
   color: #fff;
-  background-color: #ffeb3b;
+  background-color: #1e63e2;
   box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
 }
 
@@ -15987,6 +15988,7 @@ thead.thead-inverse th,
 .card .card-header {
   border-bottom: none;
   background: transparent;
+  border-radius: 15px !important;
 }
 
 .card .card-header .title {

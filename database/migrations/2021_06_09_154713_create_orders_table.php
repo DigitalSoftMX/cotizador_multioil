@@ -28,6 +28,7 @@ class CreateOrdersTable extends Migration
             $table->timestamp('date')->nullable();
             $table->timestamp('dispatched')->nullable();
             $table->double('dispatched_liters')->nullable();
+            $table->double('root_liters')->nullable();
             $table->double('invoice')->nullable();
             $table->string('CFDI')->nullable();
             $table->string('pdf')->nullable();

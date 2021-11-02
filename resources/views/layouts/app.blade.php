@@ -40,7 +40,7 @@
 
 </head>
 
-<body class="{{ $class ?? '' }}"  onload="initChartsT()">
+<body class="{{ $class ?? '' }}" onload="initChartsT()">
     @auth()
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
@@ -122,11 +122,19 @@
     <script src="{{ asset('table-plugin/jquery.dataTables.min.js') }}"></script>
     <!-- Dropify JS -->
     <script src="{{ asset('dropify/js/dropify.min.js') }}"></script>
-    
+
     <!--date-->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="{{ asset('material/js') }}/chartsDash.js"></script>
+    <script>
+        function disabledButton(button, form = null) {
+            if (form) {
+                document.getElementById(form).submit();
+            }
+            document.getElementById(button).disabled = true;
+        }
+    </script>
     @stack('js')
 
 </html>

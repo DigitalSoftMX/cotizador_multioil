@@ -1,4 +1,4 @@
-function showNotification(from, align){
+function showNotification(){
 
     $.notify({
         icon: "add_alert",
@@ -8,8 +8,8 @@ function showNotification(from, align){
         type: 'success',
         timer: 4000,
         placement: {
-            from: from,
-            align: align
+            from: 'top',
+            align: 'center'
         }
     });
 }
