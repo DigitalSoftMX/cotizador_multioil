@@ -28,6 +28,7 @@ class CreateOrdersTable extends Migration
             $table->timestamp('date')->nullable();
             $table->timestamp('dispatched')->nullable();
             $table->double('dispatched_liters')->nullable();
+            $table->double('bol_load')->nullable();
             $table->double('root_liters')->nullable();
             $table->double('invoice')->nullable();
             $table->string('CFDI')->nullable();
@@ -41,7 +42,15 @@ class CreateOrdersTable extends Migration
             $table->string('invoicecfdi')->nullable();
             $table->string('invoicepdf')->nullable();
             $table->string('invoicexml')->nullable();
+            $table->string('shipper')->nullable();
+            $table->string('number_shipper')->nullable();
+            $table->double('invoice_shipper')->nullable();
+            $table->string('credit')->nullable();
+            $table->double('amount')->nullable();
+            $table->string('creditpdf')->nullable();
+            $table->string('creditxml')->nullable();
             $table->string('reason')->nullable();
+            $table->string('type')->nullable();
             $table->unsignedBigInteger('status_id')->default(1);
             $table->timestamps();
 

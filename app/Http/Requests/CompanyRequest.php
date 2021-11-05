@@ -35,6 +35,7 @@ class CompanyRequest extends FormRequest
             'email' => [
                 'required', 'email', Rule::unique((new Company)->getTable())->ignore($this->route()->company->id ?? null)
             ],
+            'shipper' => 'required|numeric'
         ];
     }
 }

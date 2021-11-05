@@ -30,7 +30,8 @@
                                     data-style="btn-primary" data-width="100%" data-live-search="true">
                                     @foreach ($months as $month)
                                         @if (date('m') >= $month['id'])
-                                            <option value="{{ $month['id'] }}" @if (date('m') == $month['id']) selected @endif>{{ $month['name'] }}</option>
+                                            <option value="{{ $month['id'] }}" @if (date('m') == $month['id']) selected @endif>
+                                                {{ $month['name'] }}</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -46,6 +47,10 @@
                                         <th>{{ __('Factura') }}</th>
                                         <th>{{ __('Producto') }}</th>
                                         <th>{{ __('Litros') }}</th>
+                                        @if ($company->id == 19)
+                                            <th>{{ __('Litros veeder') }}</th>
+                                            <th>{{ __('Merma') }}</th>
+                                        @endif
                                         <th>{{ __('Cantidad facturada') }}</th>
                                         <th>{{ __('Pago') }}</th>
                                         <th>{{ __('Saldo') }}</th>
@@ -94,6 +99,10 @@
                             <td> ${sale.cfdi} </td>
                             <td> ${sale.product} </td>
                             <td> ${sale.liters} </td>
+                            @if ($company->id == 19)
+                                <td>${sale.root_liters}</td>
+                                <td> ${sale.decrease} </td>
+                            @endif
                             <td> ${sale.invoice} </td>
                             <td> ${sale.payment} </td>
                             <td> ${sale.balance} </td>

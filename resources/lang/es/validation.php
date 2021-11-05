@@ -222,6 +222,12 @@ return [
         'file_invoicepdf' => 'archivo pdf',
         'file_invoicexml' => 'archivo xml',
         'commission_two' => 'comisión',
-        'middleman_id' => 'comisionista dos'
+        'middleman_id' => 'comisionista dos',
+        'shipper' => 'transportista',
+        'number_shipper' => 'número de factura',
+        'invoice_shipper' => 'cantidad facturada',
+        'credit' => 'nota de crédito',
+        'amount' => 'importe',
+        'type' => 'operación'
     ],
 ];

@@ -5,6 +5,7 @@
         <div class="container-fluid">
             <div class="container-fluid mt-3">
                 <div class="row">
+                    @include('partials.notification')
                     <div class="card card-nav-tabs">
                         <div class="card-header card-header-primary">
                             <div class="row">
@@ -12,14 +13,15 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('pedidos.store') }}" method="post" name="calculadora">
+                            <form id="pedidoSemanal" action="{{ route('pedidos.store') }}" method="post"
+                                name="calculadora">
                                 @csrf
                                 <div class="row">
                                     <div class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col">
                                         <select id="input-terminal_id" name="terminal_id"
                                             class="selectpicker show-menu-arrow {{ $errors->has('terminal_id') ? ' has-danger' : '' }}"
                                             data-style="btn-primary" data-width="100%" data-live-search="true">
-                                            <option value="">{{ __('Elija una terminal') }}</option>
+                                            <option selected disabled>{{ __('Elija una terminal') }}</option>
                                             @foreach ($terminals as $terminal)
                                                 <option value="{{ $terminal->id }}">{{ $terminal->name }}
                                                 </option>
@@ -44,17 +46,17 @@
                                         </div>
                                     @endif
                                     <div class="col">
-                                        <label class="alineacion">{{ __('¿Necesita flete?') }}</label></br>
+                                        <label class="alineacion">{{ __('¿Cuenta con transporte?') }}</label></br>
                                         <div class="form-check-inline alineacion">
                                             <label class="form-check-label" for="radio1">
-                                                <input type="radio" class="form-check-input" id="nflete" name="nflete"
-                                                    value="Si" checked>SI
+                                                <input type="radio" class="form-check-input" id="nfleteNo" name="nflete"
+                                                    value="No" checked onchange="checkShipper(true)">SI
                                             </label>
                                         </div>
                                         <div class="form-check-inline alineacion">
                                             <label class="form-check-label" for="radio2">
-                                                <input type="radio" class="form-check-input" id="nflete" name="nflete"
-                                                    value="No">NO
+                                                <input type="radio" class="form-check-input" id="nfleteSi" name="nflete"
+                                                    value="Si" onchange="checkShipper(false)">NO
                                             </label>
                                         </div>
                                     </div>
@@ -62,13 +64,13 @@
                                         <label>{{ __('¿Necesita un seguro?') }}</label><br>
                                         <div class="form-check-inline">
                                             <label class="form-check-label" for="radio3">
-                                                <input type="radio" class="form-check-input" id="nseguro" name="nseguro"
+                                                <input type="radio" class="form-check-input" id="nseguroSi" name="nseguro"
                                                     value="Si" checked>SI
                                             </label>
                                         </div>
                                         <div class="form-check-inline">
                                             <label class="form-check-label" for="radio4">
-                                                <input type="radio" class="form-check-input" id="nseguro" name="nseguro"
+                                                <input type="radio" class="form-check-input" id="nseguroNo" name="nseguro"
                                                     value="No">NO
                                             </label>
                                         </div>
@@ -79,21 +81,12 @@
                                         <div class="card" style="width:230px">
                                             <div class="card-body">
                                                 <h5 class="newstyle2">Lunes:
-                                                    <input class=form-control name="monday" type="text" class="newstyle7"
-                                                        id="monday" style="width:150px"> </input>
+                                                    <input class=form-control name="monday" type="text"
+                                                        class="newstyle7" id="monday" style="width:150px"> </input>
                                                 </h5>
-                                                <label class="color1">Regular:</label>
-                                                <input class="form-control" name="regularL" id="regularL" type="text"
-                                                    onKeyUp="Suma()" placeholder="Cantidad en litros." value
-                                                    required="true">
-                                                <label class="color2">Premium:</label>
-                                                <input class="form-control" name="premiumL" id="premiumL" type="text"
-                                                    onKeyUp="Suma()" placeholder="Cantidad en litros." value
-                                                    required="true">
-                                                <label class="color3">Diésel:</label>
-                                                <input class="form-control" name="dieselL" id="dieselL" type="text"
-                                                    onKeyUp="Suma()" placeholder="Cantidad en litros." value
-                                                    required="true">
+                                                <div id="lunes">
+                                                    @include('Pedidos.input',[$day='L'])
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -101,20 +94,12 @@
                                         <div class="card" style="width:230px">
                                             <div class="card-body">
                                                 <h5 class="newstyle2">Martes:
-                                                    <input class=form-control name="tuesday" type="text" class="newstyle7"
-                                                        id="tuesday" style="width:150px"> </input>
+                                                    <input class=form-control name="tuesday" type="text"
+                                                        class="newstyle7" id="tuesday" style="width:150px"> </input>
                                                 </h5>
-                                                <label class="color1">Regular: </label>
-                                                <input class="form-control" name="regularMa" id="regularMa" onKeyUp="Suma()"
-                                                    type="text" placeholder="Cantidad en litros." value required="true">
-                                                <label class="color2">Premium: </label>
-                                                <input class="form-control" name="premiumMa" id="premiumMa" type="text"
-                                                    onKeyUp="Suma()" placeholder="Cantidad en litros." value
-                                                    required="true">
-                                                <label class="color3">Diésel: </label>
-                                                <input class="form-control" name="dieselMa" id="dieselMa" type="text"
-                                                    onKeyUp="Suma()" placeholder="Cantidad en litros." value
-                                                    required="true">
+                                                <div id="martes">
+                                                    @include('Pedidos.input',[$day='Ma'])
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -122,21 +107,12 @@
                                         <div class="card" style="width:230px">
                                             <div class="card-body">
                                                 <h5 class="newstyle2">Miércoles:
-                                                    <input class=form-control name="wednesday" type="text" class="newstyle7"
-                                                        id="wednesday" style="width:150px"> </input>
+                                                    <input class=form-control name="wednesday" type="text"
+                                                        class="newstyle7" id="wednesday" style="width:150px"> </input>
                                                 </h5>
-                                                <label class="color1">Regular: </label>
-                                                <input class="form-control" name="regularMi" id="regularMi" type="text"
-                                                    onKeyUp="Suma()" placeholder="Cantidad en litros." value
-                                                    required="true">
-                                                <label class="color2">Premium: </label>
-                                                <input class="form-control" name="premiumMi" id="premiumMi" type="text"
-                                                    onKeyUp="Suma()" placeholder="Cantidad en litros." value
-                                                    required="true">
-                                                <label class="color3">Diésel: </label>
-                                                <input class="form-control" name="dieselMi" id="dieselMi" type="text"
-                                                    onKeyUp="Suma()" placeholder="Cantidad en litros." value
-                                                    required="true">
+                                                <div id="miercoles">
+                                                    @include('Pedidos.input',[$day='Mi'])
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -146,19 +122,12 @@
                                         <div class="card" style="width:230px">
                                             <div class="card-body">
                                                 <h5 class="newstyle2">Jueves:
-                                                    <input class=form-control name="thursday" type="text" class="newstyle7"
-                                                        id="thursday" style="width:150px"> </input>
+                                                    <input class=form-control name="thursday" type="text"
+                                                        class="newstyle7" id="thursday" style="width:150px"> </input>
                                                 </h5>
-                                                <label class="color1">Regular: </label>
-                                                <input class="form-control" name="regularJ" onKeyUp="Suma()" id="regularJ"
-                                                    type="text" placeholder="Cantidad en litros." value required="true">
-                                                <label class="color2">Premium: </label>
-                                                <input class="form-control" name="premiumJ" onKeyUp="Suma()" id="premiumJ"
-                                                    type="text" placeholder="Cantidad en litros." value required="true">
-                                                <label class="color3">Diésel: </label>
-                                                <input class="form-control" name="dieselJ" id="dieselJ" type="text"
-                                                    onKeyUp="Suma()" placeholder="Cantidad en litros." value
-                                                    required="true">
+                                                <div id="jueves">
+                                                    @include('Pedidos.input',[$day='J'])
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -166,19 +135,12 @@
                                         <div class="card" style="width:230px">
                                             <div class="card-body">
                                                 <h5 class="newstyle2">Viernes:
-                                                    <input class=form-control name="friday" type="text" class="newstyle7"
-                                                        id="friday" style="width:150px"> </input>
+                                                    <input class=form-control name="friday" type="text"
+                                                        class="newstyle7" id="friday" style="width:150px"> </input>
                                                 </h5>
-                                                <label class="color1"> Regular: </label>
-                                                <input class="form-control" name="regularV" onKeyUp="Suma()" id="regullarV"
-                                                    type="text" placeholder="Cantidad en litros." value required="true">
-                                                <label class="color2"> Premium: </label>
-                                                <input class="form-control" name="premiumV" onKeyUp="Suma()" id="premiumV"
-                                                    type="text" placeholder="Cantidad en litros." value required="true">
-                                                <label class="color3">Diésel: </label>
-                                                <input class="form-control" name="dieselV" id="input-name" type="dieselV"
-                                                    onKeyUp="Suma()" placeholder="Cantidad en litros." value
-                                                    required="true">
+                                                <div id="viernes">
+                                                    @include('Pedidos.input',[$day='V'])
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -186,18 +148,12 @@
                                         <div class="card borders" style="width:230px">
                                             <div class="card-body borders">
                                                 <h5 class="newstyle2">Sábado:
-                                                    <input class=form-control name="saturday" type="text" class="newstyle7"
-                                                        id="saturday" style="width:150px"> </input>
+                                                    <input class=form-control name="saturday" type="text"
+                                                        class="newstyle7" id="saturday" style="width:150px"> </input>
                                                 </h5>
-                                                <label class="color1">Regular: </label>
-                                                <input class="form-control" name="regularS" onKeyUp="Suma()" id="regularS"
-                                                    type="text" placeholder="Cantidad en litros." value required="true">
-                                                <label class="color2">Premium: </label>
-                                                <input class="form-control" name="premiumS" onKeyUp="Suma()" id="premiumS"
-                                                    type="text" placeholder="Cantidad en litros." value required="true">
-                                                <label class="color3">Diésel: </label>
-                                                <input class="form-control" name="dieselS" onKeyUp="Suma()" id="dieselS"
-                                                    type="text" placeholder="Cantidad en litros." value required="true">
+                                                <div id="sabado">
+                                                    @include('Pedidos.input',[$day='S'])
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -206,27 +162,29 @@
                                 <div class="row " id="content">
                                     <label class="col-sm-2 col-form-label">Regular </label>
                                     <div class="form-group bmd-form-group">
-                                        <input class="form-control" name="totalR" id="totalR" type="text"
+                                        <input class="form-control" name="totalR" id="totalR" type="number"
                                             placeholder="Total de Litros." readonly>
                                     </div>
                                     <label class="col-sm-2 col-form-label">Premium </label>
                                     <div class="form-group bmd-form-group">
-                                        <input class="form-control" name="totalP" id="totalP" type="text"
+                                        <input class="form-control" name="totalP" id="totalP" type="number"
                                             placeholder="Total de litros." readonly>
                                     </div>
                                     <label class="col-sm-2 col-form-label">Diésel </label>
                                     <div class="form-group bmd-form-group">
-                                        <input class="form-control" name="totalD" id="totalD" onKeyUp="Suma()" type="text"
+                                        <input class="form-control" name="totalD" id="totalD" type="number"
                                             placeholder="Total de litros." readonly>
                                     </div>
                                 </div>
                                 <h5 class="newstyle9">Total de Litros </h5>
                                 <div class="form-group bmd-form-group">
-                                    <input class="form-control" name="grantotal" id="grantotal" onKeyUp="Suma()" type="text"
+                                    <input class="form-control" name="grantotal" id="grantotal" type="number"
                                         placeholder="Total de litros." readonly>
                                 </div>
-                                <div class="card-footer ml-auto mr-auto">
-                                    <button type="submit" class="btn btn-primary">{{ __('Realizar Pedido') }}</button>
+                                <div class="card-footer justify-content-center">
+                                    <button id="buttonPedidoSemanal"
+                                        onclick="disabledButton('buttonPedidoSemanal','pedidoSemanal')" type="button"
+                                        class="btn btn-primary">{{ __('Realizar Pedido') }}</button>
                                 </div>
                             </form>
                         </div>
@@ -239,6 +197,8 @@
 @push('js')
     <script>
         let company_client = "{{ $company->id ?? '' }}";
+        let company = document.getElementById('input-company_id').value;
+        let companies = [];
         let date = new Date();
         let actualOrder = `${date.getMonth() + 1}-${date.getDate() + 1}-${date.getFullYear()}`;
         let dayofweek = `${date.getDay()}`;
@@ -292,13 +252,68 @@
                 getTerminals(terminal);
             }
         });
+        $('#input-company_id').change(function() {
+            company = document.getElementById('input-company_id').value;
+            let selected = companies.companies.find(c => c.id === parseInt(company));
+            if (selected.shipper) {
+                document.getElementById('nfleteSi').checked = false;
+                document.getElementById('nfleteNo').checked = true;
+                document.getElementById('nseguroSi').checked = false;
+                document.getElementById('nseguroNo').checked = true;
+                optionInput('inputs', 'lunes', 'L');
+                optionInput('inputs', 'martes', 'Ma');
+                optionInput('inputs', 'miercoles', 'Mi');
+                optionInput('inputs', 'jueves', 'J');
+                optionInput('inputs', 'viernes', 'V');
+                optionInput('inputs', 'sabado', 'S');
+
+            } else {
+                document.getElementById('nfleteSi').checked = true;
+                document.getElementById('nfleteNo').checked = false;
+                document.getElementById('nseguroSi').checked = true;
+                document.getElementById('nseguroNo').checked = false;
+                optionInput('options', 'lunes', 'L');
+                optionInput('options', 'martes', 'Ma');
+                optionInput('options', 'miercoles', 'Mi');
+                optionInput('options', 'jueves', 'J');
+                optionInput('options', 'viernes', 'V');
+                optionInput('options', 'sabado', 'S');
+            }
+        });
+
+        function checkShipper(checked) {
+            if (checked) {
+                document.getElementById('nfleteSi').checked = false;
+                document.getElementById('nfleteNo').checked = true;
+                document.getElementById('nseguroSi').checked = true;
+                document.getElementById('nseguroNo').checked = false;
+                optionInput('inputs', 'lunes', 'L');
+                optionInput('inputs', 'martes', 'Ma');
+                optionInput('inputs', 'miercoles', 'Mi');
+                optionInput('inputs', 'jueves', 'J');
+                optionInput('inputs', 'viernes', 'V');
+                optionInput('inputs', 'sabado', 'S');
+            } else {
+                document.getElementById('nfleteSi').checked = true;
+                document.getElementById('nfleteNo').checked = false;
+                document.getElementById('nseguroSi').checked = false;
+                document.getElementById('nseguroNo').checked = true;
+                optionInput('options', 'lunes', 'L');
+                optionInput('options', 'martes', 'Ma');
+                optionInput('options', 'miercoles', 'Mi');
+                optionInput('options', 'jueves', 'J');
+                optionInput('options', 'viernes', 'V');
+                optionInput('options', 'sabado', 'S');
+            }
+        }
+
         // funcion para listar las empresas correspondientes a la terminal
         async function getTerminals(terminal_id) {
             try {
                 const resp = await fetch('{{ url('') }}/getcompanies/' + terminal_id);
-                const companies = await resp.json();
+                companies = await resp.json();
                 $('#input-company_id').children('option').remove();
-                $('#input-company_id').append( /* html */ `<option value="">Elija un empresa</option>`);
+                $('#input-company_id').append( /* html */ `<option selected disabled>Elija una empresa</option>`);
                 companies.companies.forEach(company => {
                     $('#input-company_id').append(`<option value="${company.id}">${company.name}</option>`);
                 });
@@ -307,6 +322,18 @@
                 console.log(error)
             }
         }
-
+        // Cambio de input por option y viceversa
+        function optionInput(type, day, d) {
+            let name = document.getElementById(day);
+            if (type == 'inputs') {
+                name.innerHTML = /* html */ `@include('Pedidos.input',[$day='${d}'])`;
+            }
+            if (type == 'options') {
+                name.innerHTML = /* html */ `@include('Pedidos.optionsLiters',[$day='${d}'])`;
+                $(`#input-regular${d}`).selectpicker('refresh');
+                $(`#input-premium${d}`).selectpicker('refresh');
+                $(`#input-diesel${d}`).selectpicker('refresh');
+            }
+        }
     </script>
 @endpush

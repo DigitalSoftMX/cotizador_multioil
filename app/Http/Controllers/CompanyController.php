@@ -129,6 +129,8 @@ class CompanyController extends Controller
             $data['cfdi'] = $order->CFDI;
             $data['product'] = strtoupper($order->product);
             $data['liters'] = number_format($order->dispatched_liters, 2);
+            $data['root_liters'] = $order->root_liters ? number_format($order->root_liters) : '';
+            $data['decrease'] = $order->root_liters ? number_format($order->dispatched_liters - $order->root_liters, 2) : '';
             $data['invoice'] = '$' . number_format($order->invoice, 2);
             $data['payment'] = '$' . number_format($order->payments->sum('payment_guerrera'), 2);
             $data['balance'] = '$' . number_format($t = ($order->payments->sum('payment_guerrera') - $order->invoice), 2);
@@ -151,6 +153,6 @@ class CompanyController extends Controller
     {
         $company = Company::find($id);
         //dd($company->name);
-        return view('companies.show',['company_id' => $id, 'company' => $company]);
+        return view('companies.show', ['company_id' => $id, 'company' => $company]);
     }
 }

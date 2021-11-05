@@ -25,6 +25,12 @@
                 <p style="text-align: justify;">{{ __('LITROS DESPACHADOS') }}</p>
             </td>
             <td style="font-weight:bold;color:#ffffff;vertical-align:center" align="center" bgcolor="#34495E" rowspan="2" width="15">
+                <p style="text-align: justify;">{{ __('MERMA') }}</p>
+            </td>
+            <td style="font-weight:bold;color:#ffffff;vertical-align:center" align="center" bgcolor="#34495E" rowspan="2" width="15">
+                <p style="text-align: justify;">{{ __('BOL DE CARGA') }}</p>
+            </td>
+            <td style="font-weight:bold;color:#ffffff;vertical-align:center" align="center" bgcolor="#34495E" rowspan="2" width="15">
                 <p style="text-align: justify;">{{ __('SOBRANTE') }}</p>
             </td>
             <td style="font-weight:bold;color:#ffffff;vertical-align:center" align="center" bgcolor="#34495E" rowspan="2" width="15">
@@ -102,6 +108,8 @@
             $totalLitrosSolicitados = 0;
             $totalAproxApagar=0;
             $totalLitrosDespachados=0;
+            $totalMerma=0;
+            $totalCargaBol=0;
             $totalPagoDelCliente=0;
             $totalPagoClienteGuerrera = 0;
             $totalPagoGuerreraValero=0;
@@ -129,6 +137,8 @@
                     <td bgcolor='#303030'></td>
                     <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{'$'.number_format($totalAproxApagar,2)}}</td>
                     <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{number_format($totalLitrosDespachados,2)}}</td>
+                    <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{number_format($totalMerma,2)}}</td>
+                    <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{number_format($totalCargaBol,2)}}</td>
                     <td bgcolor='#303030'></td>
                     <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{'$'.number_format($totalPagoDelCliente,2)}}</td>
                     <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{'$'.number_format($totalPagoClienteGuerrera,2)}}</td>
@@ -156,6 +166,8 @@
                     $totalLitrosSolicitados = 0;
                     $totalAproxApagar=0;
                     $totalLitrosDespachados=0;
+                    $totalMerma=0;
+                    $totalCargaBol=0;
                     $totalPagoDelCliente=0;
                     $totalPagoClienteGuerrera = 0;
                     $totalPagoGuerreraValero=0;
@@ -216,6 +228,10 @@
                 @php $totalAproxApagar+=$aproxAPagar; @endphp
                 <td>{{ $litrosDespachados = $order->dispatched_liters }}</td>
                 @php $totalLitrosDespachados+=$litrosDespachados; @endphp
+                <td>{{$merma=($order->root_liters?$litrosDespachados - $order->root_liters:'')}}</td>
+                @php $totalMerma+=$merma==''?0:$merma; @endphp
+                <td>{{$cargaBol=($order->bol_load?$order->bol_load:'')}}</td>
+                @php $totalCargaBol+=$cargaBol==''?0:$cargaBol; @endphp
                 <td style="color:{{($sobrante = $litrosSolicitados - $litrosDespachados)<=0?'#05AB00':'#E40404'}}">{{$sobrante}}</td>
                 <td>
                     {{ '$' . number_format($pagoDelCliente = $order->sale_price * $litrosDespachados, 2) }}
@@ -225,7 +241,7 @@
                 @php $totalPagoClienteGuerrera+=$pagoClienteGuerrera; @endphp
                 <td>{{ '$' . number_format($pagoGuerreraValero = $order->payments->sum('payment_g_valero'), 2) }}</td>
                 @php $totalPagoGuerreraValero+=$pagoGuerreraValero; @endphp
-                <td>{{ '$' . number_format($pagoFletera = $order->payments->sum('payment_freight'), 2) }}</td>
+                <td>{{ '$' . number_format($pagoFletera = ($order->invoice_shipper?$order->invoice_shipper: $order->payments->sum('payment_freight')), 2) }}</td>
                 @php $totalPagoAfletera+=$pagoFletera; @endphp
                 <td>{{ $facturaValeroGuerrera = $order->invoicecfdi }}</td>
                 <td>{{ '$' . number_format($cantidadFacturadaValeroGuerrera = $order->invoicepayment,2)}}</td>
@@ -243,7 +259,7 @@
                 </td>
                 <td>{{'$'. number_format($precioEnFactura-($regularCompra!=''?$regularCompra:($premiumCompra!=''?$premiumCompra:$dieselCompra)),2)}}</td>
                 <td>{{ $order->CFDI }}</td>
-                <td>{{ '$' . number_format($cantidadFacturada = $order->invoice, 2) }}</td>
+                <td>{{ '$' . number_format($cantidadFacturada = ( $order->amount ? $order->invoice - $order->amount : $order->invoice), 2) }}</td>
                 @php $totalCantidadFacturada+=$cantidadFacturada; @endphp
                 <td style="color: {{($diferenciaPago = $cantidadFacturada - $pagoClienteGuerrera)<=0?'#05AB00':'#E40404'}}">{{ '$' . number_format($diferenciaPago, 2) }}</td>
                 <td>{{ '$' . number_format($diferenciaEntreFacturas = $cantidadFacturada-$cantidadFacturadaValeroGuerrera, 2) }}</td>
@@ -291,6 +307,8 @@
             <td bgcolor='#303030'></td>
             <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{'$'.number_format($totalAproxApagar,2)}}</td>
             <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{number_format($totalLitrosDespachados,2)}}</td>
+            <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{number_format($totalMerma,2)}}</td>
+            <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{number_format($totalCargaBol,2)}}</td>
             <td bgcolor='#303030'></td>
             <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{'$'.number_format($totalPagoDelCliente,2)}}</td>
             <td style="font-weight:bold;color:#ffffff;" align="center" bgcolor='#303030'>{{'$'.number_format($totalPagoClienteGuerrera,2)}}</td>

@@ -57,6 +57,20 @@
             </div>
         </div>
         <div class="row justify-content-center">
+            <div class="form-group{{ $errors->has('bol_load') ? ' has-danger' : '' }} col-12">
+                <label for="bol_load">{{ __('Folio Bol de carga') }}</label>
+                <input type="number" class="form-control{{ $errors->has('bol_load') ? ' is-invalid' : '' }}"
+                    id="input-bol_load" aria-describedby="bol_loadHelp" placeholder="Escribe el folio bol de carga"
+                    value="{{ old('bol_load', $invoice->bol_load) }}" aria-required="true" name="bol_load" step="any"
+                    @if ($rol != 1) readonly @endif>
+                @if ($errors->has('bol_load'))
+                    <span id="bol_load-error" class="error text-danger" for="input-bol_load">
+                        {{ $errors->first('bol_load') }}
+                    </span>
+                @endif
+            </div>
+        </div>
+        <div class="row justify-content-center">
             <div class="form-group{{ $errors->has('dispatched_liters') ? ' has-danger' : '' }} col-12">
                 <label for="dispatched_liters">{{ __('Litros despachados') }}</label>
                 <input type="number" class="form-control{{ $errors->has('dispatched_liters') ? ' is-invalid' : '' }}"

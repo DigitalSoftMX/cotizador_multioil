@@ -11,7 +11,7 @@
                             <p class="card-category"> {{ __('Aquí puedes administrar los pedidos solicitados.') }}</p>
                         </div>
                         <div class="card-body">
-                            @include('partials._notification')
+                            @include('partials.notification')
                             <div class="row">
                                 <div class="col-md-12 text-right">
                                     <a href="{{ route('orders.index') }}"

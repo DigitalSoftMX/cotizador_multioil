@@ -27,7 +27,8 @@ class ValidationController extends Controller
     public function accept(Request $request, Order $order)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        $order->update(['status_id' => 2, 'reason' => null]);
+        $request->merge(['status_id' => 2, 'reason' => null]);
+        $order->update($request->only(['status_id', 'reason', 'type']));
         try {
             event(new EmailMultioil($order, 2));
         } catch (Exception $th) {

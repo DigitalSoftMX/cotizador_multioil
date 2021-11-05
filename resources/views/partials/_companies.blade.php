@@ -95,7 +95,8 @@
                 <label class="label-control" for="main">{{ __('Activar como una empresa principal') }}</label>
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="1" name="main" id="mainid" @if ($company->main ?? '' == 1) checked @endif>
+                        <input class="form-check-input" type="checkbox" value="1" name="main" id="mainid"
+                            @if ($company->main ?? '' == 1) checked @endif>
                         {{ 'Activar' }}
                         <span class="form-check-sign">
                             <span class="check"></span>
@@ -108,6 +109,29 @@
                     </span>
                 @endif
             </div>
+            @php $s = $company->shipper ?? 1; @endphp
+            <div class="form-group{{ $errors->has('shipper') ? ' has-danger' : '' }} col-md-4 col-sm-12">
+                <label class="alineacion">{{ __('¿Cuenta con flete?') }}</label></br>
+                <div class="form-check-inline alineacion">
+                    <label class="form-check-label" for="radio1">
+                        <input type="radio" class="form-check-input" name="shipper" value="1" @if ($s) checked @endif>
+                        SI
+                    </label>
+                </div>
+                <div class="form-check-inline alineacion">
+                    <label class="form-check-label" for="radio2">
+                        <input type="radio" class="form-check-input" name="shipper" value="0" @if (!$s) checked @endif>
+                        NO
+                    </label>
+                </div>
+                @if ($errors->has('shipper'))
+                    <span id="shipper-error" class="error text-danger" for="input-shipper">
+                        {{ $errors->first('shipper') }}
+                    </span>
+                @endif
+            </div>
+        </div>
+        <div class="row justify-content-center">
             <div
                 class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-md-4 col-sm-12 checkbox-radios">
                 <label for="terminal_id">{{ __('Elije las terminales de la empresa') }}</label>

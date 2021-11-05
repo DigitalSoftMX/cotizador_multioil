@@ -82,12 +82,11 @@ class Activities
             $data['product'] = 'premium';
         if ($product == 'd')
             $data['product'] = 'diesel';
-        if (isset($request['secure'])) {
+        if (isset($request['secure']))
             $data['secure'] = $request['secure'] == 0 ? 0 : 1;
-        }
         Order::create($data);
     }
-    // Metodo para validar pdf y xml
+    // Metodo para guardar pdf y xml
     public function saveFile($request, $invoice, $file)
     {
         if ($request->file("file_$file")) {

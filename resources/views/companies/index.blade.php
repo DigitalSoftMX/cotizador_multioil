@@ -53,19 +53,16 @@
                                                         @method('delete')
                                                         <div class="row justify-content-end">
                                                             <a rel="tooltip" class="btn btn-dark btn-link"
-                                                                href="{{ route('getshopping', $company) }}"
-                                                                data-original-title="" title="">
+                                                                href="{{ route('getshopping', $company) }}">
                                                                 <i class="material-icons">visibility</i>
                                                                 <div class="ripple-container"></div>
                                                             </a>
                                                             <a rel="tooltip" class="btn btn-success btn-link"
-                                                                href="{{ route('companies.edit', $company) }}"
-                                                                data-original-title="" title="">
+                                                                href="{{ route('companies.edit', $company) }}">
                                                                 <i class="material-icons">edit</i>
                                                                 <div class="ripple-container"></div>
                                                             </a>
-                                                            <button type="submit" class="btn btn-danger btn-link"
-                                                                data-original-title="" title=""
+                                                            <button type="submit" class="btn btn-danger btn-link"                                                               
                                                                 onclick="confirm('{{ __('¿Estás seguro de que deseas eliminar a esta empresa?') }}') ? this.parentElement.submit() : ''">
                                                                 <i class="material-icons">close</i>
                                                                 <div class="ripple-container"></div>

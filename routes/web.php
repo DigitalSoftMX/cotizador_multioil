@@ -71,6 +71,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('orders/{order}/payments', 'PaymentController');
 	Route::resource('invoices', 'InvoiceController', ['only' => ['edit', 'update']]);
 	Route::post('invoice/{invoice}', 'InvoiceController@updateinvoice')->name('invoice');
+	Route::post('shipper/{invoice}', 'InvoiceController@shipper')->name('shipper');
+	Route::post('credit/{invoice}', 'InvoiceController@credit')->name('credit');
 	Route::get('downloadfile/{order}/{file}/{type}', 'InvoiceController@download')->name('download');
 	Route::get('excel', 'OrderController@downloadExcel')->name('excel');
 	Route::get('sales', 'OrderController@downloadSales')->name('sales');

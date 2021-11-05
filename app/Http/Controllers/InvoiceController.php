@@ -37,6 +37,7 @@ class InvoiceController extends Controller
     public function update(InvoiceRequest $request, Order $invoice)
     {
         $request->user()->authorizeRoles(['Administrador']);
+        request()->validate(['bol_load' => $request->bol_load ? 'numeric' : '']);
         $savingFile = new Activities();
         if ($request->file("file_pdf")) {
             request()->validate(['file_pdf' => 'required|file|mimes:pdf']);
@@ -47,7 +48,7 @@ class InvoiceController extends Controller
             $savingFile->saveFile($request, $invoice, 'xml');
         }
         $request->merge(['total' => $request->price * $invoice->liters]);
-        $invoice->update($request->only(['dispatched', 'dispatched_liters', 'root_liters', 'invoice', 'CFDI', 'sale_price', 'name_freight', 'price', 'total']));
+        $invoice->update($request->only(['dispatched', 'dispatched_liters', 'root_liters', 'bol_load', 'invoice', 'CFDI', 'sale_price', 'name_freight', 'price', 'total']));
         return redirect()->back()->withStatus('Datos de facturación actualizados correctamente');
     }
     // Actualización de facturación Valero - Guerrera
@@ -72,5 +73,33 @@ class InvoiceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         return Response::download(public_path() . $order->$file, "Factura {$order->company->name}.$type");
+    }
+    // Actualizacion de transportista
+    public function shipper(Request $request, Order $invoice)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        request()->validate([
+            'shipper' => 'required|string', 'number_shipper' => 'required|string',
+            'invoice_shipper' => 'required|numeric'
+        ]);
+        $invoice->update($request->only(['shipper', 'number_shipper', 'invoice_shipper']));
+        return redirect()->back()->withStatus('Datos de factura transporte actualizados correctamente');
+    }
+    // Actualizar notas de credito
+    public function credit(Request $request, Order $invoice)
+    {
+        $request->user()->authorizeRoles(['Administrador']);
+        request()->validate(['credit' => 'required|string|min:3', 'amount' => 'required|numeric']);
+        $savingFile = new Activities();
+        if ($request->file("file_creditpdf")) {
+            request()->validate(['file_creditpdf' => 'required|file|mimes:pdf']);
+            $savingFile->saveFile($request, $invoice, 'creditpdf');
+        }
+        if ($request->file("file_creditxml")) {
+            request()->validate(['file_creditxml' => 'required|file|mimes:xml']);
+            $savingFile->saveFile($request, $invoice, 'creditxml');
+        }
+        $invoice->update($request->only(['credit', 'amount']));
+        return redirect()->back()->withStatus('Nota de crédito actualizada correctamente');
     }
 }

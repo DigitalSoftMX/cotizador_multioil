@@ -86,6 +86,6 @@ class TerminalController extends Controller
     public function getCompanies(Request $request, Terminal $terminal = null)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return response()->json(['companies' => $terminal != null ? $terminal->companies : Company::all()]);
+        return response()->json(['companies' => $terminal ? $terminal->companies : Company::where('active', 1)->get()]);
     }
 }

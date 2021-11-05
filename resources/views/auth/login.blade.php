@@ -62,7 +62,7 @@
                         </div>
                         <div class="card-footer justify-content-center">
                             <button type="submit"
-                                class="btn btn-primary btn-link btn-lg">{{ __('Iniciar Sesión') }}</button>
+                                class="btn btn-primary btn-link">{{ __('Iniciar Sesión') }}</button>
                         </div>
                     </div>
                 </form>

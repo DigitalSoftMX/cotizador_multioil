@@ -28,7 +28,8 @@
                         <div class="ripple-container"></div>
                     </a>
                     @if ($status == 2)
-                        <a rel="tooltip" class="btn btn-dark btn-link" data-original-title="Ver pagos y facturas" href="{{ route('invoices.edit', $order) }}">
+                        <a rel="tooltip" class="btn btn-dark btn-link" data-original-title="Ver pagos y facturas"
+                            href="{{ route('invoices.edit', $order) }}">
                             <i class="material-icons">fact_check</i>
                             <div class="ripple-container"></div>
                         </a>
@@ -37,22 +38,36 @@
                     @include('partials._modal',[$id=$order->id.'see',$see=true])
                     @if (auth()->user()->roles->first()->id == 1)
                         @if ($status == 1 || $status == 3)
-                            <form action="{{ route('accept', $order) }}" method="post">
+                            <form id="auth{{ $order->id }}" action="{{ route('accept', $order) }}" method="post">
                                 @csrf
-                                <button type="button" class="btn btn-success btn-link"
-                                    title="Autorizar el pedido"
+                                <div class="form-group{{ $errors->has('type') ? ' has-danger' : '' }}">
+                                    <select id="input-type{{ $order->id }}" name="type"
+                                        class="selectpicker show-menu-arrow {{ $errors->has('type') ? ' has-danger' : '' }}"
+                                        data-style="btn-primary"
+                                        onchange="confirm('{{ __('¿Estás seguro de que deseas autorizar este pedido?') }}') ? autorizar(`input-type{{ $order->id }}`,`auth{{ $order->id }}`,`input{{ $order->id }}`) : ''">
+                                        <option selected disabled>{{ __('Autorizar') }}</option>
+                                        <option value="prepago">{{ __('Prepago') }}</option>
+                                        <option value="credito">{{ __('Crédito') }}</option>
+                                        <option value="itzel">{{ __('Itzel') }}</option>
+                                    </select>
+                                </div>
+                                @if ($errors->has('type'))
+                                    <span id="name-type" class="error text-danger"
+                                        for="input-type">{{ $errors->first('type') }}</span>
+                                @endif
+                                <input id="input{{ $order->id }}" type="hidden" name="type" value="">
+                                {{-- <button type="button" class="btn btn-success btn-link" title="Autorizar el pedido"
                                     onclick="confirm('{{ __('¿Estás seguro de que deseas autorizar este pedido?') }}') ? this.parentElement.submit() : ''">
                                     <i class="material-icons">done</i>
                                     <div class="ripple-container"></div>
-                                </button>
+                                </button> --}}
                             </form>
                         @endif
                         @if ($status == 1)
                             <form action="{{ route('deny', $order) }}" method="post">
                                 @csrf
-                                <button type="button" class="btn btn-danger btn-link"
-                                    title="Denegar el pedido" data-toggle="modal"
-                                    data-target="#exampleModalLong{{ $order->id }}">
+                                <button type="button" class="btn btn-danger btn-link" title="Denegar el pedido"
+                                    data-toggle="modal" data-target="#exampleModalLong{{ $order->id }}">
                                     <i class=" material-icons">close</i>
                                     <div class="ripple-container"></div>
                                 </button>
@@ -63,9 +78,8 @@
                         @if ($status == 2)
                             <form action="{{ route('restore', $order) }}" method="post">
                                 @csrf
-                                <button type="button" class="btn btn-danger btn-link"
-                                    title="Deshacer autorización" data-toggle="modal"
-                                    data-target="#exampleModalLong{{ $order->id }}">
+                                <button type="button" class="btn btn-danger btn-link" title="Deshacer autorización"
+                                    data-toggle="modal" data-target="#exampleModalLong{{ $order->id }}">
                                     <i class="material-icons">replay</i>
                                     <div class="ripple-container"></div>
                                 </button>
@@ -79,3 +93,13 @@
         @endif
     @endforeach
 </tbody>
+@push('js')
+    <script>
+        function autorizar(button, form, input) {
+            document.getElementById(button).disabled = true;
+            $(`#${button}`).selectpicker('refresh');
+            document.getElementById(input).value = document.getElementById(button).value;
+            document.getElementById(form).submit();
+        }
+    </script>
+@endpush

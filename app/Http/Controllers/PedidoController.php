@@ -22,20 +22,9 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->company_id != null) {
+        if (auth()->user()->company_id != null)
             return view("Pedidos.index", ['terminals' => Terminal::all()], ['company' => auth()->user()->company]);
-        }
         return view("Pedidos.index", ['terminals' => Terminal::all()], ['companies' => Company::all()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -46,71 +35,22 @@ class PedidoController extends Controller
      */
     public function store(PedidoRequest $request)
     {
-        if (auth()->user()->roles->first()->id == 1) {
+        if (auth()->user()->roles->first()->id == 1)
             request()->validate(['company_id' => 'required|integer',]);
-        }
-        if (auth()->user()->roles->first()->id == 2) {
+        if (auth()->user()->roles->first()->id == 2)
             $request->merge(['company_id' => auth()->user()->company_id]);
-        }
-        $datosPedido = $request->except('_token');
-        Pedido::insert($datosPedido);
-        $pedido = Pedido::all()->last();
+        $pedido = Pedido::create($request->all());
         try {
             event(new EmailMultioil($pedido, 4));
         } catch (Exception $th) {
         }
-        return redirect()->back()->withStatus('Pedido realizado correctamente');
+        return redirect()->back()->withStatus('Pedido semanal realizado correctamente');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Pedido  $pedido
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Pedido $pedido)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Pedido  $pedido
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pedido $pedido)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Pedido  $pedido
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Pedido $pedido)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Pedido  $pedido
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Pedido $pedido)
-    {
-        //
-    }
     public function downloadExcel(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         return Excel::download(new PedidosExport, 'confirmacion_pedidos-semanales.xlsx');
-        return 'generar excel';
     }
     public function export()
     {

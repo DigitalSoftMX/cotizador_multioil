@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\CompetitionPrice;
 use App\Events\EmailMultioil;
+use App\Exports\OrderExcelExport;
 use App\Exports\OrdersExport;
 use App\Order;
 use App\Http\Controllers\Controller;
@@ -120,7 +121,7 @@ class OrderController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
         // return view('exports.sales', ['orders' => Order::where('status_id', 2)->get()]);
-        return Excel::download(new OrdersExport(2), 'Ventas.xlsx');
+        return Excel::download(new OrderExcelExport(), 'Ventas.xlsx');
     }
     // Vista para el estado de cuenta de un comisionista
     public function getShoppingsCommision(Request $request, User $user)

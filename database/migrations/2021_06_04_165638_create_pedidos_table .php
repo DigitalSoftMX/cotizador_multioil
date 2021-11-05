@@ -51,14 +51,14 @@ class CreatePedidosTable extends Migration
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreign('terminal_id')->references('id')->on('terminals')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreign('status_id')->references('id')->on('status')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
