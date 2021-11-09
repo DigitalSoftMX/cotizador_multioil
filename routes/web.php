@@ -69,6 +69,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('monthsdaysproduct/', 'HomeController@monthsDaysProduct')->name('monthsdaysproduct');
 	Route::resource('orders', 'OrderController', ['except' => ['create', 'edit', 'destroy']]);
 	Route::resource('orders/{order}/payments', 'PaymentController');
+	Route::get('downloadvoucher/{payment}/{file}', 'PaymentController@downloadVoucher')->name('downloadVoucher');
 	Route::resource('invoices', 'InvoiceController', ['only' => ['edit', 'update']]);
 	Route::post('invoice/{invoice}', 'InvoiceController@updateinvoice')->name('invoice');
 	Route::post('shipper/{invoice}', 'InvoiceController@shipper')->name('shipper');

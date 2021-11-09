@@ -45,22 +45,50 @@
         @if ($rol == 1)
             <div class="row justify-content-center">
                 <div class="col-md-6 col-sm-12">
-                    <label>{{ __('Factura PDF') }}</label>
-                    <input type="file" name="file_invoicepdf" id="" accept=".pdf">
-                    @if ($errors->has('file_invoicepdf'))
-                        <span id="text-file_invoicepdf" class="error text-danger" for="input-file_invoicepdf">
-                            <br> {{ $errors->first('file_invoicepdf') }}
-                        </span>
-                    @endif
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        <label>{{ __('Factura PDF') }}</label>
+                        <div class="justify-content-center">
+                            <span class="btn btn-rose btn-sm btn-file">
+                                <span class="fileinput-new">
+                                    @if ($invoice->pdf ?? false)
+                                        {{ __('Cambiar archivo') }}
+                                    @else
+                                        {{ __('Agregar archivo') }}
+                                    @endif
+                                </span>
+                                <span class="fileinput-exists">Cambiar archivo</span>
+                                <input type="file" name="file_invoicepdf" accept=".pdf">
+                            </span>
+                        </div>
+                        @if ($errors->has('file_invoicepdf'))
+                            <span id="text-file_invoicepdf" class="error text-danger" for="input-file_invoicepdf">
+                                <br> {{ $errors->first('file_invoicepdf') }}
+                            </span>
+                        @endif
+                    </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <label>{{ __('Factura XML') }}</label>
-                    <input type="file" name="file_invoicexml" id="" accept=".xml">
-                    @if ($errors->has('file_invoicexml'))
-                        <span id="text-file_invoicexml" class="error text-danger" for="input-file_invoicexml">
-                            <br> {{ $errors->first('file_invoicexml') }}
-                        </span>
-                    @endif
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        <label>{{ __('Factura XML') }}</label>
+                        <div class="justify-content-center">
+                            <span class="btn btn-rose btn-sm btn-file">
+                                <span class="fileinput-new">
+                                    @if ($invoice->pdf ?? false)
+                                        {{ __('Cambiar archivo') }}
+                                    @else
+                                        {{ __('Agregar archivo') }}
+                                    @endif
+                                </span>
+                                <span class="fileinput-exists">Cambiar archivo</span>
+                                <input type="file" name="file_invoicexml" accept=".pdf">
+                            </span>
+                        </div>
+                        @if ($errors->has('file_invoicexml'))
+                            <span id="text-file_invoicexml" class="error text-danger" for="input-file_invoicexml">
+                                <br> {{ $errors->first('file_invoicexml') }}
+                            </span>
+                        @endif
+                    </div>
                 </div>
             </div>
             <div class="card-footer justify-content-center">

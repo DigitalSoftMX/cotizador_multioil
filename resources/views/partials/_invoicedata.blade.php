@@ -5,11 +5,11 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12 text-right">
-                @if ($invoice->pdf != null)
+                @if ($invoice->pdf)
                     <a href="{{ route('download', [$invoice, 'pdf', 'pdf']) }}"
                         class="btn btn-sm btn-success">{{ __('Descargar pdf') }}</a>
                 @endif
-                @if ($invoice->xml != null)
+                @if ($invoice->xml)
                     <a href="{{ route('download', [$invoice, 'xml', 'xml']) }}"
                         class="btn btn-sm btn-success">{{ __('Descargar xml') }}</a>
                 @endif
@@ -144,25 +144,51 @@
         </div>
         @if ($rol == 1)
             <div class="row justify-content-center">
-                <div class="col-sm-12">
-                    <label>{{ __('Factura PDF') }}</label>
-                    <input type="file" name="file_pdf" id="" accept=".pdf">
-                    @if ($errors->has('file_pdf'))
-                        <span id="text-file_pdf" class="error text-danger" for="input-file_pdf">
-                            <br> {{ $errors->first('file_pdf') }}
-                        </span>
-                    @endif
+                <div class="col-12 col-sm-6">
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        <label>{{ __('Factura PDF') }}</label>
+                        <div class="justify-content-center">
+                            <span class="btn btn-rose btn-sm btn-file">
+                                <span class="fileinput-new">
+                                    @if ($invoice->pdf ?? false)
+                                        {{ __('Cambiar archivo') }}
+                                    @else
+                                        {{ __('Agregar archivo') }}
+                                    @endif
+                                </span>
+                                <span class="fileinput-exists">Cambiar archivo</span>
+                                <input type="file" name="file_pdf" accept=".pdf">
+                            </span>
+                        </div>
+                        @if ($errors->has('file_pdf'))
+                            <span id="text-file_pdf" class="error text-danger" for="input-file_pdf">
+                                <br> {{ $errors->first('file_pdf') }}
+                            </span>
+                        @endif
+                    </div>
                 </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-sm-12">
-                    <label>{{ __('Factura XML') }}</label>
-                    <input type="file" name="file_xml" id="" accept=".xml">
-                    @if ($errors->has('file_xml'))
-                        <span id="text-file_xml" class="error text-danger" for="input-file_xml">
-                            <br> {{ $errors->first('file_xml') }}
-                        </span>
-                    @endif
+                <div class="col-12 col-sm-6">
+                    <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                        <label>{{ __('Factura XML') }}</label>
+                        <div class="justify-content-center">
+                            <span class="btn btn-rose btn-sm btn-file">
+                                <span class="fileinput-new">
+                                    @if ($invoice->pdf ?? false)
+                                        {{ __('Cambiar archivo') }}
+                                    @else
+                                        {{ __('Agregar archivo') }}
+                                    @endif
+                                </span>
+                                <span class="fileinput-exists">Cambiar archivo</span>
+                                <input type="file" name="file_xml" accept=".xml">
+                            </span>
+                        </div>
+                        @if ($errors->has('file_xml'))
+                            <span id="text-file_xml" class="error text-danger" for="input-file_xml">
+                                <br> {{ $errors->first('file_xml') }}
+                            </span>
+                        @endif
+                    </div>
                 </div>
             </div>
             <div class="card-footer justify-content-center">

@@ -87,14 +87,14 @@ class Activities
         Order::create($data);
     }
     // Metodo para guardar pdf y xml
-    public function saveFile($request, $invoice, $file)
+    public function saveFile($request, $model, $file, $path = null)
     {
         if ($request->file("file_$file")) {
-            if (File::exists(public_path() . $invoice->$file)) {
-                File::delete(public_path() . $invoice->$file);
-            }
-            $save = $request->file("file_$file")->store('public' . '/orders/' . $invoice->id);
-            $invoice->update([$file => Storage::url($save)]);
+            if (File::exists(public_path() . $model->$file))
+                File::delete(public_path() . $model->$file);
+            $save = $path ? $request->file("file_$file")->store("public/orders/{$model->order_id}/{$path}") :
+                $request->file("file_$file")->store("public/orders/{$model->id}");
+            $model->update([$file => Storage::url($save)]);
         }
     }
     // lista de meses en español

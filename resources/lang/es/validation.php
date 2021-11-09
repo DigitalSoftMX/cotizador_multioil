@@ -228,6 +228,9 @@ return [
         'invoice_shipper' => 'cantidad facturada',
         'credit' => 'nota de crédito',
         'amount' => 'importe',
-        'type' => 'operación'
+        'type' => 'operación',
+        'file_voucherfreight' => 'voucher de fletera',
+        'file_vouchervalero' => 'voucher Guerrera Valero',
+        'file_voucherguerrera' => 'voucher La Guerrera'
     ],
 ];

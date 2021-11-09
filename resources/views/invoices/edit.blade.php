@@ -78,7 +78,7 @@
                             @if (auth()->user()->roles->first()->id == 1)
                                 <div class="row">
                                     <div class="col-12 text-right">
-                                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal"
+                                        <button type="button" class="btn btn-sm btn-dark" data-toggle="modal"
                                             data-target=".bd-example-modal-lg-commission">{{ ($invoice->commission != null ? 'Actualizar' : 'Agregar') . __(' comisión') }}</button>
                                         <div class="modal fade bd-example-modal-lg-commission" tabindex="-1" role="dialog"
                                             aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -417,24 +417,60 @@
                                                 @if ($rol == 1)
                                                     <div class="row justify-content-center">
                                                         <div class="col-md-5 col-sm-12">
-                                                            <label>{{ __('Factura PDF') }}</label><br>
-                                                            <input type="file" name="file_creditpdf" id="" accept=".pdf">
-                                                            @if ($errors->has('file_creditpdf'))
-                                                                <span id="text-file_creditpdf" class="error text-danger"
-                                                                    for="input-file_creditpdf">
-                                                                    <br> {{ $errors->first('file_creditpdf') }}
-                                                                </span>
-                                                            @endif
+                                                            <div class="fileinput fileinput-new text-center"
+                                                                data-provides="fileinput">
+                                                                <label>{{ __('Factura PDF') }}</label>
+                                                                <div class="justify-content-center">
+                                                                    <span class="btn btn-rose btn-sm btn-file">
+                                                                        <span class="fileinput-new">
+                                                                            @if ($invoice->pdf ?? false)
+                                                                                {{ __('Cambiar archivo') }}
+                                                                            @else
+                                                                                {{ __('Agregar archivo') }}
+                                                                            @endif
+                                                                        </span>
+                                                                        <span class="fileinput-exists">Cambiar
+                                                                            archivo</span>
+                                                                        <input type="file" name="file_creditpdf"
+                                                                            accept=".pdf">
+                                                                    </span>
+                                                                </div>
+                                                                @if ($errors->has('file_creditpdf'))
+                                                                    <span id="text-file_creditpdf"
+                                                                        class="error text-danger"
+                                                                        for="input-file_creditpdf">
+                                                                        <br> {{ $errors->first('file_creditpdf') }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
                                                         </div>
-                                                        <div class="col-md-5 col-sm-12">
-                                                            <label>{{ __('Factura XML') }}</label><br>
-                                                            <input type="file" name="file_creditxml" id="" accept=".xml">
-                                                            @if ($errors->has('file_creditxml'))
-                                                                <span id="text-file_creditxml" class="error text-danger"
-                                                                    for="input-file_creditxml">
-                                                                    <br> {{ $errors->first('file_creditxml') }}
-                                                                </span>
-                                                            @endif
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="fileinput fileinput-new text-center"
+                                                                data-provides="fileinput">
+                                                                <label>{{ __('Factura XML') }}</label>
+                                                                <div class="justify-content-center">
+                                                                    <span class="btn btn-rose btn-sm btn-file">
+                                                                        <span class="fileinput-new">
+                                                                            @if ($invoice->pdf ?? false)
+                                                                                {{ __('Cambiar archivo') }}
+                                                                            @else
+                                                                                {{ __('Agregar archivo') }}
+                                                                            @endif
+                                                                        </span>
+                                                                        <span class="fileinput-exists">Cambiar
+                                                                            archivo</span>
+                                                                        <input type="file" name="file_creditxml"
+                                                                            accept=".pdf">
+                                                                    </span>
+                                                                </div>
+                                                                @if ($errors->has('file_creditxml'))
+                                                                    <span id="text-file_creditxml"
+                                                                        class="error text-danger"
+                                                                        for="input-file_creditxml">
+                                                                        <br> {{ $errors->first('file_creditxml') }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="card-footer justify-content-center">

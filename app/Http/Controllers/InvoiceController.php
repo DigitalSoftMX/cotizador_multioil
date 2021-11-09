@@ -36,7 +36,7 @@ class InvoiceController extends Controller
      */
     public function update(InvoiceRequest $request, Order $invoice)
     {
-        $request->user()->authorizeRoles(['Administrador']);
+        $request->user()->authorizeRoles(['Administrador']); 
         request()->validate(['bol_load' => $request->bol_load ? 'numeric' : '']);
         $savingFile = new Activities();
         if ($request->file("file_pdf")) {

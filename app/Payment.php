@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    protected $fillable = ['order_id', 'payment_guerrera', 'payment_g_valero', 'payment_freight'];
+    protected $fillable = [
+        'order_id', 'payment_guerrera', 'voucherguerrera', 'payment_g_valero',
+        'vouchervalero', 'payment_freight', 'voucherfreight'
+    ];
+    // Relacion con los pedidos
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

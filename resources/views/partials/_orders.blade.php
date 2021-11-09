@@ -22,13 +22,13 @@
                 <td class="text-center">{{ $order->created_at->format('Y-m-d H:i') }}</td>
                 <td class="text-center">{{ date('Y-m-d', strtotime($order->date)) }}</td>
                 <td class="td-actions justify-content-end">
-                    <a rel="tooltip" class="btn btn-dark btn-link" data-original-title="Ver más del pedido"
+                    <a rel="tooltip" class="btn btn-link" data-original-title="Ver más del pedido"
                         data-toggle="modal" data-target="#exampleModalLong{{ $order->id }}see">
                         <i class="material-icons">visibility</i>
                         <div class="ripple-container"></div>
                     </a>
                     @if ($status == 2)
-                        <a rel="tooltip" class="btn btn-dark btn-link" data-original-title="Ver pagos y facturas"
+                        <a rel="tooltip" class="btn btn-sm btn-link" data-original-title="Ver pagos y facturas"
                             href="{{ route('invoices.edit', $order) }}">
                             <i class="material-icons">fact_check</i>
                             <div class="ripple-container"></div>
