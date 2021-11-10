@@ -22,7 +22,7 @@
                     id="input-invoicepayment" aria-describedby="invoicepaymentHelp"
                     placeholder="Escribe el precio de compra por litro"
                     value="{{ old('invoicepayment', $invoice->invoicepayment) }}" aria-required="true"
-                    name="invoicepayment" step="any" @if ($rol != 1) readonly @endif>
+                    name="invoicepayment" step="any" readonly>
                 @if ($errors->has('invoicepayment'))
                     <span id="invoicepayment-error" class="error text-danger" for="input-invoicepayment">
                         {{ $errors->first('invoicepayment') }}
@@ -38,6 +38,20 @@
                 @if ($errors->has('invoicecfdi'))
                     <span id="invoicecfdi-error" class="error text-danger" for="input-invoicecfdi">
                         {{ $errors->first('invoicecfdi') }}
+                    </span>
+                @endif
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group{{ $errors->has('paymentfolio') ? ' has-danger' : '' }} col-12">
+                <label for="paymentfolio">{{ __('Folio') }}</label>
+                <input type="text" class="form-control{{ $errors->has('paymentfolio') ? ' is-invalid' : '' }}"
+                    id="input-paymentfolio" aria-describedby="paymentfolioHelp" placeholder="Folio de la factura"
+                    value="{{ old('paymentfolio', $invoice->paymentfolio) }}" aria-required="true" name="paymentfolio"
+                    readonly>
+                @if ($errors->has('paymentfolio'))
+                    <span id="paymentfolio-error" class="error text-danger" for="input-paymentfolio">
+                        {{ $errors->first('paymentfolio') }}
                     </span>
                 @endif
             </div>
@@ -80,7 +94,7 @@
                                     @endif
                                 </span>
                                 <span class="fileinput-exists">Cambiar archivo</span>
-                                <input type="file" name="file_invoicexml" accept=".pdf">
+                                <input type="file" name="file_invoicexml" accept=".xml">
                             </span>
                         </div>
                         @if ($errors->has('file_invoicexml'))

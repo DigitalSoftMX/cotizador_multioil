@@ -87,7 +87,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="form-group{{ $errors->has('root_liters') ? ' has-danger' : '' }} col-12">
-                <label for="root_liters">{{ __('Litros vendedor root') }}</label>
+                <label for="root_liters">{{ __('Litros vendedor v-root') }}</label>
                 <input type="number" class="form-control{{ $errors->has('root_liters') ? ' is-invalid' : '' }}"
                     id="input-root_liters" aria-describedby="root_litersHelp" placeholder="Escribe los litros root"
                     value="{{ old('root_liters', $invoice->root_liters) }}" aria-required="true" name="root_liters"
@@ -103,12 +103,27 @@
             <div class="form-group{{ $errors->has('invoice') ? ' has-danger' : '' }} col-12">
                 <label for="invoice">{{ __('Cantidad facturada') }}</label>
                 <input type="number" class="form-control{{ $errors->has('invoice') ? ' is-invalid' : '' }}"
-                    id="input-invoice" aria-describedby="invoiceHelp" placeholder="Escribe la cantidad facturada"
+                    id="input-invoice" aria-describedby="invoiceHelp" placeholder="Total cantidad facturada"
                     value="{{ old('invoice', $invoice->invoice) }}" aria-required="true" name="invoice" step="any"
-                    @if ($rol != 1) readonly @endif>
+                    {{-- @if ($rol != 1) readonly @endif> --}} readonly>
                 @if ($errors->has('invoice'))
                     <span id="invoice-error" class="error text-danger" for="input-invoice">
                         {{ $errors->first('invoice') }}
+                    </span>
+                @endif
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="form-group{{ $errors->has('invoicefolio') ? ' has-danger' : '' }} col-12">
+                <label for="invoicefolio">{{ __('Folio') }}</label>
+                {{-- name="invoicefolio" @if ($rol != 1) readonly @endif> --}}
+                <textarea class="form-control{{ $errors->has('invoicefolio') ? ' is-invalid' : '' }}"
+                    name="invoicefolio" id="input-invoicefolio" aria-describedby="invoicefolioHelp" placeholder="Folio"
+                    rows="2" aria-required="true" readonly>{{ old('invoicefolio', $invoice->invoicefolio) }}
+                </textarea>
+                @if ($errors->has('invoicefolio'))
+                    <span id="invoicefolio-error" class="error text-danger" for="input-invoicefolio">
+                        {{ $errors->first('invoicefolio') }}
                     </span>
                 @endif
             </div>

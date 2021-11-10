@@ -6,6 +6,7 @@ use App\Company;
 use App\CompetitionPrice;
 use App\Order;
 use App\Terminal;
+use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -114,6 +115,29 @@ class Activities
             ['name' => 'Noviembre', 'id' => '11'],
             ['name' => 'Diciembre', 'id' => '12'],
         ];
+    }
+    // Leyendo archivo XML Total y folio
+    public function xmlTotalFolioUUID($file)
+    {
+        try {
+            $data = [];
+            $xml = simplexml_load_file($file);
+            $ns = $xml->getNamespaces(true);
+            $xml->registerXPathNamespace('cfdi', $ns['cfdi']);
+            $xml->registerXPathNamespace('t', $ns['tfd']);
+            foreach ($xml->xpath('//cfdi:Comprobante') as $cfdiComprobante) {
+                $data['total'] = $cfdiComprobante['Total'];
+            }
+            foreach ($xml->xpath('//cfdi:Comprobante//cfdi:Emisor') as $Emisor) {
+                $data['shipper'] = $Emisor['Nombre'];
+            }
+            foreach ($xml->xpath('//t:TimbreFiscalDigital') as $tfd) {
+                $data['folio'] = $tfd['UUID'];
+            }
+            return $data;
+        } catch (Exception $e) {
+            return null;
+        }
     }
     // llenado de precios
     private function dataPrices($price, $prices)

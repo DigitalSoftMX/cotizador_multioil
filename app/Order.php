@@ -9,11 +9,11 @@ class Order extends Model
     protected $fillable = [
         'company_id', 'terminal_id', 'freight', 'name_freight', 'secure',
         'price', 'sale_price', 'liters', 'product', 'total', 'date', 'dispatched',
-        'dispatched_liters', 'root_liters', 'invoice', 'CFDI', 'pdf', 'xml',
+        'dispatched_liters', 'root_liters', 'invoice', 'invoicefolio', 'CFDI', 'pdf', 'xml',
         'status_id', 'commission', 'user_id', 'commission_two', 'middleman_id',
-        'reason', 'invoicepayment', 'invoicecfdi', 'invoicepdf', 'invoicexml',
-        'shipper', 'number_shipper', 'invoice_shipper', 'bol_load', 'credit', 'amount',
-        'creditpdf', 'creditxml', 'type'
+        'reason', 'invoicepayment', 'paymentfolio', 'invoicecfdi', 'invoicepdf', 'invoicexml',
+        'shipper', 'number_shipper', 'invoice_shipper', 'shipperpdf', 'shipperxml',
+        'shipperfolio', 'bol_load', 'credit', 'amount', 'creditpdf', 'creditxml', 'type',
     ];
     // Relacion con las empresas
     public function company()

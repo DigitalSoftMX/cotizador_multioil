@@ -231,6 +231,8 @@ return [
         'type' => 'operación',
         'file_voucherfreight' => 'voucher de fletera',
         'file_vouchervalero' => 'voucher Guerrera Valero',
-        'file_voucherguerrera' => 'voucher La Guerrera'
+        'file_voucherguerrera' => 'voucher La Guerrera',
+        'file_shipperpdf' => 'Factura PDF',
+        'file_shipperxml' => 'Factura XML'
     ],
 ];

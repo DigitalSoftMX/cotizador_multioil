@@ -31,6 +31,7 @@ class CreateOrdersTable extends Migration
             $table->double('bol_load')->nullable();
             $table->double('root_liters')->nullable();
             $table->double('invoice')->nullable();
+            $table->string('invoicefolio')->nullable();
             $table->string('CFDI')->nullable();
             $table->string('pdf')->nullable();
             $table->string('xml')->nullable();
@@ -39,12 +40,16 @@ class CreateOrdersTable extends Migration
             $table->double('commission_two')->nullable();
             $table->unsignedBigInteger('middleman_id')->nullable();
             $table->double('invoicepayment')->nullable();
+            $table->string('paymentfolio')->nullable();
             $table->string('invoicecfdi')->nullable();
             $table->string('invoicepdf')->nullable();
             $table->string('invoicexml')->nullable();
             $table->string('shipper')->nullable();
             $table->string('number_shipper')->nullable();
             $table->double('invoice_shipper')->nullable();
+            $table->string('shipperpdf')->nullable();
+            $table->string('shipperxml')->nullable();
+            $table->string('shipperfolio')->nullable();
             $table->string('credit')->nullable();
             $table->double('amount')->nullable();
             $table->string('creditpdf')->nullable();

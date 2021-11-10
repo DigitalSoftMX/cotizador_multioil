@@ -36,19 +36,26 @@ class InvoiceController extends Controller
      */
     public function update(InvoiceRequest $request, Order $invoice)
     {
-        $request->user()->authorizeRoles(['Administrador']); 
+        $request->user()->authorizeRoles(['Administrador']);
         request()->validate(['bol_load' => $request->bol_load ? 'numeric' : '']);
-        $savingFile = new Activities();
+        $activity = new Activities();
         if ($request->file("file_pdf")) {
             request()->validate(['file_pdf' => 'required|file|mimes:pdf']);
-            $savingFile->saveFile($request, $invoice, 'pdf');
+            $activity->saveFile($request, $invoice, 'pdf');
         }
         if ($request->file("file_xml")) {
             request()->validate(['file_xml' => 'required|file|mimes:xml']);
-            $savingFile->saveFile($request, $invoice, 'xml');
+            $activity->saveFile($request, $invoice, 'xml');
+            // leyendo archivo xml y actualizando total y folio UUID
+            $xml = $activity->xmlTotalFolioUUID($request->file('file_xml'));
+            if ($xml) {
+                $invoice->update(['invoice' => $xml['total'], 'invoicefolio' => $xml['folio']]);
+            } else {
+                return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+            }
         }
         $request->merge(['total' => $request->price * $invoice->liters]);
-        $invoice->update($request->only(['dispatched', 'dispatched_liters', 'root_liters', 'bol_load', 'invoice', 'CFDI', 'sale_price', 'name_freight', 'price', 'total']));
+        $invoice->update($request->only(['dispatched', 'dispatched_liters', 'root_liters', 'bol_load', 'CFDI', 'sale_price', 'name_freight', 'price', 'total']));
         return redirect()->back()->withStatus('Datos de facturación actualizados correctamente');
     }
     // Actualización de facturación Valero - Guerrera
@@ -56,16 +63,22 @@ class InvoiceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate(['invoicepayment' => 'required|numeric', 'invoicecfdi' => 'required|string|min:3']);
-        $savingFile = new Activities();
+        $activity = new Activities();
         if ($request->file("file_invoicepdf")) {
             request()->validate(['file_invoicepdf' => 'required|file|mimes:pdf']);
-            $savingFile->saveFile($request, $invoice, 'invoicepdf');
+            $activity->saveFile($request, $invoice, 'invoicepdf');
         }
         if ($request->file("file_invoicexml")) {
             request()->validate(['file_invoicexml' => 'required|file|mimes:xml']);
-            $savingFile->saveFile($request, $invoice, 'invoicexml');
+            $activity->saveFile($request, $invoice, 'invoicexml');
+            $xml = $activity->xmlTotalFolioUUID($request->file('file_invoicexml'));
+            if ($xml) {
+                $invoice->update(['invoicepayment' => $xml['total'], 'paymentfolio' => $xml['folio']]);
+            } else {
+                return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+            }
         }
-        $invoice->update($request->only(['invoicepayment', 'invoicecfdi']));
+        $invoice->update($request->only(['invoicecfdi']));
         return redirect()->back()->withStatus('Datos de facturación Valero - Guerrera actualizados correctamente');
     }
     // descarga de archivo pdf o xml
@@ -80,9 +93,22 @@ class InvoiceController extends Controller
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate([
             'shipper' => 'required|string', 'number_shipper' => 'required|string',
-            'invoice_shipper' => 'required|numeric'
+            'file_shipperpdf' => 'required|file|mimes:pdf',
+            'file_shipperxml' => 'required|file|mimes:xml'
         ]);
-        $invoice->update($request->only(['shipper', 'number_shipper', 'invoice_shipper']));
+        $activity = new Activities();
+        $activity->saveFile($request, $invoice, 'shipperpdf');
+        $activity->saveFile($request, $invoice, 'shipperxml');
+        $xml = $activity->xmlTotalFolioUUID($request->file('file_shipperxml'));
+        if ($xml) {
+            $invoice->update([
+                'shipper' => $xml['shipper'], 'invoice_shipper' => $xml['total'],
+                'shipperfolio' => $xml['folio']
+            ]);
+        } else {
+            return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+        }
+        $invoice->update($request->only(['number_shipper']));
         return redirect()->back()->withStatus('Datos de factura transporte actualizados correctamente');
     }
     // Actualizar notas de credito
@@ -90,16 +116,23 @@ class InvoiceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate(['credit' => 'required|string|min:3', 'amount' => 'required|numeric']);
-        $savingFile = new Activities();
+        $activity = new Activities();
         if ($request->file("file_creditpdf")) {
             request()->validate(['file_creditpdf' => 'required|file|mimes:pdf']);
-            $savingFile->saveFile($request, $invoice, 'creditpdf');
+            $activity->saveFile($request, $invoice, 'creditpdf');
         }
         if ($request->file("file_creditxml")) {
             request()->validate(['file_creditxml' => 'required|file|mimes:xml']);
-            $savingFile->saveFile($request, $invoice, 'creditxml');
+            $activity->saveFile($request, $invoice, 'creditxml');
+            // Revision
+            $xml = $activity->xmlTotalFolioUUID($request->file('file_creditxml'));
+            if ($xml) {
+                $invoice->update(['credit' => $xml['folio'], 'amount' => $xml['total']]);
+            } else {
+                return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+            }
         }
-        $invoice->update($request->only(['credit', 'amount']));
+        // $invoice->update($request->only(['amount']));
         return redirect()->back()->withStatus('Nota de crédito actualizada correctamente');
     }
 }

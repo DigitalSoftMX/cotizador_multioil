@@ -275,7 +275,8 @@
                                     @endif
                                     @if (($rol = auth()->user()->roles->first()->id) == 1)
                                         <form id="transportistaForm" action="{{ route('shipper', $invoice) }}"
-                                            method="post" autocomplete="off" class="form-horizontal">
+                                            method="post" autocomplete="off" class="form-horizontal"
+                                            enctype="multipart/form-data">
                                             @csrf
                                             <div class="card">
                                                 <div class="card-header">
@@ -284,17 +285,28 @@
                                                     </h4>
                                                 </div>
                                                 <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-12 text-right">
+                                                            @if ($invoice->shipperpdf)
+                                                                <a href="{{ route('download', [$invoice, 'shipperpdf', 'pdf']) }}"
+                                                                    class="btn btn-sm btn-success">{{ __('Descargar pdf') }}</a>
+                                                            @endif
+                                                            @if ($invoice->shipperxml)
+                                                                <a href="{{ route('download', [$invoice, 'shipperxml', 'xml']) }}"
+                                                                    class="btn btn-sm btn-success">{{ __('Descargar xml') }}</a>
+                                                            @endif
+                                                        </div>
+                                                    </div>
                                                     <div class="row justify-content-center">
                                                         <div
-                                                            class="form-group{{ $errors->has('shipper') ? ' has-danger' : '' }} col-md-4 col-sm-12">
+                                                            class="form-group{{ $errors->has('shipper') ? ' has-danger' : '' }} col-md-6 col-sm-12">
                                                             <label for="shipper">{{ __('Transportista') }}</label>
                                                             <input type="text"
                                                                 class="form-control{{ $errors->has('shipper') ? ' is-invalid' : '' }}"
                                                                 id="input-shipper" aria-describedby="shipperHelp"
                                                                 placeholder="Escribe el nombre del transportista"
                                                                 value="{{ old('shipper', $invoice->shipper) }}"
-                                                                aria-required="true" name="shipper"
-                                                                @if ($rol != 1) readonly @endif>
+                                                                aria-required="true" name="shipper" readonly>
                                                             @if ($errors->has('shipper'))
                                                                 <span id="shipper-error" class="error text-danger"
                                                                     for="input-shipper">
@@ -303,7 +315,7 @@
                                                             @endif
                                                         </div>
                                                         <div
-                                                            class="form-group{{ $errors->has('number_shipper') ? ' has-danger' : '' }} col-md-4 col-sm-12">
+                                                            class="form-group{{ $errors->has('number_shipper') ? ' has-danger' : '' }} col-md-6 col-sm-12">
                                                             <label
                                                                 for="number_shipper">{{ __('Número de factura') }}</label>
                                                             <input type="text"
@@ -321,8 +333,10 @@
                                                                 </span>
                                                             @endif
                                                         </div>
+                                                    </div>
+                                                    <div class="row justify-content-center">
                                                         <div
-                                                            class="form-group{{ $errors->has('invoice_shipper') ? ' has-danger' : '' }} col-md-4 col-sm-12">
+                                                            class="form-group{{ $errors->has('invoice_shipper') ? ' has-danger' : '' }} col-md-6 col-sm-12">
                                                             <label
                                                                 for="invoice_shipper">{{ __('Cantidad Facturada') }}</label>
                                                             <input type="number"
@@ -332,13 +346,86 @@
                                                                 placeholder="Escribe la cantidad facturada"
                                                                 value="{{ old('invoice_shipper', $invoice->invoice_shipper) }}"
                                                                 aria-required="true" name="invoice_shipper" step="any"
-                                                                @if ($rol != 1) readonly @endif>
+                                                                readonly>
                                                             @if ($errors->has('invoice_shipper'))
                                                                 <span id="invoice_shipper-error" class="error text-danger"
                                                                     for="input-invoice_shipper">
                                                                     {{ $errors->first('invoice_shipper') }}
                                                                 </span>
                                                             @endif
+                                                        </div>
+                                                        <div
+                                                            class="form-group{{ $errors->has('shipperfolio') ? ' has-danger' : '' }} col-md-6 col-sm-12">
+                                                            <label for="shipperfolio">{{ __('Folio') }}</label>
+                                                            {{-- name="shipperfolio" @if ($rol != 1) readonly @endif> --}}
+                                                            <textarea
+                                                                class="form-control{{ $errors->has('shipperfolio') ? ' is-invalid' : '' }}"
+                                                                name="shipperfolio" id="input-shipperfolio"
+                                                                aria-describedby="shipperfolioHelp" placeholder="Folio"
+                                                                rows="2" aria-required="true" readonly>{{ old('shipperfolio', $invoice->shipperfolio) }}
+                                                                                                    </textarea>
+                                                            @if ($errors->has('shipperfolio'))
+                                                                <span id="shipperfolio-error" class="error text-danger"
+                                                                    for="input-shipperfolio">
+                                                                    {{ $errors->first('shipperfolio') }}
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="fileinput fileinput-new text-center"
+                                                                data-provides="fileinput">
+                                                                <label>{{ __('Factura PDF') }}</label>
+                                                                <div class="justify-content-center">
+                                                                    <span class="btn btn-rose btn-sm btn-file">
+                                                                        <span class="fileinput-new">
+                                                                            @if ($invoice->shipperpdf ?? false)
+                                                                                {{ __('Cambiar archivo') }}
+                                                                            @else
+                                                                                {{ __('Agregar archivo') }}
+                                                                            @endif
+                                                                        </span>
+                                                                        <span class="fileinput-exists">Cambiar
+                                                                            archivo</span>
+                                                                        <input type="file" name="file_shipperpdf"
+                                                                            accept=".pdf">
+                                                                    </span>
+                                                                </div>
+                                                                @if ($errors->has('file_shipperpdf'))
+                                                                    <span id="text-file_shipperpdf"
+                                                                        class="error text-danger"
+                                                                        for="input-file_shipperpdf">
+                                                                        <br> {{ $errors->first('file_shipperpdf') }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="fileinput fileinput-new text-center"
+                                                                data-provides="fileinput">
+                                                                <label>{{ __('Factura XML') }}</label>
+                                                                <div class="justify-content-center">
+                                                                    <span class="btn btn-rose btn-sm btn-file">
+                                                                        <span class="fileinput-new">
+                                                                            @if ($invoice->shipperxml ?? false)
+                                                                                {{ __('Cambiar archivo') }}
+                                                                            @else
+                                                                                {{ __('Agregar archivo') }}
+                                                                            @endif
+                                                                        </span>
+                                                                        <span class="fileinput-exists">Cambiar
+                                                                            archivo</span>
+                                                                        <input type="file" name="file_shipperxml"
+                                                                            accept=".xml">
+                                                                    </span>
+                                                                </div>
+                                                                @if ($errors->has('file_shipperxml'))
+                                                                    <span id="text-file_shipperxml"
+                                                                        class="error text-danger"
+                                                                        for="input-file_shipperxml">
+                                                                        <br> {{ $errors->first('file_shipperxml') }}
+                                                                    </span>
+                                                                @endif
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     @if ($rol == 1)
@@ -355,136 +442,138 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12 col-ms-12">
-                                    <form id="creditForm" action="{{ route('credit', $invoice) }}" method="post"
-                                        enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="card ">
-                                            <div class="card-header">
-                                                <h4 class="card-title">
-                                                    <strong>{{ __('Nota de crédito') }}</strong>
-                                                </h4>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="row justify-content-center">
-                                                    <div class="col-10 text-right">
-                                                        @if ($invoice->creditpdf != null)
-                                                            <a href="{{ route('download', [$invoice, 'creditpdf', 'pdf']) }}"
-                                                                class="btn btn-sm btn-success">{{ __('Descargar pdf') }}</a>
-                                                        @endif
-                                                        @if ($invoice->creditxml != null)
-                                                            <a href="{{ route('download', [$invoice, 'creditxml', 'xml']) }}"
-                                                                class="btn btn-sm btn-success">{{ __('Descargar xml') }}</a>
-                                                        @endif
-                                                    </div>
+                            @if (($rol = auth()->user()->roles->first()->id) == 1)
+                                <div class="row">
+                                    <div class="col-12 col-ms-12">
+                                        <form id="creditForm" action="{{ route('credit', $invoice) }}" method="post"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="card ">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">
+                                                        <strong>{{ __('Nota de crédito') }}</strong>
+                                                    </h4>
                                                 </div>
-                                                <div class="row justify-content-center">
-                                                    <div
-                                                        class="form-group{{ $errors->has('credit') ? ' has-danger' : '' }} col-md-5 col-sm-12">
-                                                        <label for="credit">{{ __('Folio nota de crédito') }}</label>
-                                                        <input type="text"
-                                                            class="form-control{{ $errors->has('credit') ? ' is-invalid' : '' }}"
-                                                            id="input-credit" aria-describedby="creditHelp"
-                                                            placeholder="Escribe la nota de crédito"
-                                                            value="{{ old('credit', $invoice->credit) }}"
-                                                            aria-required="true" name="credit" @if ($rol != 1) readonly @endif>
-                                                        @if ($errors->has('credit'))
-                                                            <span id="credit-error" class="error text-danger"
-                                                                for="input-credit">
-                                                                {{ $errors->first('credit') }}
-                                                            </span>
-                                                        @endif
-                                                    </div>
-                                                    <div
-                                                        class="form-group{{ $errors->has('amount') ? ' has-danger' : '' }} col-md-5 col-sm-12">
-                                                        <label for="amount">{{ __('Importe final') }}</label>
-                                                        <input type="text"
-                                                            class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}"
-                                                            id="input-amount" aria-describedby="amountHelp"
-                                                            placeholder="Escribe el importe final"
-                                                            value="{{ old('amount', $invoice->amount) }}"
-                                                            aria-required="true" name="amount" step="any"
-                                                            @if ($rol != 1) readonly @endif>
-                                                        @if ($errors->has('amount'))
-                                                            <span id="amount-error" class="error text-danger"
-                                                                for="input-amount">
-                                                                {{ $errors->first('amount') }}
-                                                            </span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                                @if ($rol == 1)
+                                                <div class="card-body">
                                                     <div class="row justify-content-center">
-                                                        <div class="col-md-5 col-sm-12">
-                                                            <div class="fileinput fileinput-new text-center"
-                                                                data-provides="fileinput">
-                                                                <label>{{ __('Factura PDF') }}</label>
-                                                                <div class="justify-content-center">
-                                                                    <span class="btn btn-rose btn-sm btn-file">
-                                                                        <span class="fileinput-new">
-                                                                            @if ($invoice->pdf ?? false)
-                                                                                {{ __('Cambiar archivo') }}
-                                                                            @else
-                                                                                {{ __('Agregar archivo') }}
-                                                                            @endif
-                                                                        </span>
-                                                                        <span class="fileinput-exists">Cambiar
-                                                                            archivo</span>
-                                                                        <input type="file" name="file_creditpdf"
-                                                                            accept=".pdf">
-                                                                    </span>
-                                                                </div>
-                                                                @if ($errors->has('file_creditpdf'))
-                                                                    <span id="text-file_creditpdf"
-                                                                        class="error text-danger"
-                                                                        for="input-file_creditpdf">
-                                                                        <br> {{ $errors->first('file_creditpdf') }}
-                                                                    </span>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <div class="fileinput fileinput-new text-center"
-                                                                data-provides="fileinput">
-                                                                <label>{{ __('Factura XML') }}</label>
-                                                                <div class="justify-content-center">
-                                                                    <span class="btn btn-rose btn-sm btn-file">
-                                                                        <span class="fileinput-new">
-                                                                            @if ($invoice->pdf ?? false)
-                                                                                {{ __('Cambiar archivo') }}
-                                                                            @else
-                                                                                {{ __('Agregar archivo') }}
-                                                                            @endif
-                                                                        </span>
-                                                                        <span class="fileinput-exists">Cambiar
-                                                                            archivo</span>
-                                                                        <input type="file" name="file_creditxml"
-                                                                            accept=".pdf">
-                                                                    </span>
-                                                                </div>
-                                                                @if ($errors->has('file_creditxml'))
-                                                                    <span id="text-file_creditxml"
-                                                                        class="error text-danger"
-                                                                        for="input-file_creditxml">
-                                                                        <br> {{ $errors->first('file_creditxml') }}
-                                                                    </span>
-                                                                @endif
-                                                            </div>
+                                                        <div class="col-10 text-right">
+                                                            @if ($invoice->creditpdf != null)
+                                                                <a href="{{ route('download', [$invoice, 'creditpdf', 'pdf']) }}"
+                                                                    class="btn btn-sm btn-success">{{ __('Descargar pdf') }}</a>
+                                                            @endif
+                                                            @if ($invoice->creditxml != null)
+                                                                <a href="{{ route('download', [$invoice, 'creditxml', 'xml']) }}"
+                                                                    class="btn btn-sm btn-success">{{ __('Descargar xml') }}</a>
+                                                            @endif
                                                         </div>
                                                     </div>
-                                                    <div class="card-footer justify-content-center">
-                                                        <button id="creditButton" type="button"
-                                                            onclick="disabledButton('creditButton','creditForm')"
-                                                            class="btn btn-primary">{{ __('Actualizar nota de crédito') }}
-                                                        </button>
+                                                    <div class="row justify-content-center">
+                                                        <div
+                                                            class="form-group{{ $errors->has('credit') ? ' has-danger' : '' }} col-md-5 col-sm-12">
+                                                            <label
+                                                                for="credit">{{ __('Folio nota de crédito') }}</label>
+                                                            <input type="text"
+                                                                class="form-control{{ $errors->has('credit') ? ' is-invalid' : '' }}"
+                                                                id="input-credit" aria-describedby="creditHelp"
+                                                                placeholder="Escribe la nota de crédito"
+                                                                value="{{ old('credit', $invoice->credit) }}"
+                                                                aria-required="true" name="credit" readonly>
+                                                            @if ($errors->has('credit'))
+                                                                <span id="credit-error" class="error text-danger"
+                                                                    for="input-credit">
+                                                                    {{ $errors->first('credit') }}
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                        <div
+                                                            class="form-group{{ $errors->has('amount') ? ' has-danger' : '' }} col-md-5 col-sm-12">
+                                                            <label for="amount">{{ __('Importe final') }}</label>
+                                                            <input type="text"
+                                                                class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}"
+                                                                id="input-amount" aria-describedby="amountHelp"
+                                                                placeholder="Escribe el importe final"
+                                                                value="{{ old('amount', $invoice->amount) }}"
+                                                                aria-required="true" name="amount" step="any" readonly>
+                                                            @if ($errors->has('amount'))
+                                                                <span id="amount-error" class="error text-danger"
+                                                                    for="input-amount">
+                                                                    {{ $errors->first('amount') }}
+                                                                </span>
+                                                            @endif
+                                                        </div>
                                                     </div>
-                                                @endif
+                                                    @if ($rol == 1)
+                                                        <div class="row justify-content-center">
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <div class="fileinput fileinput-new text-center"
+                                                                    data-provides="fileinput">
+                                                                    <label>{{ __('Factura PDF') }}</label>
+                                                                    <div class="justify-content-center">
+                                                                        <span class="btn btn-rose btn-sm btn-file">
+                                                                            <span class="fileinput-new">
+                                                                                @if ($invoice->creditpdf ?? false)
+                                                                                    {{ __('Cambiar archivo') }}
+                                                                                @else
+                                                                                    {{ __('Agregar archivo') }}
+                                                                                @endif
+                                                                            </span>
+                                                                            <span class="fileinput-exists">Cambiar
+                                                                                archivo</span>
+                                                                            <input type="file" name="file_creditpdf"
+                                                                                accept=".pdf">
+                                                                        </span>
+                                                                    </div>
+                                                                    @if ($errors->has('file_creditpdf'))
+                                                                        <span id="text-file_creditpdf"
+                                                                            class="error text-danger"
+                                                                            for="input-file_creditpdf">
+                                                                            <br> {{ $errors->first('file_creditpdf') }}
+                                                                        </span>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <div class="fileinput fileinput-new text-center"
+                                                                    data-provides="fileinput">
+                                                                    <label>{{ __('Factura XML') }}</label>
+                                                                    <div class="justify-content-center">
+                                                                        <span class="btn btn-rose btn-sm btn-file">
+                                                                            <span class="fileinput-new">
+                                                                                @if ($invoice->creditxml ?? false)
+                                                                                    {{ __('Cambiar archivo') }}
+                                                                                @else
+                                                                                    {{ __('Agregar archivo') }}
+                                                                                @endif
+                                                                            </span>
+                                                                            <span class="fileinput-exists">Cambiar
+                                                                                archivo</span>
+                                                                            <input type="file" name="file_creditxml"
+                                                                                accept=".xml">
+                                                                        </span>
+                                                                    </div>
+                                                                    @if ($errors->has('file_creditxml'))
+                                                                        <span id="text-file_creditxml"
+                                                                            class="error text-danger"
+                                                                            for="input-file_creditxml">
+                                                                            <br> {{ $errors->first('file_creditxml') }}
+                                                                        </span>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer justify-content-center">
+                                                            <button id="creditButton" type="button"
+                                                                onclick="disabledButton('creditButton','creditForm')"
+                                                                class="btn btn-primary">{{ __('Actualizar nota de crédito') }}
+                                                            </button>
+                                                        </div>
+                                                    @endif
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
