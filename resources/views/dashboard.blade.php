@@ -48,9 +48,9 @@
                 </div>
 
 
-                @include('partials._notification')
+                @include('partials.notification')
                 <div class="row mt-3 pl-5 pr-5">
-                    <div class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-sm-2">
+                    <div class="form-group{{ $errors->has('terminal_id') ? ' has-danger' : '' }} col-sm-3">
                         <select id="input-terminal_id" name="terminal_id"
                             class="selectpicker show-menu-arrow {{ $errors->has('terminal_id') ? ' has-danger' : '' }}"
                             data-style="btn-primary" data-width="100%" data-live-search="true">
@@ -63,7 +63,7 @@
                                 for="input-terminal_id">{{ $errors->first('terminal_id') }}</span>
                         @endif
                     </div>
-                    <div class="form-group{{ $errors->has('month_id') ? ' has-danger' : '' }} col-sm-2">
+                    <div class="form-group{{ $errors->has('month_id') ? ' has-danger' : '' }} col-sm-3">
                         <select id="input-month_id" name="month_id"
                             class="selectpicker show-menu-arrow {{ $errors->has('month_id') ? ' has-danger' : '' }}"
                             data-style="btn-primary" data-width="100%" data-live-search="true">
@@ -80,13 +80,13 @@
                         @endif
                     </div>
                     @if (auth()->user()->roles->first()->id == 2)
-                        <div class="col-md-8 text-right">
+                        <div class="col-md-6 text-right">
                             <a href="{{ route('getshopping', auth()->user()->company_id) }}"
                                 class="btn btn-sm btn-success">{{ __('Ver mi estado de cuenta') }}</a>
                         </div>
                     @endif
                     @if (auth()->user()->roles->first()->id == 1)
-                        <div class="col-md-8 text-right pt-3">
+                        <div class="col-md-6 text-right pt-3">
                             <a href="{{ route('prices.index') }}" class="btn btn-sm btn-success">
                                 {{ __('Capturar precios') }}
                             </a>
@@ -152,7 +152,7 @@
                                     <div class="col-md-3">
                                         <div class="statistics text-center">
                                             <h3 class="info-title">
-                                                <!--small>$</small-->{{ $totalLiters }}
+                                                <!--small>$</small-->{{ number_format($totalLiters,2) }}
                                             </h3>
                                             <h6 class="stats-title">Litros totales</h6>
                                         </div>

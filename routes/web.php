@@ -91,3 +91,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('levels', 'LevelController', ['except' => ['show']]);
 	Route::get('logins', 'LastLoginController@index')->name('logins.index');
 });
+
+
+Route::group(['middleware' => 'auth'], function () {
+	Route::get('graficas', 'GraficasController@index');
+});

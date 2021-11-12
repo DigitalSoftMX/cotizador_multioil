@@ -43,7 +43,7 @@ class HomeController extends Controller
         $terminal = Terminal::all()->first();
         if (auth()->user()->company_id != null) {
             $prices = $terminal != null ? $this->getPrices($terminal->id, date('m'), auth()->user()->company_id) : [];
-            $pricesClient = auth()->user()->company->prices->where('terminal_id', $terminal->id)->last();
+            $pricesClient = auth()->user()->company->prices->where('terminal_id', $terminal->id)->sortByDesc('created_at')->first();
         } else {
             $prices = $terminal != null ? $this->getPrices($terminal->id, date('m')) : [];
         }
@@ -147,7 +147,8 @@ class HomeController extends Controller
         return $prices;
     }
 
-    private function monthsToThePresent(){
+    private function monthsToThePresent()
+    {
         // array meses en español
         $array_meses_espanol = [
             "Jan" => "Enero",
@@ -204,7 +205,8 @@ class HomeController extends Controller
         return $combinacion;
     }
 
-    public function monthsToThePresentLiters(){
+    public function monthsToThePresentLiters()
+    {
         $meses =  $this->monthsToThePresent();
         // array ultimos 12 meses de todas las estaciones
         $liters_mouths = [];
@@ -214,14 +216,14 @@ class HomeController extends Controller
             array_push($liters_mouths, Order::where([['created_at', 'like', '%' . $meses[1][$mes] . '%'], ['status_id', 2]])->sum('dispatched_liters'));
         }
 
-        array_push($result,$liters_mouths);
-        array_push($result,$meses[0]);
+        array_push($result, $liters_mouths);
+        array_push($result, $meses[0]);
         return $result;
-
     }
 
 
-    public function monthsDaysProduct(Request $request){
+    public function monthsDaysProduct(Request $request)
+    {
         $meses =  $this->monthsToThePresent();
         $liters_mouths_regular = [];
         $liters_mouths_premium = [];
@@ -229,109 +231,107 @@ class HomeController extends Controller
         $result = [];
         $days = [];
         $temp_day = '01';
-        
-        if($request->days == 0){
 
-            for($day = 1; $day<=date('t', strtotime($meses[1][11])); $day++){
-                if($day<10){
-                    $temp_day = '0'.$day;
-                }else{
+        if ($request->days == 0) {
+
+            for ($day = 1; $day <= date('t', strtotime($meses[1][11])); $day++) {
+                if ($day < 10) {
+                    $temp_day = '0' . $day;
+                } else {
                     $temp_day = $day;
                 }
-                array_push($liters_mouths_regular, Order::where([['created_at', 'like', '%'.$meses[1][11].'-'.$temp_day.'%'], ['status_id', 2],['product','regular']])->sum('dispatched_liters'));
-                array_push($liters_mouths_premium, Order::where([['created_at', 'like', '%'.$meses[1][11].'-'.$temp_day.'%'], ['status_id', 2],['product','premium']])->sum('dispatched_liters'));
-                array_push($liters_mouths_diesel, Order::where([['created_at', 'like', '%'.$meses[1][11].'-'.$temp_day.'%'], ['status_id', 2],['product','diesel']])->sum('dispatched_liters'));
+                array_push($liters_mouths_regular, Order::where([['created_at', 'like', '%' . $meses[1][11] . '-' . $temp_day . '%'], ['status_id', 2], ['product', 'regular']])->sum('dispatched_liters'));
+                array_push($liters_mouths_premium, Order::where([['created_at', 'like', '%' . $meses[1][11] . '-' . $temp_day . '%'], ['status_id', 2], ['product', 'premium']])->sum('dispatched_liters'));
+                array_push($liters_mouths_diesel, Order::where([['created_at', 'like', '%' . $meses[1][11] . '-' . $temp_day . '%'], ['status_id', 2], ['product', 'diesel']])->sum('dispatched_liters'));
                 array_push($days, $day);
             }
-            array_push($result,$liters_mouths_regular);
-            array_push($result,$liters_mouths_premium);
-            array_push($result,$liters_mouths_diesel);
-            array_push($result,$days);
+            array_push($result, $liters_mouths_regular);
+            array_push($result, $liters_mouths_premium);
+            array_push($result, $liters_mouths_diesel);
+            array_push($result, $days);
             return $result;
-        }else if($request->days == 1){
-            
+        } else if ($request->days == 1) {
+
             for ($mes = 0; $mes <= 11; $mes++) {
-                array_push($liters_mouths_regular, Order::where([['created_at', 'like', '%' . $meses[1][$mes] . '%'], ['status_id', 2],['product','regular']])->sum('dispatched_liters'));
-                array_push($liters_mouths_premium, Order::where([['created_at', 'like', '%' . $meses[1][$mes] . '%'], ['status_id', 2],['product','premium']])->sum('dispatched_liters'));
-                array_push($liters_mouths_diesel, Order::where([['created_at', 'like', '%' . $meses[1][$mes] . '%'], ['status_id', 2],['product','diesel']])->sum('dispatched_liters'));
+                array_push($liters_mouths_regular, Order::where([['created_at', 'like', '%' . $meses[1][$mes] . '%'], ['status_id', 2], ['product', 'regular']])->sum('dispatched_liters'));
+                array_push($liters_mouths_premium, Order::where([['created_at', 'like', '%' . $meses[1][$mes] . '%'], ['status_id', 2], ['product', 'premium']])->sum('dispatched_liters'));
+                array_push($liters_mouths_diesel, Order::where([['created_at', 'like', '%' . $meses[1][$mes] . '%'], ['status_id', 2], ['product', 'diesel']])->sum('dispatched_liters'));
             }
-            
-            
-            array_push($result,$liters_mouths_regular);
-            array_push($result,$liters_mouths_premium);
-            array_push($result,$liters_mouths_diesel);
-            
-            array_push($result,$meses[0]);
+
+
+            array_push($result, $liters_mouths_regular);
+            array_push($result, $liters_mouths_premium);
+            array_push($result, $liters_mouths_diesel);
+
+            array_push($result, $meses[0]);
             return $result;
-        }else if($request->days == 2){
-            $begin = new DateTime( $request->min );
-            $end = new DateTime( $request->max );
-            $end = $end->modify( '+1 day' );
-            
+        } else if ($request->days == 2) {
+            $begin = new DateTime($request->min);
+            $end = new DateTime($request->max);
+            $end = $end->modify('+1 day');
+
             $interval = new DateInterval('P1D');
-            $daterange = new DatePeriod($begin, $interval ,$end);
+            $daterange = new DatePeriod($begin, $interval, $end);
             //dd($daterange);
-            
-            foreach($daterange as $date){
-                array_push($liters_mouths_regular, Order::where([['created_at', 'like', '%' . $date->format("Y-m-d") . '%'], ['status_id', 2],['product','regular'],['company_id',$request->id]])->sum('dispatched_liters'));
-                array_push($liters_mouths_premium, Order::where([['created_at', 'like', '%' . $date->format("Y-m-d") . '%'], ['status_id', 2],['product','premium'],['company_id',$request->id]])->sum('dispatched_liters'));
-                array_push($liters_mouths_diesel, Order::where([['created_at', 'like', '%' . $date->format("Y-m-d") . '%'], ['status_id', 2],['product','diesel'],['company_id',$request->id]])->sum('dispatched_liters'));
+
+            foreach ($daterange as $date) {
+                array_push($liters_mouths_regular, Order::where([['created_at', 'like', '%' . $date->format("Y-m-d") . '%'], ['status_id', 2], ['product', 'regular'], ['company_id', $request->id]])->sum('dispatched_liters'));
+                array_push($liters_mouths_premium, Order::where([['created_at', 'like', '%' . $date->format("Y-m-d") . '%'], ['status_id', 2], ['product', 'premium'], ['company_id', $request->id]])->sum('dispatched_liters'));
+                array_push($liters_mouths_diesel, Order::where([['created_at', 'like', '%' . $date->format("Y-m-d") . '%'], ['status_id', 2], ['product', 'diesel'], ['company_id', $request->id]])->sum('dispatched_liters'));
                 //echo $date->format("Y-m-d") . "<br>";
                 array_push($days,  $date->format("d"));
             }
 
-            array_push($result,$liters_mouths_regular);
-            array_push($result,$liters_mouths_premium);
-            array_push($result,$liters_mouths_diesel);
-            
-            array_push($result,$days);
+            array_push($result, $liters_mouths_regular);
+            array_push($result, $liters_mouths_premium);
+            array_push($result, $liters_mouths_diesel);
+
+            array_push($result, $days);
 
             return $result;
-        }else if($request->days == 3){
-            $begin = new DateTime( $request->min );
-            $end = new DateTime( $request->max );
-            $end = $end->modify( '+1 day' );
-            
+        } else if ($request->days == 3) {
+            $begin = new DateTime($request->min);
+            $end = new DateTime($request->max);
+            $end = $end->modify('+1 day');
+
             $interval = new DateInterval('P1M');
-            $daterange = new DatePeriod($begin, $interval ,$end);
-            
-            foreach($daterange as $date){
-                array_push($liters_mouths_regular, Order::where([['created_at', 'like', '%' . $date->format("Y-m") . '%'], ['status_id', 2],['product','regular'],['company_id',$request->id]])->sum('dispatched_liters'));
-                array_push($liters_mouths_premium, Order::where([['created_at', 'like', '%' . $date->format("Y-m") . '%'], ['status_id', 2],['product','premium'],['company_id',$request->id]])->sum('dispatched_liters'));
-                array_push($liters_mouths_diesel, Order::where([['created_at', 'like', '%' . $date->format("Y-m") . '%'], ['status_id', 2],['product','diesel'],['company_id',$request->id]])->sum('dispatched_liters'));
+            $daterange = new DatePeriod($begin, $interval, $end);
+
+            foreach ($daterange as $date) {
+                array_push($liters_mouths_regular, Order::where([['created_at', 'like', '%' . $date->format("Y-m") . '%'], ['status_id', 2], ['product', 'regular'], ['company_id', $request->id]])->sum('dispatched_liters'));
+                array_push($liters_mouths_premium, Order::where([['created_at', 'like', '%' . $date->format("Y-m") . '%'], ['status_id', 2], ['product', 'premium'], ['company_id', $request->id]])->sum('dispatched_liters'));
+                array_push($liters_mouths_diesel, Order::where([['created_at', 'like', '%' . $date->format("Y-m") . '%'], ['status_id', 2], ['product', 'diesel'], ['company_id', $request->id]])->sum('dispatched_liters'));
                 //echo $date->format("Y-m-d") . "<br>";
                 array_push($days,  $date->format("M"));
             }
 
-            array_push($result,$liters_mouths_regular);
-            array_push($result,$liters_mouths_premium);
-            array_push($result,$liters_mouths_diesel);
-            
-            array_push($result,$days);
+            array_push($result, $liters_mouths_regular);
+            array_push($result, $liters_mouths_premium);
+            array_push($result, $liters_mouths_diesel);
+
+            array_push($result, $days);
 
             return $result;
-        }else if($request->days == 4){
-            $begin = new DateTime( $request->min );
-            $end = new DateTime( $request->max );
-            $end = $end->modify( '+0 day' );
-            
+        } else if ($request->days == 4) {
+            $begin = new DateTime($request->min);
+            $end = new DateTime($request->max);
+            $end = $end->modify('+0 day');
+
             $interval = new DateInterval('P1D');
-            $daterange = new DatePeriod($begin, $interval ,$end);
-            
-            foreach($daterange as $date){
+            $daterange = new DatePeriod($begin, $interval, $end);
+
+            foreach ($daterange as $date) {
                 array_push($liters_mouths_regular, Payment::where([['created_at', 'like', '%' . $date->format("Y-m-d") . '%']])->sum('payment_freight'));
-                
+
                 array_push($days,  $date->format("d"));
             }
 
-            array_push($result,$liters_mouths_regular);
-            
-            
-            array_push($result,$days);
+            array_push($result, $liters_mouths_regular);
+
+
+            array_push($result, $days);
 
             return $result;
         }
-
     }
-
 }
