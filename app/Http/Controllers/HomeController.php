@@ -84,7 +84,7 @@ class HomeController extends Controller
         }
         $pricesClient = null;
         if (auth()->user()->company_id != null)
-            $pricesClient = auth()->user()->company->prices->where('terminal_id', $terminal_id)->last();
+            $pricesClient = auth()->user()->company->prices->where('terminal_id', $terminal_id)->sortByDesc('created_at')->first();
         return response()->json([
             'days' => $days,
             'prices' => $this->getPrices($terminal_id, $month, auth()->user()->company_id != null ? auth()->user()->company_id : null),
