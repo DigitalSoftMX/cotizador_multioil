@@ -27,4 +27,9 @@ class Company extends Model
     {
         return $this->hasMany(CompetitionPrice::class);
     }
+    // Relacion con los pedidos diarios
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
