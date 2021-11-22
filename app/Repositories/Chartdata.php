@@ -6,7 +6,7 @@ use App\Company;
 
 class Chartdata
 {
-    public function getDataOrder($column, $month = null)
+    public function getDataOrder($column, $date = null)
     {
         $companies = [];
         foreach (Company::where('active', 1)->with('orders.payments')->get() as $company) {
@@ -15,11 +15,11 @@ class Chartdata
                 $data['company'] = $company->alias;
                 $data['total'] = 0;
                 foreach ($orders as $order) {
-                    $data['total'] += $month ?
-                        $order->payments()->whereYear('created_at', date('Y'))->whereMonth('created_at', "{$month}")->get()->sum($column) :
+                    $data['total'] += $date ?
+                        $order->payments()->where('created_at', 'like' , "%{$date}%")->get()->sum($column) :
                         $order->payments->sum($column);
                 }
-                $data['total'] = number_format($data['total'], 2);
+                $data['total'] =$data['total'];
                 array_push($companies, $data);
             }
         }

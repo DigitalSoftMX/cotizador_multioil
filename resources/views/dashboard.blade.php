@@ -130,59 +130,70 @@
 
     @if (auth()->user()->roles->first()->id == 1)
         <div class="content pt-0 mt-0">
-
             <div class="container-fluid pt-0 mt-0">
                 <div class="row pt-0 mt-0">
-                    <div class="col-md-12 pt-0 mt-0">
-                        <div class="card card-stats pt-0 mt-0">
-                            <div class="card-body">
+                    <div class="col-sm-6">
+                        <div class="row pt-0 mt-0">
+                            <div class="col-md-12 pt-0 mt-0">
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="statistics text-center">
-                                            <h3 class="info-title">{{ $totalCompanys }}</h3>
-                                            <h6 class="stats-title">Clientes totales</h6>
+                                    <div class="col-md-6">
+                                        <div class="card card-stats pt-0 mt-0">
+                                            <div class="card-body">
+                                                <div class="statistics text-center">
+                                                    <h3 class="info-title">{{ $totalCompanys }}</h3>
+                                                    <h6 class="stats-title">Clientes totales</h6>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 ju">
-                                        <div class="statistics text-center">
-                                            <h3 class="info-title">{{ $totalOrders }}</h3>
-                                            <h6 class="stats-title">pedidos totales</h6>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="statistics text-center">
-                                            <h3 class="info-title">
-                                                <!--small>$</small-->{{ number_format($totalLiters,2) }}
-                                            </h3>
-                                            <h6 class="stats-title">Litros totales</h6>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="statistics text-center">
-                                            <h3 class="info-title">
-                                                <small>$</small>{{ number_format($totalMoney, 2) }}
-                                            </h3>
-                                            <h6 class="stats-title">total</h6>
+                                    <div class="col-md-6 ju">
+                                        <div class="card card-stats pt-0 mt-0">
+                                            <div class="card-body">
+                                                <div class="statistics text-center">
+                                                    <h3 class="info-title">{{ $totalOrders }}</h3>
+                                                    <h6 class="stats-title">pedidos totales</h6>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-8">
-                        <div class="card ps-active-y" style="height: 55vh;">
-                            <div class="card-body">
-                                <h4 class=" font-weight-bold">Litros vendidos por mes</h4>
-                                <canvas id="chartBig1L" class="pb-3"></canvas>
+                        <div class="row mt-4">
+                            <div class="col-md-12 pt-0 mt-0">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card card-stats pt-0 mt-0">
+                                            <div class="card-body">
+                                                <div class="statistics text-center">
+                                                    <h3 class="info-title">
+                                                        <!--small>$</small-->{{ number_format($totalLiters,2) }}
+                                                    </h3>
+                                                    <h6 class="stats-title">Litros totales</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <div class="col-md-6">
+                                        <div class="card card-stats pt-0 mt-0">
+                                            <div class="card-body">
+                                                <div class="statistics text-center">
+                                                    <h3 class="info-title">
+                                                        <small>$</small>{{ number_format($totalMoney, 2) }}
+                                                    </h3>
+                                                    <h6 class="stats-title">total</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="card scroll-card-active" style="height: 55vh;">
+                    <div class="col-sm-6">
+                        <div class="card scroll-card-active mt-0 pt-0" style="height: 38vh;">
                             <div class="card-body">
                                 <h4 class="font-weight-bold">Clientes</h4>
                                 <div class="row m-0 pl-2 pr-2 pt-0 pb-0">
@@ -217,6 +228,35 @@
                                     </div>
                                 </div>
 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="card scroll-card-active" style="height: 55vh;">
+                            <div class="card-body">
+                                <h4 class="font-weight-bold">IVA</h4>
+                                <div class="row m-0 pl-2 pr-2 pt-0 pb-0">
+                                    <div class="table-full-width table-responsive col-sm-12 m-0 mr-0 ml-0 pr-0 pl-0">
+                                        <table class="table table-shopping">
+                                            <tbody id="ivapormes"></tbody>
+                                            
+                                        </table>
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="card ps-active-y" style="height: 55vh;">
+                            <div class="card-body">
+                                <h4 class=" font-weight-bold">Litros vendidos por mes</h4>
+                                <canvas id="chartBig1L" class="pb-3"></canvas>
                             </div>
                         </div>
                     </div>
@@ -299,46 +339,174 @@
                     </div>
                 </div>
 
-                <!--div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="card" style="height: 60vh;">
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <div class="col-7">
-                                                                    <p class="h4 font-weight-bold pt-2">Total importe factura la guerrera </p>
-                                                                </div>
-                                                                <div class="col-5">
-                                                                    <input type="text" name="daterange" class="pt-2" style="border: none; border-bottom: 2px solid #000;"/>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="tab-pane active show" id="profil">
-                                                                
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="card" style="height: 60vh;">
-                                                        <div class="card-body">
-                                                            <div class="row">
-                                                                <div class="col-7">
-                                                                    <p class="h4 font-weight-bold pt-2">Total importe factura Valero</p>
-                                                                </div>
-                                                                <div class="col-5">
-                                                                    <input type="text" name="daterange" class="pt-2" style="border: none; border-bottom: 2px solid #000;"/>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                            <div class="tab-pane active show" id="profil">
-                                                               
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div-->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card" style="height: 60vh;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <p class="h4 font-weight-bold pt-2">Gastos por empresa de transporte</p>
+                                    </div>
+                                    <div class="col-5 text-right">
+                                        <select id="lastMounts" class="selectpicker show-menu-arrow"
+                                            data-width="100%">
+                                            <option value="0">últimos 12 meses</option>  
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane active show" id="TransportCompany">
+                                    <lottie-player id="chartTransportCompany"  class="mx-auto d-block" src="https://assets5.lottiefiles.com/packages/lf20_Z4BhGL.json"  background="transparent"  speed="1"  style="width: 200px; height: 200px; margin-top: 50px;"  loop autoplay></lottie-player>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card ps-active-y" style="height: 60vh;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <p class="h4 font-weight-bold pt-2">Total importe factura por la guerrera</p>
+                                    </div>
+                                    <div class="col-5 text-right">
+                                        <select id="lastMountsGuerrera" class="selectpicker show-menu-arrow"
+                                            data-width="100%">
+                                            <option value="0">Total</option>
+                                        </select>
+                                    </div>
+                                   
+                                </div>
+                               
+                                <div class="tab-content pb-3">
+                                    <div class="tab-pane active show" id="guerrera">
+                                        <lottie-player id="chartTransportGuerrera"  class="mx-auto d-block" src="https://assets5.lottiefiles.com/packages/lf20_Z4BhGL.json"  background="transparent"  speed="1"  style="width: 200px; height: 200px; margin-top: 50px;"  loop autoplay></lottie-player>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card" style="height: 60vh;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <p class="h4 font-weight-bold pt-2">Total importe factura por Valero</p>
+                                    </div>
+                                    <div class="col-5 text-right">
+                                        <select id="ValeroGuerreralastMounts" class="selectpicker show-menu-arrow"
+                                            data-width="50%">
+                                            <option value="0">últimos 12 meses</option>  
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="tab-pane active show" id="ValeroGuerrera">
+                                    <lottie-player id="chartValeroGuerrera"  class="mx-auto d-block" src="https://assets5.lottiefiles.com/packages/lf20_Z4BhGL.json"  background="transparent"  speed="1"  style="width: 200px; height: 200px; margin-top: 50px;"  loop autoplay></lottie-player>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card" style="height: 60vh;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <p class="h4 font-weight-bold pt-2">Merma por cliente</p>
+                                    </div>
+                                    <div class="col-5 text-right">
+                                        <select id="MermaporclientemeslastMounts" class="selectpicker show-menu-arrow"
+                                            data-width="50%">
+                                            <option value="0">últimos 12 meses</option>  
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane active show" id="mermaporclientemes">
+                                    <lottie-player id="chartMermaPorClientemes"  class="mx-auto d-block" src="https://assets5.lottiefiles.com/packages/lf20_Z4BhGL.json"  background="transparent"  speed="1"  style="width: 200px; height: 200px; margin-top: 50px;"  loop autoplay></lottie-player>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+
+                
+                <div class="row">
+                    <!--div class="col-sm-6">
+                        <div class="card" style="height: 60vh;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <p class="h4 font-weight-bold pt-2">Utilidad guerrera</p>
+                                    </div>
+                                </div>
+                                <div class="tab-pane active show" id="utilidadguerrera">
+                                    <lottie-player id="chartUtilidadGuerrera"  class="mx-auto d-block" src="https://assets5.lottiefiles.com/packages/lf20_Z4BhGL.json"  background="transparent"  speed="1"  style="width: 200px; height: 200px; margin-top: 50px;"  loop autoplay></lottie-player>
+                                </div>
+                            </div>
+                        </div>
+                    </div-->
+                    <div class="col-sm-4 pr-5">
+                        <div class="card scroll-card-active" style="height: 60vh;">
+                            <div class="card-body">
+                                <h4 class="font-weight-bold">Utilidad cliente</h4>
+                                <div class="row m-0 pl-2 pr-2 pt-0 pb-0">
+                                    <div class="table-full-width table-responsive col-sm-12 m-0 mr-0 ml-0 pr-0 pl-0">
+                                        <table class="table table-shopping">
+                                            <tbody id="utilidadcliente" class="">
+                                               
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 pr-3 pl-3">
+                        <div class="card scroll-card-active" style="height: 60vh;">
+                            <div class="card-body">
+                                <h4 class="font-weight-bold">Utilidad general</h4>
+                                <div class="row m-0 pl-2 pr-2 pt-0 pb-0">
+                                    <div class="table-full-width table-responsive col-sm-12 m-0 mr-0 ml-0 pr-0 pl-0">
+                                        <table class="table table-shopping">
+                                            <tbody id="utilidadgeneral">
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 pl-5">
+                        <div class="card scroll-card-active" style="height: 60vh;">
+                            <div class="card-body">
+                                <h4 class="font-weight-bold">Utilidad guerrera</h4>
+                                <div class="row m-0 pl-2 pr-2 pt-0 pb-0">
+                                    <div class="table-full-width table-responsive col-sm-12 m-0 mr-0 ml-0 pr-0 pl-0">
+                                        <table class="table table-shopping">
+                                            <tbody id="utilidadguerrera">
+                                        
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
+            
 
         </div>
     @endif
@@ -392,19 +560,53 @@
 
         @if (auth()->user()->roles->last()->id == 1)
             const selectElement = document.querySelector('#chsngeDaysMounts');
-        
             selectElement.addEventListener('change', (event) => {
-            const val = document.getElementById("chsngeDaysMounts").value;
-            chartProducts(val,'','','',45,'{{ url('/') }}');
+                const val = document.getElementById("chsngeDaysMounts").value;
+                chartProducts(val,'','','',45,'{{ url('/') }}');
+            });
+
+            const selectLastMount = document.querySelector('#lastMounts');
+            selectLastMount.addEventListener('change', (event) => {
+                const val = document.getElementById("lastMounts").value;
+                chartTransportCompany('{{ url('/') }}','transporte', val,'doughnut','chartTransportCompany','TransportCompany',false,false, true);
+            });
+
+            const selectLastMountGuerrera = document.querySelector('#lastMountsGuerrera');
+            selectLastMountGuerrera.addEventListener('change', (event) => {
+                const val = document.getElementById("lastMountsGuerrera").value; 
+                chartTransportCompany('{{ url('/') }}','guerrera',val, 'bar','chartTransportGuerrera','guerrera',true,true, false);
+            });
+
+            const selectValeroGuerreralastMounts = document.querySelector('#ValeroGuerreralastMounts');
+            selectValeroGuerreralastMounts.addEventListener('change', (event) => {
+                const val = document.getElementById("ValeroGuerreralastMounts").value; 
+                chartTransportCompany('{{ url('/') }}','valeroguerrera',val, 'line','chartValeroGuerrera','ValeroGuerrera',true,true,false);
+            });
+
+            const selectMermaporclientemeslastMounts = document.querySelector('#MermaporclientemeslastMounts');
+            selectMermaporclientemeslastMounts.addEventListener('change', (event) => {
+                const val = document.getElementById("MermaporclientemeslastMounts").value; 
+                chartTransportCompany('{{ url('/') }}','mermaporclientemes',val, 'bar','chartMermaPorClientemes','mermaporclientemes',true,true,false);
             });
         @endif
 
-        function initChartsT() {
+        async function initChartsT() {
             const yourDate = new Date().toLocaleDateString('en-ZA');
-            //console.log('{{ url('/') }}');
             myFunction();
             chartProducts(0, '', '', '', 45, '{{ url('/') }}');
             chartTransport(4, formatDate(sumarDias(new Date(), -30)), yourDate, '{{ url('/') }}');
+            await chartTransportCompany('{{ url('/') }}','transporte','', 'doughnut','chartTransportCompany','TransportCompany',false,false, true);
+            await chartTransportCompany('{{ url('/') }}','guerrera','', 'bar','chartTransportGuerrera','guerrera',true,true,false);
+            await chartTransportCompany('{{ url('/') }}','valeroguerrera','', 'line','chartValeroGuerrera','ValeroGuerrera',true,true,false);
+            await chartTransportCompany('{{ url('/') }}','mermaporclientemes','', 'bar','chartMermaPorClientemes','mermaporclientemes',true,true,false);
+            await initDashboardTable('{{ url('/') }}','utilidadcliente','','utilidadcliente');
+            await initDashboardTable('{{ url('/') }}','utilidadgeneral','','utilidadgeneral');
+            await initDashboardTable('{{ url('/') }}','utilidadguerrera','','utilidadguerrera');
+            await initDashboardTable('{{ url('/') }}','ivapormes','','ivapormes');
+            await selectMouth('{{ url('/') }}', 0,'lastMounts');
+            await selectMouth('{{ url('/') }}', 0,'lastMountsGuerrera');
+            await selectMouth('{{ url('/') }}', 0,'ValeroGuerreralastMounts');
+            await selectMouth('{{ url('/') }}', 0,'MermaporclientemeslastMounts');
         }
 
         // esto activa el scroll de la tarjeta

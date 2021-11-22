@@ -102,4 +102,5 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('utilidadguerrera', 'GraficasController@utilidadGuerrera');
 	Route::get('ivapormes', 'GraficasController@ivaPorMes');
 	Route::get('mermaporclientemes/{month?}', 'GraficasController@mermaPorClienteMes');
+	Route::get('ultimosmeses/{revers?}', 'GraficasController@mouthLast');
 });
