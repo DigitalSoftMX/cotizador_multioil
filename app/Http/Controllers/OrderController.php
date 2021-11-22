@@ -72,7 +72,10 @@ class OrderController extends Controller
         $request = $request->liters_r == null ? $request->merge(['liters_r' => 0]) : $request;
         $request = $request->liters_p == null ? $request->merge(['liters_p' => 0]) : $request;
         $request = $request->liters_d == null ? $request->merge(['liters_d' => 0]) : $request;
-        $price = CompetitionPrice::where([['company_id', $request->company_id], ['terminal_id', $request->terminal_id]])->get()->last();
+        $price = CompetitionPrice::where([['company_id', $request->company_id], ['terminal_id', $request->terminal_id]])
+            ->whereDate('created_at', $request->date)->get()->last();
+        if (!$price)
+            $price = CompetitionPrice::where([['company_id', $request->company_id], ['terminal_id', $request->terminal_id]])->get()->last();
         $request->merge([
             'total_r' => $request->liters_r * (($price != null ? $price->regular : 0)),
             'total_p' => $request->liters_p * (($price != null ? $price->premium : 0)),
@@ -84,9 +87,11 @@ class OrderController extends Controller
         } else {
             $request->merge(['total' => ($request->total_r + $request->total_p + $request->total_d), 'status_id' => 1]);
         }
-        try {
-            event(new EmailMultioil($request, 1));
-        } catch (Exception $e) {
+        if (strtotime($request->date) >= strtotime(date("Y-m-d", time()))) {
+            try {
+                event(new EmailMultioil($request, 1));
+            } catch (Exception $e) {
+            }
         }
         $register = new Activities();
         if ($request->total_r)

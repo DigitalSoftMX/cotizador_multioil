@@ -85,7 +85,9 @@ class Activities
             $data['product'] = 'diesel';
         if (isset($request['secure']))
             $data['secure'] = $request['secure'] == 0 ? 0 : 1;
-        Order::create($data);
+        $order = Order::create($data);
+        if (strtotime($request['date']) < strtotime(date("Y-m-d", time())))
+            $order->update(['created_at' => $request['date']]);
     }
     // Metodo para guardar pdf y xml
     public function saveFile($request, $model, $file, $path = null)

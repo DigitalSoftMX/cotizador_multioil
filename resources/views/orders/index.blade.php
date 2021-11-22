@@ -235,6 +235,14 @@
                 getPrices(company, terminal);
             }
         });
+        // Escuchando el cambio de fecha de entrega
+        $('#calendar_first').blur(function() {
+            let company = document.getElementById('input-company_id').value;
+            let terminal = document.getElementById('input-terminal_id').value;
+            if (company != '') {
+                getPrices(company, terminal);
+            }
+        });
         // valor del freight
         $("input[name=freight]").click(function() {
             freight = $('input:radio[name=freight]:checked').val();
@@ -273,7 +281,8 @@
         // funcion para obtener los ultimos precios de la empresa y terminal
         async function getPrices(company_id, terminal_id) {
             try {
-                const resp = await fetch('{{ url('') }}/getlastprice/' + `${company_id}/${terminal_id}`);
+                let date = document.getElementById('calendar_first').value;
+                const resp = await fetch('{{ url('') }}/getlastprice/' + `${company_id}/${terminal_id}/${date}`);
                 const prices = await resp.json();
                 console.log(prices);
                 document.getElementById('price_r').value = prices.prices != null ?

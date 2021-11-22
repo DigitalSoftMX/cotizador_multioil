@@ -13,7 +13,7 @@ class Order extends Model
         'status_id', 'commission', 'user_id', 'commission_two', 'middleman_id',
         'reason', 'invoicepayment', 'paymentfolio', 'invoicecfdi', 'invoicepdf', 'invoicexml',
         'shipper', 'number_shipper', 'invoice_shipper', 'shipperpdf', 'shipperxml',
-        'shipperfolio', 'bol_load', 'credit', 'amount', 'creditpdf', 'creditxml', 'type',
+        'shipperfolio', 'bol_load', 'credit', 'amount', 'creditpdf', 'creditxml', 'type', 'created_at'
     ];
     // Relacion con las empresas
     public function company()

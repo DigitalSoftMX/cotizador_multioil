@@ -151,10 +151,15 @@ class CompetitionPriceController extends Controller
         return response()->json(['price' => $price, 'date' => $date]);
     }
     // Metodo para obtener el ultimo precio por terminal y empresa
-    public function getLastPrice(Request $request, $company, $terminal)
+    public function getLastPrice(Request $request, $company, $terminal, $date = null)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
-        $prices = CompetitionPrice::where([['company_id', $company], ['terminal_id', $terminal]])->get()->last();
+        $prices = $date ?
+            CompetitionPrice::where([['company_id', $company], ['terminal_id', $terminal]])
+            ->whereDate('created_at', $date)->get()->last()
+            : CompetitionPrice::where([['company_id', $company], ['terminal_id', $terminal]])->get()->last();
+        if ($date > now()->format('Y-m-d'))
+            $prices = CompetitionPrice::where([['company_id', $company], ['terminal_id', $terminal]])->get()->last();
         return response()->json(['prices' => $prices]);
     }
 }

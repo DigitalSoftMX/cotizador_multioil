@@ -54,7 +54,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('prices', 'CompetitionPriceController', ['except' => 'show', 'destroy']);
 	Route::get('getprices/{company}/{date?}', 'CompetitionPriceController@getPrices')->name('getprices');
 	Route::post('getprice', 'CompetitionPriceController@getPrice')->name('getprice');
-	Route::get('getlastprice/{company}/{terminal}', 'CompetitionPriceController@getLastPrice')->name('getlastprice');
+	Route::get('getlastprice/{company}/{terminal}/{date?}', 'CompetitionPriceController@getLastPrice')->name('getlastprice');
 });
 //rutas pemex
 Route::group(['middleware' => 'auth'], function () {

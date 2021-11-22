@@ -29,9 +29,11 @@ class ValidationController extends Controller
         $request->user()->authorizeRoles(['Administrador']);
         $request->merge(['status_id' => 2, 'reason' => null]);
         $order->update($request->only(['status_id', 'reason', 'type']));
-        try {
-            event(new EmailMultioil($order, 2));
-        } catch (Exception $th) {
+        if (strtotime($order->created_at->format('Y-m-d')) >= strtotime(date("Y-m-d", time()))) {
+            try {
+                event(new EmailMultioil($order, 2));
+            } catch (Exception $th) {
+            }
         }
         return redirect()->back()->withStatus('Pedido autorizado correctamente');
     }
@@ -42,9 +44,11 @@ class ValidationController extends Controller
         if ($request->message == null)
             return redirect()->back()->withStatus('Ingrese el motivo por el cual se deniega el pedido')->withColor('danger');
         $order->update(['status_id' => 3, 'reason' => $request->message]);
-        try {
-            event(new EmailMultioil($order, 3, $request->message));
-        } catch (Exception $th) {
+        if (strtotime($order->created_at->format('Y-m-d')) >= strtotime(date("Y-m-d", time()))) {
+            try {
+                event(new EmailMultioil($order, 3, $request->message));
+            } catch (Exception $th) {
+            }
         }
         return redirect()->back()->withStatus('Pedido denegado')->withColor('danger');
     }
