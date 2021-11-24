@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\InvoiceRequest;
 use App\Order;
 use App\Repositories\Activities;
 use App\Role;
@@ -34,17 +33,25 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(InvoiceRequest $request, Order $invoice)
+    public function update(Request $request, Order $invoice)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        request()->validate(['bol_load' => $request->bol_load ? 'numeric' : '']);
+        request()->validate([
+            'dispatched' => $request->dispatched ? 'date' : '',
+            'price' => $request->price ? 'numeric' : '',
+            'sale_price' => $request->sale_price ? 'numeric' : '',
+            'bol_load' => $request->bol_load ? 'numeric' : '',
+            'dispatched_liters' => $request->dispatched_liters ? 'numeric' : '',
+            'root_liters' => $request->root_liters ? 'numeric' : '',
+            'CFDI' => $request->CFDI ? 'string' : '',
+            'name_freight' => $request->name_freight ? 'min:3' : '',
+            'file_pdf' => $request->file('file_pdf') ? 'required|file|mimes:pdf' : '',
+            'file_xml' => $request->file('file_xml') ? 'required|file|mimes:xml' : '',
+        ]);
         $activity = new Activities();
-        if ($request->file("file_pdf")) {
-            request()->validate(['file_pdf' => 'required|file|mimes:pdf']);
+        if ($request->file("file_pdf"))
             $activity->saveFile($request, $invoice, 'pdf');
-        }
         if ($request->file("file_xml")) {
-            request()->validate(['file_xml' => 'required|file|mimes:xml']);
             $activity->saveFile($request, $invoice, 'xml');
             // leyendo archivo xml y actualizando total y folio UUID
             $xml = $activity->xmlTotalFolioUUID($request->file('file_xml'));
