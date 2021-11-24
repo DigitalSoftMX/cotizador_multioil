@@ -80,7 +80,7 @@
                             @if ($payment->vouchervalero ?? false)
                                 <a class="btn btn-sm btn-success"
                                     href="{{ route('downloadVoucher', [$payment, 'valero']) }}">
-                                    {{ __('Descargar factura Guerrera') }}
+                                    {{ __('Descargar factura Guerrera - Valero') }}
                                 </a>
                             @endif
                         </div>
@@ -88,7 +88,7 @@
                             @if ($payment->voucherfreight ?? false)
                                 <a class="btn btn-sm btn-success"
                                     href="{{ route('downloadVoucher', [$payment, 'fletera']) }}">
-                                    {{ __('Descargar factura Guerrera') }}
+                                    {{ __('Descargar factura Fletera') }}
                                 </a>
                             @endif
                         </div>
@@ -119,7 +119,7 @@
                             </div>
                         </div>
                         <div class="col-sm-4">
-                            <label>{{ __('Factura Cliente Guerrera') }}</label>
+                            <label>{{ __('Factura Guerrera - Valero') }}</label>
                             <div class="fileinput fileinput-new text-center" data-provides="fileinput">
                                 <div class=" justify-content-center">
                                     <span class="btn btn-rose btn-sm btn-file">
@@ -143,7 +143,7 @@
                             </div>
                         </div>
                         <div class="col-sm-4">
-                            <label>{{ __('Factura Cliente Guerrera') }}</label>
+                            <label>{{ __('Factura Fletera') }}</label>
                             <div class="fileinput fileinput-new text-center" data-provides="fileinput">
                                 <div class=" justify-content-center">
                                     <span class="btn btn-rose btn-sm btn-file">
