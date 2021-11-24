@@ -32,8 +32,7 @@
                 <label for="price">{{ __('Precio de compra') }}</label>
                 <input type="number" class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}"
                     id="input-price" aria-describedby="priceHelp" placeholder="Escribe el precio de compra por litro"
-                    value="{{ old('price', $invoice->price) }}" aria-required="true" name="price" step="any"
-                    @if ($rol != 1) readonly @endif>
+                    value="{{ old('price', $invoice->price) }}" name="price" step="any" @if ($rol != 1) readonly @endif>
                 @if ($errors->has('price'))
                     <span id="price-error" class="error text-danger" for="input-price">
                         {{ $errors->first('price') }}
@@ -47,8 +46,8 @@
                 <input type="number" class="form-control{{ $errors->has('sale_price') ? ' is-invalid' : '' }}"
                     id="input-sale_price" aria-describedby="sale_priceHelp"
                     placeholder="Escribe el precio de venta por litro"
-                    value="{{ old('sale_price', $invoice->sale_price) }}" aria-required="true" name="sale_price"
-                    step="any" @if ($rol != 1) readonly @endif>
+                    value="{{ old('sale_price', $invoice->sale_price) }}" name="sale_price" step="any"
+                    @if ($rol != 1) readonly @endif>
                 @if ($errors->has('sale_price'))
                     <span id="sale_price-error" class="error text-danger" for="input-sale_price">
                         {{ $errors->first('sale_price') }}
@@ -61,7 +60,7 @@
                 <label for="bol_load">{{ __('Folio Bol de carga') }}</label>
                 <input type="number" class="form-control{{ $errors->has('bol_load') ? ' is-invalid' : '' }}"
                     id="input-bol_load" aria-describedby="bol_loadHelp" placeholder="Escribe el folio bol de carga"
-                    value="{{ old('bol_load', $invoice->bol_load) }}" aria-required="true" name="bol_load" step="any"
+                    value="{{ old('bol_load', $invoice->bol_load) }}" name="bol_load" step="any"
                     @if ($rol != 1) readonly @endif>
                 @if ($errors->has('bol_load'))
                     <span id="bol_load-error" class="error text-danger" for="input-bol_load">
@@ -76,8 +75,8 @@
                 <input type="number" class="form-control{{ $errors->has('dispatched_liters') ? ' is-invalid' : '' }}"
                     id="input-dispatched_liters" aria-describedby="dispatched_litersHelp"
                     placeholder="Escribe los litros despachados"
-                    value="{{ old('dispatched_liters', $invoice->dispatched_liters) }}" aria-required="true"
-                    name="dispatched_liters" step="any" @if ($rol != 1) readonly @endif>
+                    value="{{ old('dispatched_liters', $invoice->dispatched_liters) }}" name="dispatched_liters"
+                    step="any" @if ($rol != 1) readonly @endif>
                 @if ($errors->has('dispatched_liters'))
                     <span id="dispatched_liters-error" class="error text-danger" for="input-dispatched_liters">
                         {{ $errors->first('dispatched_liters') }}
@@ -90,8 +89,8 @@
                 <label for="root_liters">{{ __('Litros vendedor v-root') }}</label>
                 <input type="number" class="form-control{{ $errors->has('root_liters') ? ' is-invalid' : '' }}"
                     id="input-root_liters" aria-describedby="root_litersHelp" placeholder="Escribe los litros root"
-                    value="{{ old('root_liters', $invoice->root_liters) }}" aria-required="true" name="root_liters"
-                    step="any" @if ($rol != 1) readonly @endif>
+                    value="{{ old('root_liters', $invoice->root_liters) }}" name="root_liters" step="any"
+                    @if ($rol != 1) readonly @endif>
                 @if ($errors->has('root_liters'))
                     <span id="root_liters-error" class="error text-danger" for="input-root_liters">
                         {{ $errors->first('root_liters') }}
@@ -104,8 +103,8 @@
                 <label for="invoice">{{ __('Cantidad facturada') }}</label>
                 <input type="number" class="form-control{{ $errors->has('invoice') ? ' is-invalid' : '' }}"
                     id="input-invoice" aria-describedby="invoiceHelp" placeholder="Total cantidad facturada"
-                    value="{{ old('invoice', $invoice->invoice) }}" aria-required="true" name="invoice" step="any"
-                    {{-- @if ($rol != 1) readonly @endif> --}} readonly>
+                    value="{{ old('invoice', $invoice->invoice) }}" name="invoice" step="any" {{-- @if ($rol != 1) readonly @endif> --}}
+                    readonly>
                 @if ($errors->has('invoice'))
                     <span id="invoice-error" class="error text-danger" for="input-invoice">
                         {{ $errors->first('invoice') }}
@@ -119,7 +118,7 @@
                 {{-- name="invoicefolio" @if ($rol != 1) readonly @endif> --}}
                 <textarea class="form-control{{ $errors->has('invoicefolio') ? ' is-invalid' : '' }}"
                     name="invoicefolio" id="input-invoicefolio" aria-describedby="invoicefolioHelp" placeholder="Folio"
-                    rows="2" aria-required="true" readonly>{{ old('invoicefolio', $invoice->invoicefolio) }}
+                    rows="2" readonly>{{ old('invoicefolio', $invoice->invoicefolio) }}
                 </textarea>
                 @if ($errors->has('invoicefolio'))
                     <span id="invoicefolio-error" class="error text-danger" for="input-invoicefolio">
@@ -133,8 +132,7 @@
                 <label for="CFDI">{{ __('Factura') }}</label>
                 <input type="text" class="form-control{{ $errors->has('CFDI') ? ' is-invalid' : '' }}"
                     id="input-CFDI" aria-describedby="CFDIHelp" placeholder="Escribe la factura"
-                    value="{{ old('CFDI', $invoice->CFDI) }}" aria-required="true" name="CFDI" step="any"
-                    @if ($rol != 1) readonly @endif>
+                    value="{{ old('CFDI', $invoice->CFDI) }}" name="CFDI" step="any" @if ($rol != 1) readonly @endif>
                 @if ($errors->has('CFDI'))
                     <span id="CFDI-error" class="error text-danger" for="input-CFDI">
                         {{ $errors->first('CFDI') }}
@@ -148,8 +146,8 @@
                 <input type="text" class="form-control{{ $errors->has('name_freight') ? ' is-invalid' : '' }}"
                     id="input-name_freight" aria-describedby="name_freightHelp"
                     placeholder="Escribe el nombre de la fletera"
-                    value="{{ old('name_freight', $invoice->name_freight) }}" aria-required="true"
-                    name="name_freight" step="any" @if ($rol != 1) readonly @endif>
+                    value="{{ old('name_freight', $invoice->name_freight) }}" name="name_freight" step="any"
+                    @if ($rol != 1) readonly @endif>
                 @if ($errors->has('name_freight'))
                     <span id="name_freight-error" class="error text-danger" for="input-name_freight">
                         {{ $errors->first('name_freight') }}
