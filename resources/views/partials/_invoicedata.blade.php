@@ -40,21 +40,23 @@
                 @endif
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="form-group{{ $errors->has('sale_price') ? ' has-danger' : '' }} col-12">
-                <label for="sale_price">{{ __('Precio de venta') }}</label>
-                <input type="number" class="form-control{{ $errors->has('sale_price') ? ' is-invalid' : '' }}"
-                    id="input-sale_price" aria-describedby="sale_priceHelp"
-                    placeholder="Escribe el precio de venta por litro"
-                    value="{{ old('sale_price', $invoice->sale_price) }}" name="sale_price" step="any"
-                    @if ($rol != 1) readonly @endif>
-                @if ($errors->has('sale_price'))
-                    <span id="sale_price-error" class="error text-danger" for="input-sale_price">
-                        {{ $errors->first('sale_price') }}
-                    </span>
-                @endif
+        @if (auth()->user()->roles->first()->id == 1)
+            <div class="row justify-content-center">
+                <div class="form-group{{ $errors->has('sale_price') ? ' has-danger' : '' }} col-12">
+                    <label for="sale_price">{{ __('Precio Multioil compra') }}</label>
+                    <input type="number" class="form-control{{ $errors->has('sale_price') ? ' is-invalid' : '' }}"
+                        id="input-sale_price" aria-describedby="sale_priceHelp"
+                        placeholder="Escribe el precio de venta por litro"
+                        value="{{ old('sale_price', $invoice->sale_price) }}" name="sale_price" step="any"
+                        @if ($rol != 1) readonly @endif>
+                    @if ($errors->has('sale_price'))
+                        <span id="sale_price-error" class="error text-danger" for="input-sale_price">
+                            {{ $errors->first('sale_price') }}
+                        </span>
+                    @endif
+                </div>
             </div>
-        </div>
+        @endif
         <div class="row justify-content-center">
             <div class="form-group{{ $errors->has('bol_load') ? ' has-danger' : '' }} col-12">
                 <label for="bol_load">{{ __('Folio Bol de carga') }}</label>
