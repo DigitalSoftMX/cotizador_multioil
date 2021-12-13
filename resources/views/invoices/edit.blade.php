@@ -41,7 +41,7 @@
                                                         <h6>Cantidad a pagar:</h6>
                                                     </label>
                                                     <strong>
-                                                        {{ '$ ' . number_format($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total, 2) }}
+                                                        {{ '$ ' . number_format($invoice->invoice > 0 ? $invoice->invoice - $invoice->amount : $invoice->total, 2) }}
                                                     </strong><br>
                                                     <label>
                                                         <h6>Cantidad pagada:</h6>
@@ -52,8 +52,8 @@
                                                         <h6>Cantidad restante:</h6>
                                                     </label>
                                                     <strong
-                                                        style="{{ ($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total) - $invoice->payments->sum('payment_guerrera') > 0 ? 'color:red;' : 'color:blue;' }}">
-                                                        {{ '$ ' . number_format(($invoice->invoice != null && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total) - $invoice->payments->sum('payment_guerrera'), 2) }}
+                                                        style="{{ ($invoice->invoice && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total) - $invoice->payments->sum('payment_guerrera') > 0 ? 'color:red;' : 'color:blue;' }}">
+                                                        {{ '$ ' . number_format(($invoice->invoice && $invoice->invoice > 0 ? $invoice->invoice : $invoice->total) - $invoice->payments->sum('payment_guerrera'), 2) }}
                                                     </strong>
                                                 </div>
                                                 <div class="col-12 col-md-4">
