@@ -55,11 +55,8 @@ class InvoiceController extends Controller
             $activity->saveFile($request, $invoice, 'xml');
             // leyendo archivo xml y actualizando total y folio UUID
             $xml = $activity->xmlTotalFolioUUID($request->file('file_xml'));
-            if ($xml) {
-                $invoice->update(['invoice' => $xml['total'], 'invoicefolio' => $xml['folio']]);
-            } else {
-                return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
-            }
+            if (!$xml) return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+            $invoice->update(['invoice' => $xml['total'], 'invoicefolio' => $xml['folio']]);
         }
         $request->merge(['total' => $request->price * $invoice->liters]);
         $invoice->update($request->only(['dispatched', 'dispatched_liters', 'root_liters', 'bol_load', 'CFDI', 'sale_price', 'name_freight', 'price', 'total']));
@@ -69,7 +66,7 @@ class InvoiceController extends Controller
     public function updateinvoice(Request $request, Order $invoice)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        request()->validate(['invoicepayment' => 'required|numeric', 'invoicecfdi' => 'required|string|min:3']);
+        request()->validate(['invoicecfdi' => 'required|string|min:3']);
         $activity = new Activities();
         if ($request->file("file_invoicepdf")) {
             request()->validate(['file_invoicepdf' => 'required|file|mimes:pdf']);
@@ -79,11 +76,8 @@ class InvoiceController extends Controller
             request()->validate(['file_invoicexml' => 'required|file|mimes:xml']);
             $activity->saveFile($request, $invoice, 'invoicexml');
             $xml = $activity->xmlTotalFolioUUID($request->file('file_invoicexml'));
-            if ($xml) {
-                $invoice->update(['invoicepayment' => $xml['total'], 'paymentfolio' => $xml['folio']]);
-            } else {
-                return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
-            }
+            if (!$xml) return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+            $invoice->update(['invoicepayment' => $xml['total'], 'paymentfolio' => $xml['folio']]);
         }
         $invoice->update($request->only(['invoicecfdi']));
         return redirect()->back()->withStatus('Datos de facturación Valero - Guerrera actualizados correctamente');
@@ -99,7 +93,6 @@ class InvoiceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate([
-            'shipper' => 'required|string', 'number_shipper' => 'required|string',
             'file_shipperpdf' => 'required|file|mimes:pdf',
             'file_shipperxml' => 'required|file|mimes:xml'
         ]);
@@ -122,7 +115,6 @@ class InvoiceController extends Controller
     public function credit(Request $request, Order $invoice)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        request()->validate(['credit' => 'required|string|min:3', 'amount' => 'required|numeric']);
         $activity = new Activities();
         if ($request->file("file_creditpdf")) {
             request()->validate(['file_creditpdf' => 'required|file|mimes:pdf']);
@@ -131,15 +123,10 @@ class InvoiceController extends Controller
         if ($request->file("file_creditxml")) {
             request()->validate(['file_creditxml' => 'required|file|mimes:xml']);
             $activity->saveFile($request, $invoice, 'creditxml');
-            // Revision
             $xml = $activity->xmlTotalFolioUUID($request->file('file_creditxml'));
-            if ($xml) {
-                $invoice->update(['credit' => $xml['folio'], 'amount' => $xml['total']]);
-            } else {
-                return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
-            }
+            if (!$xml) return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+            $invoice->update(['credit' => $xml['folio'], 'amount' => $xml['total']]);
         }
-        // $invoice->update($request->only(['amount']));
         return redirect()->back()->withStatus('Nota de crédito actualizada correctamente');
     }
 }
