@@ -20,11 +20,7 @@
                 <label class="label-control">{{ __('Fecha de despacho') }}</label>
                 <input class="form-control datetimepicker" id="calendar_first" name="dispatched" type="text"
                     value="{{ old('dispatched', $invoice->dispatched) }}" @if ($rol != 1) readonly @endif />
-                @if ($errors->has('dispatched'))
-                    <span id="dispatched-error" class="error text-danger" for="input-dispatched">
-                        {{ $errors->first('dispatched') }}
-                    </span>
-                @endif
+                @include('partials.errorsession',[$field='dispatched'])
             </div>
         </div>
         <div class="row justify-content-center">
@@ -33,11 +29,7 @@
                 <input type="number" class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}"
                     id="input-price" aria-describedby="priceHelp" placeholder="Escribe el precio de compra por litro"
                     value="{{ old('price', $invoice->price) }}" name="price" step="any" @if ($rol != 1) readonly @endif>
-                @if ($errors->has('price'))
-                    <span id="price-error" class="error text-danger" for="input-price">
-                        {{ $errors->first('price') }}
-                    </span>
-                @endif
+                @include('partials.errorsession',[$field='price'])
             </div>
         </div>
         @if (auth()->user()->roles->first()->id == 1)
@@ -49,11 +41,7 @@
                         placeholder="Escribe el precio de venta por litro"
                         value="{{ old('sale_price', $invoice->sale_price) }}" name="sale_price" step="any"
                         @if ($rol != 1) readonly @endif>
-                    @if ($errors->has('sale_price'))
-                        <span id="sale_price-error" class="error text-danger" for="input-sale_price">
-                            {{ $errors->first('sale_price') }}
-                        </span>
-                    @endif
+                    @include('partials.errorsession',[$field='sale_price'])
                 </div>
             </div>
         @endif
@@ -64,11 +52,7 @@
                     id="input-bol_load" aria-describedby="bol_loadHelp" placeholder="Escribe el folio bol de carga"
                     value="{{ old('bol_load', $invoice->bol_load) }}" name="bol_load" step="any"
                     @if ($rol != 1) readonly @endif>
-                @if ($errors->has('bol_load'))
-                    <span id="bol_load-error" class="error text-danger" for="input-bol_load">
-                        {{ $errors->first('bol_load') }}
-                    </span>
-                @endif
+                @include('partials.errorsession',[$field='bol_load'])
             </div>
         </div>
         <div class="row justify-content-center">
@@ -79,11 +63,7 @@
                     placeholder="Escribe los litros despachados"
                     value="{{ old('dispatched_liters', $invoice->dispatched_liters) }}" name="dispatched_liters"
                     step="any" @if ($rol != 1) readonly @endif>
-                @if ($errors->has('dispatched_liters'))
-                    <span id="dispatched_liters-error" class="error text-danger" for="input-dispatched_liters">
-                        {{ $errors->first('dispatched_liters') }}
-                    </span>
-                @endif
+                @include('partials.errorsession',[$field='dispatched_liters'])
             </div>
         </div>
         <div class="row justify-content-center">
@@ -93,40 +73,23 @@
                     id="input-root_liters" aria-describedby="root_litersHelp" placeholder="Escribe los litros root"
                     value="{{ old('root_liters', $invoice->root_liters) }}" name="root_liters" step="any"
                     @if ($rol != 1) readonly @endif>
-                @if ($errors->has('root_liters'))
-                    <span id="root_liters-error" class="error text-danger" for="input-root_liters">
-                        {{ $errors->first('root_liters') }}
-                    </span>
-                @endif
+                @include('partials.errorsession',[$field='root_liters'])
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="form-group{{ $errors->has('invoice') ? ' has-danger' : '' }} col-12">
+            <div class="form-group col-12">
                 <label for="invoice">{{ __('Cantidad facturada') }}</label>
-                <input type="number" class="form-control{{ $errors->has('invoice') ? ' is-invalid' : '' }}"
-                    id="input-invoice" aria-describedby="invoiceHelp" placeholder="Total cantidad facturada"
-                    value="{{ old('invoice', $invoice->invoice) }}" name="invoice" step="any" {{-- @if ($rol != 1) readonly @endif> --}}
+                <input type="number" class="form-control" id="input-invoice" aria-describedby="invoiceHelp"
+                    placeholder="Total cantidad facturada" value="{{ old('invoice', $invoice->invoice) }}" step="any"
                     readonly>
-                @if ($errors->has('invoice'))
-                    <span id="invoice-error" class="error text-danger" for="input-invoice">
-                        {{ $errors->first('invoice') }}
-                    </span>
-                @endif
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="form-group{{ $errors->has('invoicefolio') ? ' has-danger' : '' }} col-12">
+            <div class="form-group col-12">
                 <label for="invoicefolio">{{ __('Folio') }}</label>
-                {{-- name="invoicefolio" @if ($rol != 1) readonly @endif> --}}
-                <textarea class="form-control{{ $errors->has('invoicefolio') ? ' is-invalid' : '' }}"
-                    name="invoicefolio" id="input-invoicefolio" aria-describedby="invoicefolioHelp" placeholder="Folio"
-                    rows="2" readonly>{{ old('invoicefolio', $invoice->invoicefolio) }}
+                <textarea class="form-control" id="input-invoicefolio" aria-describedby="invoicefolioHelp"
+                    placeholder="Folio" rows="2" readonly>{{ old('invoicefolio', $invoice->invoicefolio) }}
                 </textarea>
-                @if ($errors->has('invoicefolio'))
-                    <span id="invoicefolio-error" class="error text-danger" for="input-invoicefolio">
-                        {{ $errors->first('invoicefolio') }}
-                    </span>
-                @endif
             </div>
         </div>
         <div class="row justify-content-center">
@@ -135,11 +98,7 @@
                 <input type="text" class="form-control{{ $errors->has('CFDI') ? ' is-invalid' : '' }}"
                     id="input-CFDI" aria-describedby="CFDIHelp" placeholder="Escribe la factura"
                     value="{{ old('CFDI', $invoice->CFDI) }}" name="CFDI" step="any" @if ($rol != 1) readonly @endif>
-                @if ($errors->has('CFDI'))
-                    <span id="CFDI-error" class="error text-danger" for="input-CFDI">
-                        {{ $errors->first('CFDI') }}
-                    </span>
-                @endif
+                @include('partials.errorsession',[$field='CFDI'])
             </div>
         </div>
         <div class="row justify-content-center">
@@ -148,13 +107,9 @@
                 <input type="text" class="form-control{{ $errors->has('name_freight') ? ' is-invalid' : '' }}"
                     id="input-name_freight" aria-describedby="name_freightHelp"
                     placeholder="Escribe el nombre de la fletera"
-                    value="{{ old('name_freight', $invoice->name_freight) }}" name="name_freight" step="any"
+                    value="{{ old('name_freight', $invoice->name_freight) }}" name="name_freight"
                     @if ($rol != 1) readonly @endif>
-                @if ($errors->has('name_freight'))
-                    <span id="name_freight-error" class="error text-danger" for="input-name_freight">
-                        {{ $errors->first('name_freight') }}
-                    </span>
-                @endif
+                @include('partials.errorsession',[$field='name_freight'])
             </div>
         </div>
         @if ($rol == 1)
@@ -175,11 +130,7 @@
                                 <input type="file" name="file_pdf" accept=".pdf">
                             </span>
                         </div>
-                        @if ($errors->has('file_pdf'))
-                            <span id="text-file_pdf" class="error text-danger" for="input-file_pdf">
-                                <br> {{ $errors->first('file_pdf') }}
-                            </span>
-                        @endif
+                        @include('partials.errorsession',[$field='file_pdf'])
                     </div>
                 </div>
                 <div class="col-12 col-sm-6">
@@ -198,11 +149,7 @@
                                 <input type="file" name="file_xml" accept=".xml">
                             </span>
                         </div>
-                        @if ($errors->has('file_xml'))
-                            <span id="text-file_xml" class="error text-danger" for="input-file_xml">
-                                <br> {{ $errors->first('file_xml') }}
-                            </span>
-                        @endif
+                        @include('partials.errorsession',[$field='file_xml'])
                     </div>
                 </div>
             </div>

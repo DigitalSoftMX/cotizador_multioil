@@ -197,6 +197,7 @@
                                 </div>
                             @endif
                             <div class="row">
+                                {{-- Datos de facturación --}}
                                 <div class="col-md-4 col-ms-12">
                                     @if (($rol = auth()->user()->roles->first()->id) == 1)
                                         <form id="invoice" method="post"
@@ -204,10 +205,10 @@
                                             class="form-horizontal" enctype="multipart/form-data">
                                             @method('put')
                                             @csrf
-                                            @include('partials._invoicedata',[$rol])
+                                            @include('invoices.invoiceData',[$rol])
                                         </form>
                                     @else
-                                        @include('partials._invoicedata',[$rol])
+                                        @include('invoices.invoiceData',[$rol])
                                     @endif
                                 </div>
                                 <div class="col-md-8 col-ms-12">
@@ -266,180 +267,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @if (($rol = auth()->user()->roles->first()->id) == 1)
-                                        <form method="post" action="{{ route('invoice', $invoice) }}" autocomplete="off"
-                                            class="form-horizontal" enctype="multipart/form-data">
-                                            @csrf
-                                            @include('partials._invoice_data',[$rol])
-                                        </form>
-                                    @endif
-                                    @if (($rol = auth()->user()->roles->first()->id) == 1)
-                                        <form id="transportistaForm" action="{{ route('shipper', $invoice) }}"
-                                            method="post" autocomplete="off" class="form-horizontal"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h4 class="card-title">
-                                                        <strong>{{ __('Facturación Transporte') }}</strong>
-                                                    </h4>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-12 text-right">
-                                                            @if ($invoice->shipperpdf)
-                                                                <a href="{{ route('download', [$invoice, 'shipperpdf', 'pdf']) }}"
-                                                                    class="btn btn-sm btn-success">{{ __('Descargar pdf') }}</a>
-                                                            @endif
-                                                            @if ($invoice->shipperxml)
-                                                                <a href="{{ route('download', [$invoice, 'shipperxml', 'xml']) }}"
-                                                                    class="btn btn-sm btn-success">{{ __('Descargar xml') }}</a>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                    <div class="row justify-content-center">
-                                                        <div
-                                                            class="form-group{{ $errors->has('shipper') ? ' has-danger' : '' }} col-md-6 col-sm-12">
-                                                            <label for="shipper">{{ __('Transportista') }}</label>
-                                                            <input type="text"
-                                                                class="form-control{{ $errors->has('shipper') ? ' is-invalid' : '' }}"
-                                                                id="input-shipper" aria-describedby="shipperHelp"
-                                                                placeholder="Escribe el nombre del transportista"
-                                                                value="{{ old('shipper', $invoice->shipper) }}"
-                                                                aria-required="true" name="shipper" readonly>
-                                                            @if ($errors->has('shipper'))
-                                                                <span id="shipper-error" class="error text-danger"
-                                                                    for="input-shipper">
-                                                                    {{ $errors->first('shipper') }}
-                                                                </span>
-                                                            @endif
-                                                        </div>
-                                                        <div
-                                                            class="form-group{{ $errors->has('number_shipper') ? ' has-danger' : '' }} col-md-6 col-sm-12">
-                                                            <label
-                                                                for="number_shipper">{{ __('Número de factura') }}</label>
-                                                            <input type="text"
-                                                                class="form-control{{ $errors->has('number_shipper') ? ' is-invalid' : '' }}"
-                                                                id="input-number_shipper"
-                                                                aria-describedby="number_shipperHelp"
-                                                                placeholder="Escribe el número de factura"
-                                                                value="{{ old('number_shipper', $invoice->number_shipper) }}"
-                                                                aria-required="true" name="number_shipper" step="any"
-                                                                @if ($rol != 1) readonly @endif>
-                                                            @if ($errors->has('number_shipper'))
-                                                                <span id="number_shipper-error" class="error text-danger"
-                                                                    for="input-number_shipper">
-                                                                    {{ $errors->first('number_shipper') }}
-                                                                </span>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                    <div class="row justify-content-center">
-                                                        <div
-                                                            class="form-group{{ $errors->has('invoice_shipper') ? ' has-danger' : '' }} col-md-6 col-sm-12">
-                                                            <label
-                                                                for="invoice_shipper">{{ __('Cantidad Facturada') }}</label>
-                                                            <input type="number"
-                                                                class="form-control{{ $errors->has('invoice_shipper') ? ' is-invalid' : '' }}"
-                                                                id="input-invoice_shipper"
-                                                                aria-describedby="invoice_shipperHelp"
-                                                                placeholder="Escribe la cantidad facturada"
-                                                                value="{{ old('invoice_shipper', $invoice->invoice_shipper) }}"
-                                                                aria-required="true" name="invoice_shipper" step="any"
-                                                                readonly>
-                                                            @if ($errors->has('invoice_shipper'))
-                                                                <span id="invoice_shipper-error" class="error text-danger"
-                                                                    for="input-invoice_shipper">
-                                                                    {{ $errors->first('invoice_shipper') }}
-                                                                </span>
-                                                            @endif
-                                                        </div>
-                                                        <div
-                                                            class="form-group{{ $errors->has('shipperfolio') ? ' has-danger' : '' }} col-md-6 col-sm-12">
-                                                            <label for="shipperfolio">{{ __('Folio') }}</label>
-                                                            {{-- name="shipperfolio" @if ($rol != 1) readonly @endif> --}}
-                                                            <textarea
-                                                                class="form-control{{ $errors->has('shipperfolio') ? ' is-invalid' : '' }}"
-                                                                name="shipperfolio" id="input-shipperfolio"
-                                                                aria-describedby="shipperfolioHelp" placeholder="Folio"
-                                                                rows="2" aria-required="true" readonly>{{ old('shipperfolio', $invoice->shipperfolio) }}
-                                                                                                    </textarea>
-                                                            @if ($errors->has('shipperfolio'))
-                                                                <span id="shipperfolio-error" class="error text-danger"
-                                                                    for="input-shipperfolio">
-                                                                    {{ $errors->first('shipperfolio') }}
-                                                                </span>
-                                                            @endif
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <div class="fileinput fileinput-new text-center"
-                                                                data-provides="fileinput">
-                                                                <label>{{ __('Factura PDF') }}</label>
-                                                                <div class="justify-content-center">
-                                                                    <span class="btn btn-rose btn-sm btn-file">
-                                                                        <span class="fileinput-new">
-                                                                            @if ($invoice->shipperpdf ?? false)
-                                                                                {{ __('Cambiar archivo') }}
-                                                                            @else
-                                                                                {{ __('Agregar archivo') }}
-                                                                            @endif
-                                                                        </span>
-                                                                        <span class="fileinput-exists">Cambiar
-                                                                            archivo</span>
-                                                                        <input type="file" name="file_shipperpdf"
-                                                                            accept=".pdf">
-                                                                    </span>
-                                                                </div>
-                                                                @if ($errors->has('file_shipperpdf'))
-                                                                    <span id="text-file_shipperpdf"
-                                                                        class="error text-danger"
-                                                                        for="input-file_shipperpdf">
-                                                                        <br> {{ $errors->first('file_shipperpdf') }}
-                                                                    </span>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <div class="fileinput fileinput-new text-center"
-                                                                data-provides="fileinput">
-                                                                <label>{{ __('Factura XML') }}</label>
-                                                                <div class="justify-content-center">
-                                                                    <span class="btn btn-rose btn-sm btn-file">
-                                                                        <span class="fileinput-new">
-                                                                            @if ($invoice->shipperxml ?? false)
-                                                                                {{ __('Cambiar archivo') }}
-                                                                            @else
-                                                                                {{ __('Agregar archivo') }}
-                                                                            @endif
-                                                                        </span>
-                                                                        <span class="fileinput-exists">Cambiar
-                                                                            archivo</span>
-                                                                        <input type="file" name="file_shipperxml"
-                                                                            accept=".xml">
-                                                                    </span>
-                                                                </div>
-                                                                @if ($errors->has('file_shipperxml'))
-                                                                    <span id="text-file_shipperxml"
-                                                                        class="error text-danger"
-                                                                        for="input-file_shipperxml">
-                                                                        <br> {{ $errors->first('file_shipperxml') }}
-                                                                    </span>
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    @if ($rol == 1)
-                                                        <div class="card-footer justify-content-center">
-                                                            <button type="button" id="transportistaButton"
-                                                                onclick="disabledButton('transportistaButton','transportistaForm')"
-                                                                class="btn btn-primary">{{ __('Actualizar Facturación Transporte') }}
-                                                            </button>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </form>
-                                    @endif
+                                    {{-- Facturacion Valero - Guerrera --}}
+                                    @include('invoices.invoiceValeroGuerrera',[$rol])
+                                    {{-- Facturacion transporte --}}
+                                    @include('invoices.invoiceTransport')
                                 </div>
                             </div>
                             @if (($rol = auth()->user()->roles->first()->id) == 1)
@@ -468,38 +299,19 @@
                                                         </div>
                                                     </div>
                                                     <div class="row justify-content-center">
-                                                        <div
-                                                            class="form-group{{ $errors->has('credit') ? ' has-danger' : '' }} col-md-5 col-sm-12">
-                                                            <label
-                                                                for="credit">{{ __('Folio nota de crédito') }}</label>
-                                                            <input type="text"
-                                                                class="form-control{{ $errors->has('credit') ? ' is-invalid' : '' }}"
-                                                                id="input-credit" aria-describedby="creditHelp"
-                                                                placeholder="Escribe la nota de crédito"
-                                                                value="{{ old('credit', $invoice->credit) }}"
-                                                                aria-required="true" name="credit" readonly>
-                                                            @if ($errors->has('credit'))
-                                                                <span id="credit-error" class="error text-danger"
-                                                                    for="input-credit">
-                                                                    {{ $errors->first('credit') }}
-                                                                </span>
-                                                            @endif
+                                                        <div class="form-group col-md-5 col-sm-12">
+                                                            <label for="credit">{{ __('Folio nota de crédito') }}
+                                                            </label>
+                                                            <input type="text" class="form-control" id="input-credit"
+                                                                aria-describedby="creditHelp" placeholder="Nota de crédito"
+                                                                value="{{ old('credit', $invoice->credit) }}" readonly>
                                                         </div>
-                                                        <div
-                                                            class="form-group{{ $errors->has('amount') ? ' has-danger' : '' }} col-md-5 col-sm-12">
+                                                        <div class="form-group col-md-5 col-sm-12">
                                                             <label for="amount">{{ __('Importe final') }}</label>
-                                                            <input type="text"
-                                                                class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}"
-                                                                id="input-amount" aria-describedby="amountHelp"
-                                                                placeholder="Escribe el importe final"
-                                                                value="{{ old('amount', $invoice->amount) }}"
-                                                                aria-required="true" name="amount" step="any" readonly>
-                                                            @if ($errors->has('amount'))
-                                                                <span id="amount-error" class="error text-danger"
-                                                                    for="input-amount">
-                                                                    {{ $errors->first('amount') }}
-                                                                </span>
-                                                            @endif
+                                                            <input type="text" class="form-control" id="input-amount"
+                                                                aria-describedby="amountHelp" placeholder="Importe final"
+                                                                value="{{ old('amount', $invoice->amount) }}" step="any"
+                                                                readonly>
                                                         </div>
                                                     </div>
                                                     @if ($rol == 1)
