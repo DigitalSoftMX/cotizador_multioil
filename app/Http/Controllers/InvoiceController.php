@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Order;
 use App\Repositories\Activities;
 use App\Role;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -41,25 +42,41 @@ class InvoiceController extends Controller
             'price' => $request->price ? 'numeric' : '',
             'sale_price' => $request->sale_price ? 'numeric' : '',
             'bol_load' => $request->bol_load ? 'numeric' : '',
+            'bol_load2' => $request->bol_load2 ? 'numeric' : '',
             'dispatched_liters' => $request->dispatched_liters ? 'numeric' : '',
             'root_liters' => $request->root_liters ? 'numeric' : '',
-            'CFDI' => $request->CFDI ? 'string' : '',
             'name_freight' => $request->name_freight ? 'min:3' : '',
+            'CFDI' => $request->CFDI ? 'string' : '',
             'file_pdf' => $request->file('file_pdf') ? 'required|file|mimes:pdf' : '',
             'file_xml' => $request->file('file_xml') ? 'required|file|mimes:xml' : '',
+            'CFDI2' => $request->CFDI2 ? 'string' : '',
+            'file_pdf2' => $request->file('file_pdf2') ? 'required|file|mimes:pdf' : '',
+            'file_xml2' => $request->file('file_xml2') ? 'required|file|mimes:xml' : '',
         ]);
         $activity = new Activities();
         if ($request->file("file_pdf"))
             $activity->saveFile($request, $invoice, 'pdf');
+        if ($request->file("file_pdf2"))
+            $activity->saveFile($request, $invoice, 'pdf2');
         if ($request->file("file_xml")) {
-            $activity->saveFile($request, $invoice, 'xml');
             // leyendo archivo xml y actualizando total y folio UUID
+            $activity->saveFile($request, $invoice, 'xml');
             $xml = $activity->xmlTotalFolioUUID($request->file('file_xml'));
             if (!$xml) return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
             $invoice->update(['invoice' => $xml['total'], 'invoicefolio' => $xml['folio']]);
         }
+        if ($request->file("file_xml2")) {
+            // leyendo archivo xml y actualizando total y folio UUID
+            $activity->saveFile($request, $invoice, 'xml2');
+            $xml = $activity->xmlTotalFolioUUID($request->file('file_xml2'));
+            if (!$xml) return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+            $invoice->update(['invoice2' => $xml['total'], 'invoicefolio2' => $xml['folio']]);
+        }
         $request->merge(['total' => $request->price * $invoice->liters]);
-        $invoice->update($request->only(['dispatched', 'dispatched_liters', 'root_liters', 'bol_load', 'CFDI', 'sale_price', 'name_freight', 'price', 'total']));
+        $invoice->update($request->only([
+            'dispatched', 'dispatched_liters', 'root_liters', 'bol_load', 'bol_load2', 'name_freight',
+            'CFDI', 'CFDI2', 'sale_price', 'price', 'total'
+        ]));
         return redirect()->back()->withStatus('Datos de facturación actualizados correctamente');
     }
     // Actualización de facturación Valero - Guerrera
@@ -86,7 +103,11 @@ class InvoiceController extends Controller
     public function download(Request $request, Order $order, $file, $type)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
-        return Response::download(public_path() . $order->$file, "Factura {$order->company->name}.$type");
+        try {
+            return Response::download(public_path() . $order->$file, "Factura {$order->company->name}.$type");
+        } catch (Exception $e) {
+            return redirect()->back()->withStatus('El archivo que intenta descargar no ha sido guardado')->withColor('danger');
+        }
     }
     // Actualizacion de transportista
     public function shipper(Request $request, Order $invoice)

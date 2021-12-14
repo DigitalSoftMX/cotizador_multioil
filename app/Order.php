@@ -10,10 +10,12 @@ class Order extends Model
         'company_id', 'terminal_id', 'freight', 'name_freight', 'secure',
         'price', 'sale_price', 'liters', 'product', 'total', 'date', 'dispatched',
         'dispatched_liters', 'root_liters', 'invoice', 'invoicefolio', 'CFDI', 'pdf', 'xml',
+        'invoice2', 'invoicefolio2', 'CFDI2', 'pdf2', 'xml2',
         'status_id', 'commission', 'user_id', 'commission_two', 'middleman_id',
         'reason', 'invoicepayment', 'paymentfolio', 'invoicecfdi', 'invoicepdf', 'invoicexml',
         'shipper', 'number_shipper', 'invoice_shipper', 'shipperpdf', 'shipperxml',
-        'shipperfolio', 'bol_load', 'credit', 'amount', 'creditpdf', 'creditxml', 'type', 'created_at'
+        'shipperfolio', 'bol_load', 'bol_load2', 'credit', 'amount', 'creditpdf', 'creditxml',
+        'type', 'created_at'
     ];
     // Relacion con las empresas
     public function company()
