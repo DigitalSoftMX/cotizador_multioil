@@ -28,12 +28,7 @@
                                 placeholder="Escribe la cantidad del pago"
                                 value="{{ old('payment_guerrera', $payment->payment_guerrera ?? '') }}"
                                 aria-required="true" name="payment_guerrera" step="any">
-                            @if ($errors->has('payment_guerrera'))
-                                <span id="payment_guerrera-error" class="error text-danger"
-                                    for="input-payment_guerrera">
-                                    {{ $errors->first('payment_guerrera') }}
-                                </span>
-                            @endif
+                            @include('partials.errorsession',[$field='payment_guerrera'])
                         </div>
                         <div
                             class="form-group{{ $errors->has('payment_g_valero') ? ' has-danger' : '' }} col-md-4 col-sm-12">
@@ -44,12 +39,7 @@
                                 placeholder="Escribe la cantidad del pago"
                                 value="{{ old('payment_g_valero', $payment->payment_g_valero ?? '') }}"
                                 aria-required="true" name="payment_g_valero" step="any">
-                            @if ($errors->has('payment_g_valero'))
-                                <span id="payment_g_valero-error" class="error text-danger"
-                                    for="input-payment_g_valero">
-                                    {{ $errors->first('payment_g_valero') }}
-                                </span>
-                            @endif
+                            @include('partials.errorsession',[$field='payment_g_valero'])
                         </div>
                         <div
                             class="form-group{{ $errors->has('payment_freight') ? ' has-danger' : '' }} col-md-4 col-sm-12">
@@ -60,11 +50,7 @@
                                 placeholder="Escribe la cantidad del pago"
                                 value="{{ old('payment_freight', $payment->payment_freight ?? '') }}"
                                 aria-required="true" name="payment_freight" step="any">
-                            @if ($errors->has('payment_freight'))
-                                <span id="payment_freight-error" class="error text-danger" for="input-payment_freight">
-                                    {{ $errors->first('payment_freight') }}
-                                </span>
-                            @endif
+                            @include('partials.errorsession',[$field='payment_freight'])
                         </div>
                     </div>
                     <div class="row justify-content-center">
@@ -110,12 +96,7 @@
                                         <input type="file" name="file_voucherguerrera">
                                     </span>
                                 </div>
-                                @if ($errors->has('file_voucherguerrera'))
-                                    <span id="text-file_voucherguerrera" class="error text-danger"
-                                        for="input-file_voucherguerrera">
-                                        <br> {{ $errors->first('file_voucherguerrera') }}
-                                    </span>
-                                @endif
+                                @include('partials.errorsession',[$field='file_voucherguerrera'])
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -134,12 +115,7 @@
                                         <input type="file" name="file_vouchervalero">
                                     </span>
                                 </div>
-                                @if ($errors->has('file_vouchervalero'))
-                                    <span id="text-file_vouchervalero" class="error text-danger"
-                                        for="input-file_vouchervalero">
-                                        <br> {{ $errors->first('file_vouchervalero') }}
-                                    </span>
-                                @endif
+                                @include('partials.errorsession',[$field='file_vouchervalero'])
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -158,12 +134,7 @@
                                         <input type="file" name="file_voucherfreight">
                                     </span>
                                 </div>
-                                @if ($errors->has('file_voucherfreight'))
-                                    <span id="text-file_voucherfreight" class="error text-danger"
-                                        for="input-file_voucherfreight">
-                                        <br> {{ $errors->first('file_voucherfreight') }}
-                                    </span>
-                                @endif
+                                @include('partials.errorsession',[$field='file_voucherfreight'])
                             </div>
                         </div>
                     </div>

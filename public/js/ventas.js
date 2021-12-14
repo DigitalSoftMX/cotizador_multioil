@@ -24,9 +24,7 @@
     }
 
     function loadTable(name) {
-        table=$('#'+name).DataTable({
-
-            responsive: true,
+        table=$('#'+name).DataTable({      
             dom: 'Blfrtip',
             buttons: [
                 {
