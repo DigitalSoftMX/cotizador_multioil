@@ -83,20 +83,30 @@ class InvoiceController extends Controller
     public function updateinvoice(Request $request, Order $invoice)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        request()->validate(['invoicecfdi' => 'required|string|min:3']);
+        request()->validate([
+            'invoicecfdi' => 'required|string|min:3',
+            'invoicecfdi' => $request->invoicecfdi2 ? 'string|min:3' : '',
+            'file_invoicepdf' => $request->file_invoicepdf ? 'file|mimes:pdf' : '',
+            'file_invoicexml' => $request->file_invoicexml ? 'file|mimes:xml' : '',
+            'file_invoicepdf2' => $request->file_invoicepdf2 ? 'file|mimes:pdf' : '',
+            'file_invoicexml2' => $request->file_invoicexml2 ? 'file|mimes:xml' : ''
+        ]);
         $activity = new Activities();
-        if ($request->file("file_invoicepdf")) {
-            request()->validate(['file_invoicepdf' => 'required|file|mimes:pdf']);
-            $activity->saveFile($request, $invoice, 'invoicepdf');
-        }
+        if ($request->file("file_invoicepdf")) $activity->saveFile($request, $invoice, 'invoicepdf');
+        if ($request->file("file_invoicepdf2")) $activity->saveFile($request, $invoice, 'invoicepdf2');
         if ($request->file("file_invoicexml")) {
-            request()->validate(['file_invoicexml' => 'required|file|mimes:xml']);
             $activity->saveFile($request, $invoice, 'invoicexml');
             $xml = $activity->xmlTotalFolioUUID($request->file('file_invoicexml'));
             if (!$xml) return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
             $invoice->update(['invoicepayment' => $xml['total'], 'paymentfolio' => $xml['folio']]);
         }
-        $invoice->update($request->only(['invoicecfdi']));
+        if ($request->file("file_invoicexml2")) {
+            $activity->saveFile($request, $invoice, 'invoicexml2');
+            $xml = $activity->xmlTotalFolioUUID($request->file('file_invoicexml2'));
+            if (!$xml) return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+            $invoice->update(['invoicepayment2' => $xml['total'], 'paymentfolio2' => $xml['folio']]);
+        }
+        $invoice->update($request->only(['invoicecfdi', 'invoicecfdi2']));
         return redirect()->back()->withStatus('Datos de facturación Valero - Guerrera actualizados correctamente');
     }
     // descarga de archivo pdf o xml

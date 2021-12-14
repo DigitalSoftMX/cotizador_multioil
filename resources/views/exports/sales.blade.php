@@ -252,7 +252,7 @@
                 <td>{{ '$' . number_format($pagoFletera = ($order->invoice_shipper?$order->invoice_shipper: $order->payments->sum('payment_freight')), 2) }}</td>
                 @php $totalPagoAfletera+=$pagoFletera; @endphp
                 <td>{{ $facturaValeroGuerrera = $order->invoicecfdi }}</td>
-                <td>{{ '$' . number_format($cantidadFacturadaValeroGuerrera = $order->invoicepayment,2)}}</td>
+                <td>{{ '$' . number_format($cantidadFacturadaValeroGuerrera = ($order->invoicepayment + $order->invoicepayment2),2)}}</td>
                 @php $totalCantidadFacturadaValeroGuerrera+=$cantidadFacturadaValeroGuerrera; @endphp
                 <td style="color: {{($diferenciaDePagoContraFacturaValero=$cantidadFacturadaValeroGuerrera-$pagoGuerreraValero)<=0?'#05AB00':'#E40404'}}">{{ '$' . number_format($diferenciaDePagoContraFacturaValero,2)}}</td>
                 <td>
