@@ -21,22 +21,11 @@ class PaymentController extends Controller
     public function store(Request $request, Order $order)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        if ($request->payment_guerrera == null && $request->payment_g_valero == null && $request->payment_freight == null)
+        if (!$request->payment_guerrera && !$request->payment_g_valero && !$request->payment_freight)
             return redirect()->back()->withStatus('Debe ingresar al menos un tipo de pago')->withColor('danger');
-        if ($request->payment_guerrera)
-            request()->validate(['file_voucherguerrera' => 'required|file']);
-        if ($request->payment_g_valero)
-            request()->validate(['file_vouchervalero' => 'required|file']);
-        if ($request->payment_freight)
-            request()->validate(['file_voucherfreight' => 'required|file']);
-        $savingFile = new Activities();
         $payment = Payment::create($request->merge(['order_id' => $order->id])->all());
-        if ($request->payment_guerrera)
-            $savingFile->saveFile($request, $payment, 'voucherguerrera', 'payments');
-        if ($request->payment_g_valero)
-            $savingFile->saveFile($request, $payment, 'vouchervalero', 'payments');
-        if ($request->payment_freight)
-            $savingFile->saveFile($request, $payment, 'voucherfreight', 'payments');
+        $savingFile = new Activities();
+        $savingFile->saveOrUpdatePayments($request, $payment);
         return redirect()->back()->withStatus('Pago registrado correctamente');
     }
 
@@ -50,37 +39,11 @@ class PaymentController extends Controller
     public function update(Request $request, Order $order, Payment $payment)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        if ($request->payment_guerrera == null && $request->payment_g_valero == null && $request->payment_freight == null)
+        if (!$request->payment_guerrera && !$request->payment_g_valero && !$request->payment_freight)
             return redirect()->back()->withStatus('Debe ingresar al menos un tipo de pago')->withColor('danger');
-        if ($request->payment_guerrera and $payment->voucherguerrera == null)
-            request()->validate(['file_voucherguerrera' => 'required|file']);
-        if ($request->payment_g_valero and $payment->vouchervalero == null)
-            request()->validate(['file_vouchervalero' => 'required|file']);
-        if ($request->payment_freight and $payment->voucherfreight == null)
-            request()->validate(['file_voucherfreight' => 'required|file']);
         $savingFile = new Activities();
         $payment->update($request->except('order_id'));
-        if ($request->payment_guerrera)
-            $savingFile->saveFile($request, $payment, 'voucherguerrera', 'payments');
-        if ($request->payment_g_valero)
-            $savingFile->saveFile($request, $payment, 'vouchervalero', 'payments');
-        if ($request->payment_freight)
-            $savingFile->saveFile($request, $payment, 'voucherfreight', 'payments');
-        if (!$request->payment_guerrera) {
-            if (File::exists(public_path() . $payment->voucherguerrera))
-                File::delete(public_path() . $payment->voucherguerrera);
-            $payment->update(['voucherguerrera' => null]);
-        }
-        if (!$request->payment_g_valero) {
-            if (File::exists(public_path() . $payment->vouchervalero))
-                File::delete(public_path() . $payment->vouchervalero);
-            $payment->update(['vouchervalero' => null]);
-        }
-        if (!$request->payment_freight) {
-            if (File::exists(public_path() . $payment->voucherfreight))
-                File::delete(public_path() . $payment->voucherfreight);
-            $payment->update(['voucherfreight' => null]);
-        }
+        $savingFile->saveOrUpdatePayments($request, $payment);
         return redirect()->back()->withStatus('Pago actualizado correctamente');
     }
     // Descarga de archivos "factura" de los pagos de cada pedido
