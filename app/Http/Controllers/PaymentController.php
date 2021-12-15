@@ -50,15 +50,16 @@ class PaymentController extends Controller
     public function downloadVoucher(Request $request, Payment $payment, $file)
     {
         $request->user()->authorizeRoles(['Administrador']);
+        $extention = explode('.', $payment->vouchervalero);
         switch ($file) {
             case 'guerrera':
                 $extention = explode('.', $payment->voucherguerrera);
                 return Response::download(public_path() . $payment->voucherguerrera, "Factura {$payment->order->name} Guerrera.{$extention[1]}");
             case 'valero':
-                $extention = explode('.', $payment->voucherguerrera);
+                $extention = explode('.', $payment->vouchervalero);
                 return Response::download(public_path() . $payment->vouchervalero, "Factura {$payment->order->name} Guerrera-Valero.{$extention[1]}");
             case 'fletera':
-                $extention = explode('.', $payment->voucherguerrera);
+                $extention = explode('.', $payment->voucherfreight);
                 return Response::download(public_path() . $payment->voucherfreight, "Factura {$payment->order->name} Fletera.{$extention[1]}");
             default:
                 return redirect()->back()->withStatus('archivo no encontrado')->withColor('danger');
