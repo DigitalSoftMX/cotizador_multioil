@@ -45,11 +45,16 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->double('commission_two')->nullable();
             $table->unsignedBigInteger('middleman_id')->nullable();
-            $table->double('invoicepayment')->nullable();
+            $table->double('invoicepayment')->default(0);
             $table->string('paymentfolio')->nullable();
             $table->string('invoicecfdi')->nullable();
             $table->string('invoicepdf')->nullable();
             $table->string('invoicexml')->nullable();
+            $table->double('invoicepayment2')->default(0);
+            $table->string('paymentfolio2')->nullable();
+            $table->string('invoicecfdi2')->nullable();
+            $table->string('invoicepdf2')->nullable();
+            $table->string('invoicexml2')->nullable();
             $table->string('shipper')->nullable();
             $table->string('number_shipper')->nullable();
             $table->double('invoice_shipper')->nullable();

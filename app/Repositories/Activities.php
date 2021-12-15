@@ -9,6 +9,7 @@ use App\Terminal;
 use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class Activities
 {
@@ -139,6 +140,37 @@ class Activities
             return $data;
         } catch (Exception $e) {
             return null;
+        }
+    }
+    // Guarda o actualiza los pagos de un pedido
+    public function saveOrUpdatePayments(Request $request, $payment)
+    {
+        if ($request->file_voucherguerrera) {
+            request()->validate(['file_voucherguerrera' => 'file']);
+            $this->saveFile($request, $payment, 'voucherguerrera', 'payments');
+        }
+        if ($request->file_vouchervalero) {
+            request()->validate(['file_vouchervalero' => 'file']);
+            $this->saveFile($request, $payment, 'vouchervalero', 'payments');
+        }
+        if ($request->file_voucherfreight) {
+            request()->validate(['file_voucherfreight' => 'file']);
+            $this->saveFile($request, $payment, 'voucherfreight', 'payments');
+        }
+        if (!$request->payment_guerrera) {
+            if (File::exists(public_path() . $payment->voucherguerrera))
+                File::delete(public_path() . $payment->voucherguerrera);
+            $payment->update(['voucherguerrera' => null]);
+        }
+        if (!$request->payment_g_valero) {
+            if (File::exists(public_path() . $payment->vouchervalero))
+                File::delete(public_path() . $payment->vouchervalero);
+            $payment->update(['vouchervalero' => null]);
+        }
+        if (!$request->payment_freight) {
+            if (File::exists(public_path() . $payment->voucherfreight))
+                File::delete(public_path() . $payment->voucherfreight);
+            $payment->update(['voucherfreight' => null]);
         }
     }
     // llenado de precios

@@ -13,6 +13,7 @@ class Order extends Model
         'invoice2', 'invoicefolio2', 'CFDI2', 'pdf2', 'xml2',
         'status_id', 'commission', 'user_id', 'commission_two', 'middleman_id',
         'reason', 'invoicepayment', 'paymentfolio', 'invoicecfdi', 'invoicepdf', 'invoicexml',
+        'invoicepayment2', 'paymentfolio2', 'invoicecfdi2', 'invoicepdf2', 'invoicexml2',
         'shipper', 'number_shipper', 'invoice_shipper', 'shipperpdf', 'shipperxml',
         'shipperfolio', 'bol_load', 'bol_load2', 'credit', 'amount', 'creditpdf', 'creditxml',
         'type', 'created_at'
