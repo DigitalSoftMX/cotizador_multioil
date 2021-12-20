@@ -11,28 +11,29 @@
                 @include('partials.errorsession',[$field='dispatched'])
             </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="form-group{{ $errors->has('price') ? ' has-danger' : '' }} col-12 col-md-10">
-                <label for="price">{{ __('Precio de compra') }}</label>
-                <input type="number" class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}"
-                    id="input-price" aria-describedby="priceHelp" placeholder="Escribe el precio de compra por litro"
-                    value="{{ old('price', $invoice->price) }}" name="price" step="any" @if ($rol != 1) readonly @endif>
-                @include('partials.errorsession',[$field='price'])
-            </div>
-        </div>
         @if (auth()->user()->roles->first()->id == 1)
             <div class="row justify-content-center">
-                <div class="form-group{{ $errors->has('sale_price') ? ' has-danger' : '' }} col-12 col-md-10">
-                    <label for="sale_price">{{ __('Precio Multioil compra') }}</label>
-                    <input type="number" class="form-control{{ $errors->has('sale_price') ? ' is-invalid' : '' }}"
-                        id="input-sale_price" aria-describedby="sale_priceHelp"
-                        placeholder="Escribe el precio de venta por litro"
-                        value="{{ old('sale_price', $invoice->sale_price) }}" name="sale_price" step="any"
-                        @if ($rol != 1) readonly @endif>
-                    @include('partials.errorsession',[$field='sale_price'])
+                <div class="form-group{{ $errors->has('price') ? ' has-danger' : '' }} col-12 col-md-10">
+                    <label for="price">{{ __('Precio de compra') }}</label>
+                    <input type="number" class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}"
+                        id="input-price" aria-describedby="priceHelp"
+                        placeholder="Escribe el precio de compra por litro"
+                        value="{{ old('price', $invoice->price) }}" name="price" step="any" @if ($rol != 1) readonly @endif>
+                    @include('partials.errorsession',[$field='price'])
                 </div>
             </div>
         @endif
+        <div class="row justify-content-center">
+            <div class="form-group{{ $errors->has('sale_price') ? ' has-danger' : '' }} col-12 col-md-10">
+                <label for="sale_price">{{ __('Precio de venta') }}</label>
+                <input type="number" class="form-control{{ $errors->has('sale_price') ? ' is-invalid' : '' }}"
+                    id="input-sale_price" aria-describedby="sale_priceHelp"
+                    placeholder="Escribe el precio de venta por litro"
+                    value="{{ old('sale_price', $invoice->sale_price) }}" name="sale_price" step="any"
+                    @if ($rol != 1) readonly @endif>
+                @include('partials.errorsession',[$field='sale_price'])
+            </div>
+        </div>
         <div class="row justify-content-center">
             <div class="form-group{{ $errors->has('bol_load') ? ' has-danger' : '' }} col-12 col-md-10">
                 <label for="bol_load">{{ __('Folio Bol de carga 1') }}</label>
