@@ -102,9 +102,9 @@ class Activities
         }
     }
     // lista de meses en español
-    public function getMonths()
+    public function getMonths($date = null)
     {
-        return [
+        $months = [
             ['name' => 'Enero', 'id' => '01'],
             ['name' => 'Febrero', 'id' => '02'],
             ['name' => 'Marzo', 'id' => '03'],
@@ -118,6 +118,11 @@ class Activities
             ['name' => 'Noviembre', 'id' => '11'],
             ['name' => 'Diciembre', 'id' => '12'],
         ];
+        if ($date) {
+            $date = explode("-", $date);
+            return $months[((int)$date[1]) - 1]['name'];
+        }
+        return $months;
     }
     // Leyendo archivo XML Total y folio
     public function xmlTotalFolioUUID($file)

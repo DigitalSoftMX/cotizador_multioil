@@ -125,7 +125,8 @@ class OrderController extends Controller
     public function downloadSales(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
-        // return view('exports.sales', ['orders' => Order::where('status_id', 2)->get()]);
+        /* return view('exports.sales', ['orders' => Order::where('status_id', 2)
+            ->with(['company', 'payments'])->get()]); */
         return Excel::download(new OrderExcelExport(), 'Ventas.xlsx');
     }
     // Vista para el estado de cuenta de un comisionista
