@@ -100,7 +100,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('utilidadcliente', 'GraficasController@utilidadCliente');
 	Route::get('utilidadgeneral', 'GraficasController@utilidadGeneral');
 	Route::get('utilidadguerrera', 'GraficasController@utilidadGuerrera');
-	Route::get('ivapormes', 'GraficasController@ivaPorMes');
+	Route::get('iva', 'GraficasController@iva');
 	Route::get('mermaporclientemes/{month?}', 'GraficasController@mermaPorClienteMes');
 	Route::get('ultimosmeses/{revers?}', 'GraficasController@mouthLast');
 });

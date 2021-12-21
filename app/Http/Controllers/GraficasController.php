@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Http\Controllers\Controller;
+use App\Order;
+use App\Repositories\Activities;
 use App\Repositories\Chartdata;
 use Exception;
 use Illuminate\Http\Request;
@@ -98,29 +100,33 @@ class GraficasController extends Controller
         return $companies;
     }
     // Acumulado IVA por mes
-    public function ivaPorMes()
+    public function iva()
     {
-        $companies = [];
-        foreach (Company::where('active', 1)->with('orders')->get() as $company) {
-            if (($orders = $company->orders->where('status_id', 2))->count() > 0) {
-                $data['id'] = $company->id;
-                $data['company'] = $company->alias;
-                $data['total'] = 0;
-                foreach ($orders as $order) {
-                    $diferenciaPrecio = $order->sale_price - $order->price;
-                    $pagoFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
-                    $comision = ($diferenciaPrecio * $order->dispatched_liters - $pagoFletera);
-                    $utilidadComisionista1 = $order->commission ? $order->commission * $order->dispatched_liters : 0;
-                    $utilidadComisionista2 = $order->commission_two ? $order->commission_two * $order->dispatched_liters : 0;
-                    $utilidadMultioil = ($comision - $utilidadComisionista1 - $utilidadComisionista2) * 0.8;
-                    $utilidadMultioilSinIVA = $utilidadMultioil / 1.16;
-                    $data['total'] += ($utilidadMultioilSinIVA * 0.2);
-                }
-                $data['total'] =$data['total'];
-                array_push($companies, $data);
+        $months = new Activities();
+        $orders = Order::where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get();
+        $month = $orders->first()->created_at->format('Y-m');
+        $data = [];
+        $totalIva = 0;
+        foreach ($orders as $order) {
+            if ($month != $order->created_at->format('Y-m')) {
+                array_push($data, ["month" => $months->getMonths($month), 'total' => '$ ' .  number_format($totalIva, 2)]);
+                $month = $order->created_at->format('Y-m');
+                $totalIva = 0;
             }
+            $cantidadFacturadaACliente = $order->amount ? $order->invoice + $order->invoice2 - $order->amount : $order->invoice + $order->invoice2;
+            $cantidadFacturadaPorValero = $order->invoicepayment + $order->invoicepayment2;
+            $pagoAFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
+            $utilidadGeneral = $cantidadFacturadaACliente - $cantidadFacturadaPorValero - $pagoAFletera;
+            $litrosDespachados = $order->dispatched_liters;
+            $comisionista1 = $order->commission ?? 0 * $litrosDespachados;
+            $comisionista2 = $order->commission_two ?? 0 * $litrosDespachados;
+            $utilidadMultioil = ($utilidadGeneral - $comisionista1 - $comisionista2) * 0.8;
+            $utilidadMultioilSinIVA = $utilidadMultioil / 1.16;
+            $iva = $utilidadMultioil - $utilidadMultioilSinIVA;
+            $totalIva += $iva;
         }
-        return $companies;
+        array_push($data, ["month" => $months->getMonths($month), 'total' => '$ ' .  number_format($totalIva, 2)]);
+        return $data;
     }
     // Merma por cliente o por mes si este existe
     public function mermaPorClienteMes($month = null)
@@ -196,7 +202,7 @@ class GraficasController extends Controller
         array_unshift($array_meses_largos,  $array_meses_espanol[strval(date("M", mktime(0, 0, 0, date("m"), 28, date("Y"))))]);
 
         // revertimos el orden del array
-        if($revers){
+        if ($revers) {
             $meses_hasta_el_actual = array_reverse($meses_hasta_el_actual);
             $array_meses_largos = array_reverse($array_meses_largos);
             $array_meses = array_reverse($array_meses);

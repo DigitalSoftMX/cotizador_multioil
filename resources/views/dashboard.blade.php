@@ -326,12 +326,6 @@
                                     <div class="tab-pane active show" id="profile">
                                         <canvas id="chartBigProducts"></canvas>
                                     </div>
-                                    <!--div class="tab-pane" id="messages">
-                                                                                                                2
-                                                                                                            </div>
-                                                                                                            <div class="tab-pane" id="settings">
-                                                                                                                3
-                                                                                                            </div-->
                                 </div>
                             </div>
                         </div>
@@ -450,22 +444,7 @@
 
                 </div>
 
-
                 <div class="row">
-                    <!--div class="col-sm-6">
-                                                                    <div class="card" style="height: 60vh;">
-                                                                        <div class="card-body">
-                                                                            <div class="row">
-                                                                                <div class="col-7">
-                                                                                    <p class="h4 font-weight-bold pt-2">Utilidad guerrera</p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="tab-pane active show" id="utilidadguerrera">
-                                                                                <lottie-player id="chartUtilidadGuerrera"  class="mx-auto d-block" src="https://assets5.lottiefiles.com/packages/lf20_Z4BhGL.json"  background="transparent"  speed="1"  style="width: 200px; height: 200px; margin-top: 50px;"  loop autoplay></lottie-player>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div-->
                     <div class="col-sm-4 pr-5">
                         <div class="card scroll-card-active" style="height: 60vh;">
                             <div class="card-body">
@@ -624,7 +603,7 @@
             await initDashboardTable('{{ url('/') }}', 'utilidadcliente', '', 'utilidadcliente');
             await initDashboardTable('{{ url('/') }}', 'utilidadgeneral', '', 'utilidadgeneral');
             await initDashboardTable('{{ url('/') }}', 'utilidadguerrera', '', 'utilidadguerrera');
-            await initDashboardTable('{{ url('/') }}', 'ivapormes', '', 'ivapormes');
+            await initDashboardTable('{{ url('/') }}', 'iva', '', 'ivapormes', 'month');
             await selectMouth('{{ url('/') }}', 0, 'lastMounts');
             await selectMouth('{{ url('/') }}', 0, 'lastMountsGuerrera');
             await selectMouth('{{ url('/') }}', 0, 'ValeroGuerreralastMounts');
