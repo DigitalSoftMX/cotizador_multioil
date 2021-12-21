@@ -41,11 +41,15 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="form-group col-md-6 col-sm-12">
+                    <div
+                        class="form-group{{ $errors->has('invoice_shipper') ? ' has-danger' : '' }} col-md-6 col-sm-12">
                         <label for="invoice_shipper">{{ __('Cantidad Facturada') }}</label>
-                        <input type="number" class="form-control" id="input-invoice_shipper"
-                            aria-describedby="invoice_shipperHelp" placeholder="Escribe la cantidad facturada"
-                            value="{{ old('invoice_shipper', $invoice->invoice_shipper) }}" step="any" readonly>
+                        <input type="number"
+                            class="form-control{{ $errors->has('invoice_shipper') ? ' is-invalid' : '' }}"
+                            id="input-invoice_shipper" aria-describedby="invoice_shipperHelp"
+                            placeholder="Escribe la cantidad facturada" name="invoice_shipper"
+                            value="{{ old('invoice_shipper', $invoice->invoice_shipper) }}" step="any">
+                        @include('partials.errorsession',[$field='invoice_shipper'])
                     </div>
                     <div class="form-group col-md-6 col-sm-12">
                         <label for="shipperfolio">{{ __('Folio') }}</label>

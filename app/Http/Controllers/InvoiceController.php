@@ -124,20 +124,26 @@ class InvoiceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate([
-            'file_shipperpdf' => 'required|file|mimes:pdf',
-            'file_shipperxml' => 'required|file|mimes:xml'
+            'file_shipperpdf' => $request->file_shipperpdf ? 'file|mimes:pdf' : '',
+            'file_shipperxml' => $request->file_shipperxml ? 'file|mimes:xml' : '',
+            'invoice_shipper' => $request->invoice_shipper ? 'numeric' : '',
         ]);
         $activity = new Activities();
-        $activity->saveFile($request, $invoice, 'shipperpdf');
-        $activity->saveFile($request, $invoice, 'shipperxml');
-        $xml = $activity->xmlTotalFolioUUID($request->file('file_shipperxml'));
-        if ($xml) {
-            $invoice->update([
-                'shipper' => $xml['shipper'], 'invoice_shipper' => $xml['total'],
-                'shipperfolio' => $xml['folio']
-            ]);
+        if ($request->file_shipperpdf)
+            $activity->saveFile($request, $invoice, 'shipperpdf');
+        if ($request->file('file_shipperxml')) {
+            $activity->saveFile($request, $invoice, 'shipperxml');
+            $xml = $activity->xmlTotalFolioUUID($request->file('file_shipperxml'));
+            if ($xml) {
+                $invoice->update([
+                    'shipper' => $xml['shipper'], 'shipperfolio' => $xml['folio'],
+                    'invoice_shipper' => $request->invoice_shipper ?? $xml['total'],
+                ]);
+            } else {
+                return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+            }
         } else {
-            return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+            $invoice->update($request->only(['invoice_shipper']));
         }
         $invoice->update($request->only(['number_shipper']));
         return redirect()->back()->withStatus('Datos de factura transporte actualizados correctamente');

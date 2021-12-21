@@ -15,8 +15,28 @@ class GraficasController extends Controller
     // Total de transporte por empresa y mes
     public function totalTransporte($month = null)
     {
-        $chart = new Chartdata();
-        return $chart->getDataOrder('payment_freight', $month);
+        $orders = $month ?
+            Order::where('status_id', 2)->where('created_at', 'like', "%{$month}%")->with(['company', 'payments'])->get()
+            : Order::where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get();
+        $data = [];
+        $totals = [];
+        foreach ($orders as $order) {
+            if ($order->name_freight) {
+                $data["{$order->name_freight}"] = 0;
+                $pagoAFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
+                $data["{$order->name_freight}"] += $pagoAFletera;
+            }
+        }
+        $names = [];
+        foreach ($orders as $order) {
+            if ($order->name_freight) {
+                if (!in_array($order->name_freight, $names)) {
+                    array_push($names, $order->name_freight);
+                    array_push($totals, ['company' => $order->name_freight, 'total' => $data["{$order->name_freight}"]]);
+                }
+            }
+        }
+        return $totals;       
     }
     // Total de transporte por Cliente Guerrera y mes
     public function totalClienteGuerrera($month = null)

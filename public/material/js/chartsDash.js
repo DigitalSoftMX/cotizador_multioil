@@ -315,10 +315,10 @@ function chartProducts(opt, min, max, id, height, urlL) {
     }
 }
 
-async function chartTransportCompany(urlL, option, mouth, typegrafic, idcanvas, idDiv, showX, showY, leyens) {
+async function chartTransportCompany(urlL, option, month, typegrafic, idcanvas, idDiv, showX, showY, leyens) {
 
     const Http = new XMLHttpRequest();
-    const url = urlL + '/' + option + '/' + mouth;
+    const url = urlL + '/' + option + '/' + month;
     await Http.open("GET", url);
     await Http.send();
 
@@ -329,7 +329,6 @@ async function chartTransportCompany(urlL, option, mouth, typegrafic, idcanvas, 
             el.remove();
             $("#" + idDiv).append('<canvas id="' + idcanvas + '"></canvas>');
             initDashboardPageChartsDounout(idcanvas, status, 50, '68, 99, 252', typegrafic, showX, showY, leyens);
-            //console.log(status);
         }
     }
 }

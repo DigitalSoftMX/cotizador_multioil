@@ -341,7 +341,7 @@
                                         <p class="h4 font-weight-bold pt-2">Gastos por empresa de transporte</p>
                                     </div>
                                     <div class="col-5 text-right">
-                                        <select id="lastMounts" class="selectpicker show-menu-arrow" data-width="100%">
+                                        <select id="lastMonths" class="selectpicker show-menu-arrow" data-width="100%">
                                             <option value="0">últimos 12 meses</option>
                                         </select>
                                     </div>
@@ -365,7 +365,7 @@
                                         <p class="h4 font-weight-bold pt-2">Total importe factura por la guerrera</p>
                                     </div>
                                     <div class="col-5 text-right">
-                                        <select id="lastMountsGuerrera" class="selectpicker show-menu-arrow"
+                                        <select id="lastMonthsGuerrera" class="selectpicker show-menu-arrow"
                                             data-width="100%">
                                             <option value="0">Total</option>
                                         </select>
@@ -397,7 +397,7 @@
                                         <p class="h4 font-weight-bold pt-2">Total importe factura por Valero</p>
                                     </div>
                                     <div class="col-5 text-right">
-                                        <select id="ValeroGuerreralastMounts" class="selectpicker show-menu-arrow"
+                                        <select id="ValeroGuerreralastMonths" class="selectpicker show-menu-arrow"
                                             data-width="50%">
                                             <option value="0">últimos 12 meses</option>
                                         </select>
@@ -424,7 +424,7 @@
                                         <p class="h4 font-weight-bold pt-2">Merma por cliente</p>
                                     </div>
                                     <div class="col-5 text-right">
-                                        <select id="MermaporclientemeslastMounts" class="selectpicker show-menu-arrow"
+                                        <select id="MermaporclientemeslastMonths" class="selectpicker show-menu-arrow"
                                             data-width="50%">
                                             <option value="0">últimos 12 meses</option>
                                         </select>
@@ -558,30 +558,30 @@
             chartProducts(val,'','','',45,'{{ url('/') }}');
             });
         
-            const selectLastMount = document.querySelector('#lastMounts');
+            const selectLastMount = document.querySelector('#lastMonths');
             selectLastMount.addEventListener('change', (event) => {
-            const val = document.getElementById("lastMounts").value;
+            const val = document.getElementById("lastMonths").value;
             chartTransportCompany('{{ url('/') }}','transporte',
             val,'doughnut','chartTransportCompany','TransportCompany',false,false, true);
             });
         
-            const selectLastMountGuerrera = document.querySelector('#lastMountsGuerrera');
+            const selectLastMountGuerrera = document.querySelector('#lastMonthsGuerrera');
             selectLastMountGuerrera.addEventListener('change', (event) => {
-            const val = document.getElementById("lastMountsGuerrera").value;
+            const val = document.getElementById("lastMonthsGuerrera").value;
             chartTransportCompany('{{ url('/') }}','guerrera',val, 'bar','chartTransportGuerrera','guerrera',true,true,
             false);
             });
         
-            const selectValeroGuerreralastMounts = document.querySelector('#ValeroGuerreralastMounts');
-            selectValeroGuerreralastMounts.addEventListener('change', (event) => {
-            const val = document.getElementById("ValeroGuerreralastMounts").value;
+            const selectValeroGuerreralastMonths = document.querySelector('#ValeroGuerreralastMonths');
+            selectValeroGuerreralastMonths.addEventListener('change', (event) => {
+            const val = document.getElementById("ValeroGuerreralastMonths").value;
             chartTransportCompany('{{ url('/') }}','valeroguerrera',val,
             'line','chartValeroGuerrera','ValeroGuerrera',true,true,false);
             });
         
-            const selectMermaporclientemeslastMounts = document.querySelector('#MermaporclientemeslastMounts');
-            selectMermaporclientemeslastMounts.addEventListener('change', (event) => {
-            const val = document.getElementById("MermaporclientemeslastMounts").value;
+            const selectMermaporclientemeslastMonths = document.querySelector('#MermaporclientemeslastMonths');
+            selectMermaporclientemeslastMonths.addEventListener('change', (event) => {
+            const val = document.getElementById("MermaporclientemeslastMonths").value;
             chartTransportCompany('{{ url('/') }}','mermaporclientemes',val,
             'bar','chartMermaPorClientemes','mermaporclientemes',true,true,false);
             });
@@ -604,10 +604,10 @@
             await initDashboardTable('{{ url('/') }}', 'utilidadgeneral', '', 'utilidadgeneral');
             await initDashboardTable('{{ url('/') }}', 'utilidadguerrera', '', 'utilidadguerrera');
             await initDashboardTable('{{ url('/') }}', 'iva', '', 'ivapormes', 'month');
-            await selectMouth('{{ url('/') }}', 0, 'lastMounts');
-            await selectMouth('{{ url('/') }}', 0, 'lastMountsGuerrera');
-            await selectMouth('{{ url('/') }}', 0, 'ValeroGuerreralastMounts');
-            await selectMouth('{{ url('/') }}', 0, 'MermaporclientemeslastMounts');
+            await selectMouth('{{ url('/') }}', 0, 'lastMonths');
+            await selectMouth('{{ url('/') }}', 0, 'lastMonthsGuerrera');
+            await selectMouth('{{ url('/') }}', 0, 'ValeroGuerreralastMonths');
+            await selectMouth('{{ url('/') }}', 0, 'MermaporclientemeslastMonths');
         }
 
         // esto activa el scroll de la tarjeta
