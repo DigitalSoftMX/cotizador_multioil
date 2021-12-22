@@ -8,7 +8,6 @@ use App\Order;
 use App\Repositories\Activities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\File;
 
 class PaymentController extends Controller
 {
@@ -21,6 +20,7 @@ class PaymentController extends Controller
     public function store(Request $request, Order $order)
     {
         $request->user()->authorizeRoles(['Administrador']);
+        request()->validate(['created_at' => 'required|date_format:Y-m-d']);
         if (!$request->payment_guerrera && !$request->payment_g_valero && !$request->payment_freight)
             return redirect()->back()->withStatus('Debe ingresar al menos un tipo de pago')->withColor('danger');
         $payment = Payment::create($request->merge(['order_id' => $order->id])->all());
@@ -39,6 +39,7 @@ class PaymentController extends Controller
     public function update(Request $request, Order $order, Payment $payment)
     {
         $request->user()->authorizeRoles(['Administrador']);
+        request()->validate(['created_at' => 'required|date_format:Y-m-d']);
         if (!$request->payment_guerrera && !$request->payment_g_valero && !$request->payment_freight)
             return redirect()->back()->withStatus('Debe ingresar al menos un tipo de pago')->withColor('danger');
         $savingFile = new Activities();
