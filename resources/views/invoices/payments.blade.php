@@ -11,6 +11,12 @@
                             <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
                                 data-target=".bd-example-modal-lg-register">{{ __('Agregar pago') }}</button>
                             @include('invoices.paymentmodal',[$type='register'])
+                            @push('js')
+                                <script>
+                                    var id = "{{ $payment->id ?? '' }}"
+                                    init_calendar(`created_at-id${id}`);
+                                </script>
+                            @endpush
                         </div>
                     </div>
                 @endif

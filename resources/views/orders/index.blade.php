@@ -69,7 +69,7 @@
                                     <div class="col-3">
                                         <label class="label-control">{{ __('Fecha de entrega') }}</label>
                                         <input class="form-control datetimepicker" id="calendar_first" name="date"
-                                            type="text" value="" @if ($day != 5) readonly @endif /></input>
+                                            type="text" value="" @if ($day != 5) readonly @endif />
                                         @if ($errors->has('date'))
                                             <span id="name-date" class="error text-danger"
                                                 for="input-date">{{ $errors->first('date') }}</span>
