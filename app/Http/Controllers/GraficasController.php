@@ -40,14 +40,44 @@ class GraficasController extends Controller
     // Total de transporte por Cliente Guerrera y mes
     public function totalClienteGuerrera($month = null)
     {
-        $chart = new Chartdata();
-        return $chart->getDataOrder('payment_guerrera', $month);
+        $companies = [];
+        foreach (Company::where('active', 1)->with('orders')->get() as $company) {
+            $orders = $month ?
+                $company->orders()->where('dispatched', 'like', "%{$month}%")->where('status_id', 2)->get() :
+                $company->orders->where('status_id', 2);
+            if ($orders->count() > 0) {
+                $data['id'] = $company->id;
+                $data['company'] = $company->alias;
+                $data['total'] = 0;
+                foreach ($orders as $order) {
+                    $cantidadFacturadaACliente = $order->amount ? $order->invoice + $order->invoice2 - $order->amount : $order->invoice + $order->invoice2;
+                    $data['total'] += $cantidadFacturadaACliente;
+                }
+                array_push($companies, $data);
+            }
+        }
+        return $companies;
     }
     // Total de transporte por Factura Valero - Guerrera y mes
     public function totalValeroGuerrera($month = null)
     {
-        $chart = new Chartdata();
-        return $chart->getDataOrder('payment_g_valero', $month);
+        $companies = [];
+        foreach (Company::where('active', 1)->with('orders')->get() as $company) {
+            $orders = $month ?
+                $company->orders()->where('dispatched', 'like', "%{$month}%")->where('status_id', 2)->get() :
+                $company->orders->where('status_id', 2);
+            if ($orders->count() > 0) {
+                $data['id'] = $company->id;
+                $data['company'] = $company->alias;
+                $data['total'] = 0;
+                foreach ($orders as $order) {
+                    $cantidadFacturadaPorValero = $order->invoicepayment + $order->invoicepayment2;
+                    $data['total'] += $cantidadFacturadaPorValero;
+                }
+                array_push($companies, $data);
+            }
+        }
+        return $companies;
     }
     // Total de utilidad por cliente
     public function utilidadCliente()
