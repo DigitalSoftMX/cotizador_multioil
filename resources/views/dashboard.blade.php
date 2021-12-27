@@ -602,7 +602,7 @@
                 'chartMermaPorClientemes', 'mermaporclientemes', true, true, false);
             await initDashboardTable('{{ url('/') }}', 'utilidadcliente', '', 'utilidadcliente');
             await initDashboardTable('{{ url('/') }}', 'utilidadgeneral', '', 'utilidadgeneral');
-            await initDashboardTable('{{ url('/') }}', 'utilidadguerrera', '', 'utilidadguerrera');
+            await initDashboardTable('{{ url('/') }}', 'utilidadguerrera', '', 'utilidadguerrera', 'month');
             await initDashboardTable('{{ url('/') }}', 'iva', '', 'ivapormes', 'month');
             await selectMouth('{{ url('/') }}', 0, 'lastMonths');
             await selectMouth('{{ url('/') }}', 0, 'lastMonthsGuerrera');

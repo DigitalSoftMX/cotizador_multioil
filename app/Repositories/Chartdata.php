@@ -16,10 +16,10 @@ class Chartdata
                 $data['total'] = 0;
                 foreach ($orders as $order) {
                     $data['total'] += $date ?
-                        $order->payments()->where('created_at', 'like' , "%{$date}%")->get()->sum($column) :
+                        $order->payments()->where('created_at', 'like', "%{$date}%")->get()->sum($column) :
                         $order->payments->sum($column);
                 }
-                $data['total'] =$data['total'];
+                $data['total'] = $data['total'];
                 array_push($companies, $data);
             }
         }

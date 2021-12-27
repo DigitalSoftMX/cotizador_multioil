@@ -223,6 +223,7 @@ return [
         'file_invoicexml' => 'archivo xml',
         'commission_two' => 'comisión',
         'middleman_id' => 'comisionista dos',
+        'commission_id' => 'comisionista tres',
         'shipper' => 'transportista',
         'number_shipper' => 'número de factura',
         'invoice_shipper' => 'cantidad facturada',

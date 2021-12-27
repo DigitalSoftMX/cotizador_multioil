@@ -54,10 +54,8 @@ class InvoiceController extends Controller
             'file_xml2' => $request->file('file_xml2') ? 'required|file|mimes:xml' : '',
         ]);
         $activity = new Activities();
-        if ($request->file("file_pdf"))
-            $activity->saveFile($request, $invoice, 'pdf');
-        if ($request->file("file_pdf2"))
-            $activity->saveFile($request, $invoice, 'pdf2');
+        if ($request->file("file_pdf")) $activity->saveFile($request, $invoice, 'pdf');
+        if ($request->file("file_pdf2")) $activity->saveFile($request, $invoice, 'pdf2');
         if ($request->file("file_xml")) {
             // leyendo archivo xml y actualizando total y folio UUID
             $activity->saveFile($request, $invoice, 'xml');
@@ -84,8 +82,10 @@ class InvoiceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate([
+            'invoicepayment' => $request->file_invoicexml ? 'requried|numeric|min:1' : '',
+            'invoicepayment2' => $request->file_invoicexml2 ? 'required|numeric|min:1' : '',
             'invoicecfdi' => 'required|string|min:3',
-            'invoicecfdi' => $request->invoicecfdi2 ? 'string|min:3' : '',
+            'invoicecfdi2' => $request->invoicecfdi2 ? 'string|min:3' : '',
             'file_invoicepdf' => $request->file_invoicepdf ? 'file|mimes:pdf' : '',
             'file_invoicexml' => $request->file_invoicexml ? 'file|mimes:xml' : '',
             'file_invoicepdf2' => $request->file_invoicepdf2 ? 'file|mimes:pdf' : '',
@@ -98,15 +98,15 @@ class InvoiceController extends Controller
             $activity->saveFile($request, $invoice, 'invoicexml');
             $xml = $activity->xmlTotalFolioUUID($request->file('file_invoicexml'));
             if (!$xml) return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
-            $invoice->update(['invoicepayment' => $xml['total'], 'paymentfolio' => $xml['folio']]);
+            $invoice->update(['paymentfolio' => $xml['folio']]);
         }
         if ($request->file("file_invoicexml2")) {
             $activity->saveFile($request, $invoice, 'invoicexml2');
             $xml = $activity->xmlTotalFolioUUID($request->file('file_invoicexml2'));
             if (!$xml) return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
-            $invoice->update(['invoicepayment2' => $xml['total'], 'paymentfolio2' => $xml['folio']]);
+            $invoice->update(['paymentfolio2' => $xml['folio']]);
         }
-        $invoice->update($request->only(['invoicecfdi', 'invoicecfdi2']));
+        $invoice->update($request->only(['invoicecfdi', 'invoicecfdi2', 'invoicepayment', 'invoicepayment2']));
         return redirect()->back()->withStatus('Datos de facturación Valero - Guerrera actualizados correctamente');
     }
     // descarga de archivo pdf o xml
@@ -129,8 +129,7 @@ class InvoiceController extends Controller
             'invoice_shipper' => $request->invoice_shipper ? 'numeric' : '',
         ]);
         $activity = new Activities();
-        if ($request->file_shipperpdf)
-            $activity->saveFile($request, $invoice, 'shipperpdf');
+        if ($request->file_shipperpdf) $activity->saveFile($request, $invoice, 'shipperpdf');
         if ($request->file('file_shipperxml')) {
             $activity->saveFile($request, $invoice, 'shipperxml');
             $xml = $activity->xmlTotalFolioUUID($request->file('file_shipperxml'));
