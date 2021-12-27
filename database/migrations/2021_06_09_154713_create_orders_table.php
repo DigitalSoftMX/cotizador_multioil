@@ -45,6 +45,8 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->double('commission_two')->nullable();
             $table->unsignedBigInteger('middleman_id')->nullable();
+            $table->double('commission_three')->nullable();
+            $table->unsignedBigInteger('commission_id')->nullable();
             $table->double('invoicepayment')->default(0);
             $table->string('paymentfolio')->nullable();
             $table->string('invoicecfdi')->nullable();
@@ -89,6 +91,10 @@ class CreateOrdersTable extends Migration
             $table->foreign('middleman_id')->references('id')->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->foreign('commission_id')->references('id')->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

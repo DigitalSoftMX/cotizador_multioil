@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Order;
 use App\Repositories\Activities;
 use App\Repositories\Chartdata;
-use Exception;
 use Illuminate\Http\Request;
 
 class GraficasController extends Controller
@@ -36,7 +35,7 @@ class GraficasController extends Controller
                 }
             }
         }
-        return $totals;       
+        return $totals;
     }
     // Total de transporte por Cliente Guerrera y mes
     public function totalClienteGuerrera($month = null)
@@ -55,22 +54,23 @@ class GraficasController extends Controller
     {
         $companies = [];
         foreach (Company::where('active', 1)->with('orders')->get() as $company) {
-            if (($orders = $company->orders->where('status_id', 2))->count() > 0) {
-                $total = 0;
-                $count = 0;
+            if (($orders = $company->orders()->where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get())->count() > 0) {
                 $data['id'] = $company->id;
                 $data['company'] = $company->alias;
                 $data['total'] = 0;
                 foreach ($orders as $order) {
-                    try {
-                        $diferenciaPrecio = $order->sale_price - $order->price;
-                        $total += (($diferenciaPrecio * $order->dispatched_liters) / ($order->sale_price * $order->dispatched_liters)) * 100;
-                        $count++;
-                    } catch (Exception $th) {
-                    }
+                    $litrosDespachados = $order->dispatched_liters;
+                    $cantidadFacturadaACliente = $order->amount ? $order->invoice + $order->invoice2 - $order->amount : $order->invoice + $order->invoice2;
+                    $cantidadFacturadaPorValero = $order->invoicepayment + $order->invoicepayment2;
+                    $pagoAFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
+                    $utilidadGeneral = $cantidadFacturadaACliente - $cantidadFacturadaPorValero - $pagoAFletera;
+                    $comisionista1 = $order->commission ?? 0 * $litrosDespachados;
+                    $comisionista2 = $order->commission_two ?? 0 * $litrosDespachados;
+                    $comisionista3 = $order->commission_three ?? 0 * $litrosDespachados;
+                    $utilidadCliente = $utilidadGeneral - $comisionista1 - $comisionista2 - $comisionista3;
+                    $data['total'] += $utilidadCliente;
                 }
-                $data['total'] = $total / $count;
-                $data['total'] = $data['total'];
+                $data['total'] = '$ ' . number_format($data['total'], 2);
                 array_push($companies, $data);
             }
         }
@@ -81,16 +81,18 @@ class GraficasController extends Controller
     {
         $companies = [];
         foreach (Company::where('active', 1)->with('orders')->get() as $company) {
-            if (($orders = $company->orders->where('status_id', 2))->count() > 0) {
+            if (($orders = $company->orders()->where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get())->count() > 0) {
                 $data['id'] = $company->id;
                 $data['company'] = $company->alias;
                 $data['total'] = 0;
                 foreach ($orders as $order) {
-                    $diferenciaPrecio = $order->sale_price - $order->price;
-                    $pagoFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
-                    $data['total'] += ($diferenciaPrecio * $order->dispatched_liters - $pagoFletera);
+                    $cantidadFacturadaACliente = $order->amount ? $order->invoice + $order->invoice2 - $order->amount : $order->invoice + $order->invoice2;
+                    $cantidadFacturadaPorValero = $order->invoicepayment + $order->invoicepayment2;
+                    $pagoAFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
+                    $utilidadGeneral = $cantidadFacturadaACliente - $cantidadFacturadaPorValero - $pagoAFletera;
+                    $data['total'] += $utilidadGeneral;
                 }
-                $data['total'] = $data['total'];
+                $data['total'] = '$ ' . number_format($data['total'], 2);
                 array_push($companies, $data);
             }
         }
@@ -99,25 +101,31 @@ class GraficasController extends Controller
     // Total utilidad Guerrera
     public function utilidadGuerrera()
     {
-        $companies = [];
-        foreach (Company::where('active', 1)->with('orders')->get() as $company) {
-            if (($orders = $company->orders->where('status_id', 2))->count() > 0) {
-                $data['id'] = $company->id;
-                $data['company'] = $company->alias;
-                $data['total'] = 0;
-                foreach ($orders as $order) {
-                    $diferenciaPrecio = $order->sale_price - $order->price;
-                    $pagoFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
-                    $comision = ($diferenciaPrecio * $order->dispatched_liters - $pagoFletera);
-                    $utilidadComisionista1 = $order->commission ? $order->commission * $order->dispatched_liters : 0;
-                    $utilidadComisionista2 = $order->commission_two ? $order->commission_two * $order->dispatched_liters : 0;
-                    $data['total'] += ($comision - $utilidadComisionista1 - $utilidadComisionista2) * 0.2;
-                }
-                $data['total'] = $data['total'];
-                array_push($companies, $data);
+        $months = new Activities();
+        $orders = Order::where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get();
+        $month = $orders->first()->created_at->format('Y-m');
+        $data = [];
+        $total = 0;
+        foreach ($orders as $order) {
+            if ($month != $order->created_at->format('Y-m')) {
+                array_push($data, ["month" => $months->getMonths($month), 'total' => '$ ' .  number_format($total, 2)]);
+                $month = $order->created_at->format('Y-m');
+                $total = 0;
             }
+            $litrosDespachados = $order->dispatched_liters;
+            $cantidadFacturadaACliente = $order->amount ? $order->invoice + $order->invoice2 - $order->amount : $order->invoice + $order->invoice2;
+            $cantidadFacturadaPorValero = $order->invoicepayment + $order->invoicepayment2;
+            $pagoAFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
+            $utilidadGeneral = $cantidadFacturadaACliente - $cantidadFacturadaPorValero - $pagoAFletera;
+            $comisionista1 = $order->commission ?? 0 * $litrosDespachados;
+            $comisionista2 = $order->commission_two ?? 0 * $litrosDespachados;
+            $comisionista3 = $order->commission_three ?? 0 * $litrosDespachados;
+            $utilidadCliente = $utilidadGeneral - $comisionista1 - $comisionista2 - $comisionista3;
+            $utilidadGuerrera = ($utilidadCliente * 0.2);
+            $total += $utilidadGuerrera;
         }
-        return $companies;
+        array_push($data, ["month" => $months->getMonths($month), 'total' => '$ ' .  number_format($total, 2)]);
+        return $data;
     }
     // Acumulado IVA por mes
     public function iva()
@@ -154,19 +162,17 @@ class GraficasController extends Controller
         $companies = [];
         foreach (Company::where('active', 1)->with('orders')->get() as $company) {
             $orders = $month ?
-                $orders = $company->orders()->whereYear('created_at', date('Y'))
-                ->whereMonth('created_at', "{$month}")->where('status_id', 2)->get() :
+                $company->orders()->where('dispatched', 'like', "%{$month}%")->where('status_id', 2)->get() :
                 $company->orders->where('status_id', 2);
-            $data['id'] = $company->id;
-            $data['company'] = $company->alias;
-            $data['total'] = 0;
             if ($orders->count() > 0) {
+                $data['id'] = $company->id;
+                $data['company'] = $company->alias;
+                $data['total'] = 0;
                 foreach ($orders as $order) {
-                    $data['total'] += ($order->root_liters ? $order->dispatched_liters - $order->root_liters : 0);
+                    $data['total'] += $order->dispatched_liters - $order->root_liters ?? 0;
                 }
-                $data['total'] = $data['total'];
+                array_push($companies, $data);
             }
-            array_push($companies, $data);
         }
         return $companies;
     }

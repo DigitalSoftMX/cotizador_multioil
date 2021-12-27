@@ -11,7 +11,7 @@ class Order extends Model
         'price', 'sale_price', 'liters', 'product', 'total', 'date', 'dispatched',
         'dispatched_liters', 'root_liters', 'invoice', 'invoicefolio', 'CFDI', 'pdf', 'xml',
         'invoice2', 'invoicefolio2', 'CFDI2', 'pdf2', 'xml2',
-        'status_id', 'commission', 'user_id', 'commission_two', 'middleman_id',
+        'status_id', 'commission', 'user_id', 'commission_two', 'middleman_id', 'commission_three', 'commission_id',
         'reason', 'invoicepayment', 'paymentfolio', 'invoicecfdi', 'invoicepdf', 'invoicexml',
         'invoicepayment2', 'paymentfolio2', 'invoicecfdi2', 'invoicepdf2', 'invoicexml2',
         'shipper', 'number_shipper', 'invoice_shipper', 'shipperpdf', 'shipperxml',

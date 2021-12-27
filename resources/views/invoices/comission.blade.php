@@ -80,6 +80,36 @@
                                         @include('partials.errorsession',[$field='middleman_id'])
                                     </div>
                                 </div>
+                                <div class="row justify-content-center">
+                                    <div
+                                        class="form-group{{ $errors->has('commission_three') ? ' has-danger' : '' }} col-lg-4 col-sm-12">
+                                        <label
+                                            for="commission_three">{{ __('Comisión del segundo comisionista') }}</label>
+                                        <input type="number"
+                                            class="form-control{{ $errors->has('commission_three') ? ' is-invalid' : '' }}"
+                                            id="input-commission_three" aria-describedby="commission_threeHelp"
+                                            placeholder="Escribe la cantidad del pago"
+                                            value="{{ old('commission_three', $invoice->commission_three) }}"
+                                            aria-required="true" name="commission_three" step="any">
+                                        @include('partials.errorsession',[$field='commission_three'])
+                                    </div>
+                                    <div
+                                        class="form-group{{ $errors->has('commission_id') ? ' has-danger' : '' }} col-lg-4 col-sm-12">
+                                        <select id="input-commission_id" name="commission_id"
+                                            class="selectpicker show-menu-arrow {{ $errors->has('commission_id') ? ' has-danger' : '' }}"
+                                            data-style="btn-primary" data-width="100%" data-live-search="true">
+                                            <option value="">
+                                                {{ __('Elija un comisionista') }}
+                                            </option>
+                                            @foreach ($sales as $sale)
+                                                <option value="{{ $sale->id }}" @if ($invoice->commission_id == $sale->id) selected @endif>
+                                                    {{ $sale->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @include('partials.errorsession',[$field='commission_id'])
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

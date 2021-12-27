@@ -22,11 +22,15 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="form-group col-md-6 col-sm-12">
+                    <div
+                        class="form-group{{ $errors->has('invoicepayment') ? ' has-danger' : '' }} col-md-6 col-sm-12">
                         <label for="invoicepayment">{{ __('Cantidad Facturada') }}</label>
-                        <input type="number" class="form-control" id="input-invoicepayment"
-                            aria-describedby="invoicepaymentHelp" placeholder="Precio de compra por litro"
-                            value="{{ old('invoicepayment', $invoice->invoicepayment) }}" step="any" readonly>
+                        <input type="number"
+                            class="form-control{{ $errors->has('invoicepayment') ? ' is-invalid' : '' }}"
+                            id="input-invoicepayment" aria-describedby="invoicepaymentHelp"
+                            placeholder="Precio de compra por litro" name="invoicepayment"
+                            value="{{ old('invoicepayment', $invoice->invoicepayment) }}" step="any">
+                        @include('partials.errorsession',[$field='invoicepayment'])
                     </div>
                     <div class="form-group{{ $errors->has('invoicecfdi') ? ' has-danger' : '' }} col-md-6 col-sm-12">
                         <label for="invoicecfdi">{{ __('Factura') }}</label>
@@ -102,11 +106,15 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="form-group col-md-6 col-sm-12">
+                    <div
+                        class="form-group{{ $errors->has('invoicepayment2') ? ' has-danger' : '' }} col-md-6 col-sm-12">
                         <label for="invoicepayment2">{{ __('Cantidad Facturada') }}</label>
-                        <input type="number" class="form-control" id="input-invoicepayment2"
-                            aria-describedby="invoicepayment2Help" placeholder="Precio de compra por litro"
-                            value="{{ old('invoicepayment2', $invoice->invoicepayment2) }}" step="any" readonly>
+                        <input type="number"
+                            class="form-control{{ $errors->has('invoicepayment2') ? ' is-invalid' : '' }}"
+                            id="input-invoicepayment2" aria-describedby="invoicepayment2Help"
+                            placeholder="Precio de compra por litro" name="invoicepayment2"
+                            value="{{ old('invoicepayment2', $invoice->invoicepayment2) }}" step="any">
+                        @include('partials.errorsession',[$field='invoicepayment2'])
                     </div>
                     <div
                         class="form-group{{ $errors->has('invoicecfdi2') ? ' has-danger' : '' }} col-md-6 col-sm-12">

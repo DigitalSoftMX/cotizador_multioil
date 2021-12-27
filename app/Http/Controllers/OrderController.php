@@ -106,13 +106,19 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        if ($request->commission != null || $request->user_id != null)
-            request()->validate(['commission' => 'required|numeric', 'user_id' => 'required|integer']);
-        if ($request->commission_two != null || $request->middleman_id != null)
-            request()->validate(['commission_two' => 'required|numeric', 'middleman_id' => 'required|integer',]);
-        if ($request->user_id == $request->middleman_id)
+        request()->validate([
+            'commission' => $request->commission ? 'numeric' : '',
+            'commission' => $request->user_id ? 'required|numeric' : '',
+            'commission_two' => $request->commission_two ? 'numeric' : '',
+            'commission_two' => $request->middleman_id ? 'required|numeric' : '',
+            'commission_three' => $request->commission_three ? 'numeric' : '',
+            'commission_three' => $request->commission_id ? 'required|numeric' : '',
+        ]);
+        if ($request->user_id == $request->middleman_id or $request->user_id == $request->commission_id)
             return redirect()->back()->withStatus('Los comisionistas deben ser diferentes')->withColor('danger');
-        $order->update($request->only('commission', 'user_id', 'commission_two', 'middleman_id'));
+        if ($request->middleman_id == $request->commission_id)
+            return redirect()->back()->withStatus('Los comisionistas deben ser diferentes')->withColor('danger');
+        $order->update($request->only('commission', 'user_id', 'commission_two', 'middleman_id', 'commission_three', 'commission_id'));
         return redirect()->back()->withStatus('Comisión del pedido agregado correctamente');
     }
     // Generar excel
