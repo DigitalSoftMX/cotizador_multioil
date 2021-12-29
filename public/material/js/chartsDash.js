@@ -359,7 +359,7 @@ async function selectMouth(urlL, revers, idSelect) {
 function chartTransport(opt, min, max, urlL) {
 
     const Http = new XMLHttpRequest();
-    const url = urlL + '/monthsdaysproduct?days=' + opt + '&min=' + min + '&max=' + max;
+    const url = urlL + '/monthsdaysproduct?days=' + opt + '&min=' + min + '&max=' + max;   
     Http.open("GET", url);
     Http.send();
 

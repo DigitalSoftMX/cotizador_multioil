@@ -266,18 +266,13 @@
                     <div class="col-sm-5">
                         <div class="card" style="height: 60vh;">
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-7">
-                                        <p class="h4 font-weight-bold pt-2">Gasto total por transporte</p>
+                                <h4 class="font-weight-bold">{{ __('Gasto total por transporte') }}</h4>
+                                <div class="row m-0 pl-2 pr-2 pt-0 pb-0">
+                                    <div class="table-full-width table-responsive col-sm-12 m-0 mr-0 ml-0 pr-0 pl-0">
+                                        <table class="table table-shopping">
+                                            <tbody id="gastoTotalTransporte"></tbody>
+                                        </table>
                                     </div>
-                                    <div class="col-5">
-                                        <input type="text" name="daterange" class="pt-2"
-                                            style="border: none; border-bottom: 2px solid #000;" />
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane active show" id="profil">
-                                    <canvas id="chartBigTransport"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -604,6 +599,7 @@
             await initDashboardTable('{{ url('/') }}', 'utilidadgeneral', '', 'utilidadgeneral');
             await initDashboardTable('{{ url('/') }}', 'utilidadguerrera', '', 'utilidadguerrera', 'month');
             await initDashboardTable('{{ url('/') }}', 'iva', '', 'ivapormes', 'month');
+            await initDashboardTable('{{ url('/') }}', 'totaltransporte', '', 'gastoTotalTransporte', 'month')
             await selectMouth('{{ url('/') }}', 0, 'lastMonths');
             await selectMouth('{{ url('/') }}', 0, 'lastMonthsGuerrera');
             await selectMouth('{{ url('/') }}', 0, 'ValeroGuerreralastMonths');

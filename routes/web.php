@@ -94,6 +94,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 Route::group(['middleware' => 'auth'], function () {
+	Route::get('totaltransporte', 'GraficasController@gastoTotalTransporte')->name('totaltransporte');
 	Route::get('transporte/{month?}', 'GraficasController@totalTransporte');
 	Route::get('guerrera/{month?}', 'GraficasController@totalClienteGuerrera');
 	Route::get('valeroguerrera/{month?}', 'GraficasController@totalValeroGuerrera');

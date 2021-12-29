@@ -11,20 +11,47 @@ use Illuminate\Http\Request;
 
 class GraficasController extends Controller
 {
-    // Total de transporte por empresa y mes
+    public function gastoTotalTransporte()
+    {
+        $months = new Activities();
+        $orders = Order::where('status_id', 2)->whereYear('dispatched', date('Y'))->where('name_freight', '!=', null)
+            ->orderBy('dispatched', 'ASC')->with(['company', 'payments'])->get();
+        $date = date("Y-m", strtotime($orders->first()->dispatched));
+        $month = $date;
+        $data = [];
+        $total = 0;
+
+        foreach ($orders as $order) {
+            $date = date("Y-m", strtotime($order->dispatched));
+            if ($month != $date) {
+                array_push($data, ["month" => $months->getMonths($month), 'total' => '$ ' .  number_format($total, 2)]);
+                $date = date("Y-m", strtotime($order->dispatched));
+                $month = $date;
+                $total = 0;
+            }
+            $pagoAFletera = $order->invoice_shipper ?? $order->payments->sum('payment_freight');
+            $total += $pagoAFletera;
+        }
+        array_push($data, ["month" => $months->getMonths($month), 'total' => '$ ' .  number_format($total, 2)]);
+        return $data;
+    }
+    // Gasto por empresa de transporte
     public function totalTransporte($month = null)
     {
         $orders = $month ?
-            Order::where('status_id', 2)->where('created_at', 'like', "%{$month}%")->with(['company', 'payments'])->get()
-            : Order::where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get();
+            Order::where('status_id', 2)->where([['dispatched', 'like', "%{$month}%"], ['name_freight', '!=', null]])
+            ->with(['company', 'payments'])->get()
+            : Order::where('status_id', 2)->whereYear('dispatched', date('Y'))->where('name_freight', '!=', null)
+            ->with(['company', 'payments'])->get();
+
         $data = [];
         $totals = [];
         foreach ($orders as $order) {
-            if ($order->name_freight) {
-                $data["{$order->name_freight}"] = 0;
-                $pagoAFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
-                $data["{$order->name_freight}"] += $pagoAFletera;
-            }
+            $data["{$order->name_freight}"] = 0;
+        }
+        foreach ($orders as $order) {
+            $pagoAFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
+            $data["{$order->name_freight}"] += $pagoAFletera;
         }
         $names = [];
         foreach ($orders as $order) {
@@ -37,7 +64,7 @@ class GraficasController extends Controller
         }
         return $totals;
     }
-    // Total de transporte por Cliente Guerrera y mes
+    // Total importe factura la Guerrera y mes
     public function totalClienteGuerrera($month = null)
     {
         $companies = [];
@@ -50,7 +77,7 @@ class GraficasController extends Controller
                 $data['company'] = $company->alias;
                 $data['total'] = 0;
                 foreach ($orders as $order) {
-                    $cantidadFacturadaACliente = $order->amount ? $order->invoice + $order->invoice2 - $order->amount : $order->invoice + $order->invoice2;
+                    $cantidadFacturadaACliente = $order->invoice + $order->invoice2 - $order->amount ?? 0;
                     $data['total'] += $cantidadFacturadaACliente;
                 }
                 array_push($companies, $data);
@@ -58,7 +85,7 @@ class GraficasController extends Controller
         }
         return $companies;
     }
-    // Total de transporte por Factura Valero - Guerrera y mes
+    // Total importe factura por Valero
     public function totalValeroGuerrera($month = null)
     {
         $companies = [];
