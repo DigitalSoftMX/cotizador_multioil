@@ -460,13 +460,20 @@
                     <div class="col-sm-4 pr-3 pl-3">
                         <div class="card scroll-card-active" style="height: 60vh;">
                             <div class="card-body">
-                                <h4 class="font-weight-bold">Utilidad general</h4>
+                                <div class="row">
+                                    <div class="col-12 col-sm-5">
+                                        <p class="h4 font-weight-bold pt-2">Utilidad general</p>
+                                    </div>
+                                    <div class="col-12 col-sm-7">
+                                        <select id="uGeneral" class="selectpicker show-menu-arrow" data-width="100%">
+                                            <option value="0">últimos 12 meses</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="row m-0 pl-2 pr-2 pt-0 pb-0">
                                     <div class="table-full-width table-responsive col-sm-12 m-0 mr-0 ml-0 pr-0 pl-0">
                                         <table class="table table-shopping">
-                                            <tbody id="utilidadgeneral">
-
-                                            </tbody>
+                                            <tbody id="utilidadgeneral"></tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -580,6 +587,12 @@
             chartTransportCompany('{{ url('/') }}','mermaporclientemes',val,
             'bar','chartMermaPorClientemes','mermaporclientemes',true,true,false);
             });
+        
+            const selectUtilidadGeneral = document.querySelector('#uGeneral');
+            selectUtilidadGeneral.addEventListener('change', async (event) => {
+            const val = document.getElementById("uGeneral").value;
+            await initDashboardTable('{{ url('/') }}', 'utilidadgeneral', val, 'utilidadgeneral');
+            });
         @endif
 
         async function initChartsT() {
@@ -595,15 +608,16 @@
                 'ValeroGuerrera', true, true, false);
             await chartTransportCompany('{{ url('/') }}', 'mermaporclientemes', '', 'bar',
                 'chartMermaPorClientemes', 'mermaporclientemes', true, true, false);
-            await initDashboardTable('{{ url('/') }}', 'utilidadcliente', '', 'utilidadcliente');
+            await initDashboardTable('{{ url('/') }}', 'utilidadcliente', '', 'utilidadcliente', 'month');
             await initDashboardTable('{{ url('/') }}', 'utilidadgeneral', '', 'utilidadgeneral');
             await initDashboardTable('{{ url('/') }}', 'utilidadguerrera', '', 'utilidadguerrera', 'month');
             await initDashboardTable('{{ url('/') }}', 'iva', '', 'ivapormes', 'month');
             await initDashboardTable('{{ url('/') }}', 'totaltransporte', '', 'gastoTotalTransporte', 'month')
-            await selectMouth('{{ url('/') }}', 0, 'lastMonths');
-            await selectMouth('{{ url('/') }}', 0, 'lastMonthsGuerrera');
-            await selectMouth('{{ url('/') }}', 0, 'ValeroGuerreralastMonths');
-            await selectMouth('{{ url('/') }}', 0, 'MermaporclientemeslastMonths');
+            await selectMonth('{{ url('/') }}', 0, 'lastMonths');
+            await selectMonth('{{ url('/') }}', 0, 'uGeneral');
+            await selectMonth('{{ url('/') }}', 0, 'lastMonthsGuerrera');
+            await selectMonth('{{ url('/') }}', 0, 'ValeroGuerreralastMonths');
+            await selectMonth('{{ url('/') }}', 0, 'MermaporclientemeslastMonths');
         }
 
         // esto activa el scroll de la tarjeta
