@@ -256,16 +256,17 @@ function initDashboardPageChartsDounout(nameChart, data, height, colorHexa, type
 
 }
 
-async function initDashboardTable(urlL, option, mouth, idTable, column = 'company') {
+async function initDashboardTable(urlL, option, month, idTable, column = 'company') {
 
     const Http = new XMLHttpRequest();
-    const url = urlL + '/' + option + '/' + mouth;
+    const url = urlL + '/' + option + '/' + month;
     await Http.open("GET", url);
     await Http.send();
 
     Http.onreadystatechange = (e) => {
         if (Http.readyState == 4 && Http.status == 200) {
             var status = JSON.parse(Http.responseText);
+            document.getElementById(idTable).innerHTML = '';
             status.forEach(function (element) {
                 $("#" + idTable).append(/* html */`
                     <tr>                                    
@@ -334,7 +335,7 @@ async function chartTransportCompany(urlL, option, month, typegrafic, idcanvas, 
 }
 
 
-async function selectMouth(urlL, revers, idSelect) {
+async function selectMonth(urlL, revers, idSelect) {
 
     const Http = new XMLHttpRequest();
     const url = urlL + '/ultimosmeses/' + revers;
@@ -359,7 +360,7 @@ async function selectMouth(urlL, revers, idSelect) {
 function chartTransport(opt, min, max, urlL) {
 
     const Http = new XMLHttpRequest();
-    const url = urlL + '/monthsdaysproduct?days=' + opt + '&min=' + min + '&max=' + max;   
+    const url = urlL + '/monthsdaysproduct?days=' + opt + '&min=' + min + '&max=' + max;
     Http.open("GET", url);
     Http.send();
 

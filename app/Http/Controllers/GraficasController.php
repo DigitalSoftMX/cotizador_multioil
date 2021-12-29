@@ -109,36 +109,40 @@ class GraficasController extends Controller
     // Total de utilidad por cliente
     public function utilidadCliente()
     {
-        $companies = [];
-        foreach (Company::where('active', 1)->with('orders')->get() as $company) {
-            if (($orders = $company->orders()->where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get())->count() > 0) {
-                $data['id'] = $company->id;
-                $data['company'] = $company->alias;
-                $data['total'] = 0;
-                foreach ($orders as $order) {
-                    $litrosDespachados = $order->dispatched_liters;
-                    $cantidadFacturadaACliente = $order->amount ? $order->invoice + $order->invoice2 - $order->amount : $order->invoice + $order->invoice2;
-                    $cantidadFacturadaPorValero = $order->invoicepayment + $order->invoicepayment2;
-                    $pagoAFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
-                    $utilidadGeneral = $cantidadFacturadaACliente - $cantidadFacturadaPorValero - $pagoAFletera;
-                    $comisionista1 = $order->commission ?? 0 * $litrosDespachados;
-                    $comisionista2 = $order->commission_two ?? 0 * $litrosDespachados;
-                    $comisionista3 = $order->commission_three ?? 0 * $litrosDespachados;
-                    $utilidadCliente = $utilidadGeneral - $comisionista1 - $comisionista2 - $comisionista3;
-                    $data['total'] += $utilidadCliente;
-                }
-                $data['total'] = '$ ' . number_format($data['total'], 2);
-                array_push($companies, $data);
+        $months = new Activities();
+        $orders = Order::where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get();
+        $month = $orders->first()->created_at->format('Y-m');
+        $data = [];
+        $total = 0;
+        foreach ($orders as $order) {
+            if ($month != $order->created_at->format('Y-m')) {
+                array_push($data, ["month" => $months->getMonths($month), 'total' => '$ ' .  number_format($total, 2)]);
+                $month = $order->created_at->format('Y-m');
+                $total = 0;
             }
+            $litrosDespachados = $order->dispatched_liters;
+            $cantidadFacturadaACliente = $order->amount ? $order->invoice + $order->invoice2 - $order->amount : $order->invoice + $order->invoice2;
+            $cantidadFacturadaPorValero = $order->invoicepayment + $order->invoicepayment2;
+            $pagoAFletera = $order->invoice_shipper ? $order->invoice_shipper : $order->payments->sum('payment_freight');
+            $utilidadGeneral = $cantidadFacturadaACliente - $cantidadFacturadaPorValero - $pagoAFletera;
+            $comisionista1 = $order->commission ?? 0 * $litrosDespachados;
+            $comisionista2 = $order->commission_two ?? 0 * $litrosDespachados;
+            $comisionista3 = $order->commission_three ?? 0 * $litrosDespachados;
+            $utilidadCliente = $utilidadGeneral - $comisionista1 - $comisionista2 - $comisionista3;
+            $total += $utilidadCliente;
         }
-        return $companies;
+        array_push($data, ["month" => $months->getMonths($month), 'total' => '$ ' .  number_format($total, 2)]);
+        return $data;
     }
     // Total de utilidad General
-    public function utilidadGeneral()
+    public function utilidadGeneral($month = null)
     {
         $companies = [];
         foreach (Company::where('active', 1)->with('orders')->get() as $company) {
-            if (($orders = $company->orders()->where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get())->count() > 0) {
+            $orders = $month ?
+                $company->orders()->where('dispatched', 'like', "%{$month}%")->where('status_id', 2)->get() :
+                $company->orders()->where('status_id', 2)->with(['company', 'payments'])->get();
+            if ($orders->count() > 0) {
                 $data['id'] = $company->id;
                 $data['company'] = $company->alias;
                 $data['total'] = 0;
