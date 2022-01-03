@@ -2,11 +2,10 @@
 
 @section('content')
     <div
-        style="background:white; width:100%; height: 70vh; background: #ffffff; box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+        style="background:white; width:100%; height: 80vh; background: #ffffff; box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
         <div class="row">
             <div class="card-body">
                 <div class="row justify-content-center">
-
                     <div id="carouselExampleIndicators0" class="carousel slide col-lg-12 col-md-12 col-sm-12"
                         data-ride="carousel">
                         <div class="carousel-inner">
@@ -34,6 +33,21 @@
                             <h6 class="text-white">{{ __('Días Transcurridos') }}</h6>
 
                         </div>
+                        <div class="row justify-content-end">
+                            @if (auth()->user()->roles->first()->id == 2)
+                                <div class="col-md-6 text-right">
+                                    <a href="{{ route('getshopping', auth()->user()->company_id) }}"
+                                        class="btn btn-sm btn-success">{{ __('Ver mi estado de cuenta') }}</a>
+                                </div>
+                            @endif
+                            @if (auth()->user()->roles->first()->id == 1)
+                                <div class="col-md-6 text-right pt-3">
+                                    <a href="{{ route('prices.index') }}" class="btn btn-sm btn-success">
+                                        {{ __('Capturar precios') }}
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleIndicators0" role="button" data-slide="prev">
                         <span class="text-dark" aria-hidden="true">
@@ -58,43 +72,33 @@
                                 <option value="{{ $terminal->id }}">{{ $terminal->name }}</option>
                             @endforeach
                         </select>
-                        @if ($errors->has('terminal_id'))
-                            <span id="name-terminal_id" class="error text-danger"
-                                for="input-terminal_id">{{ $errors->first('terminal_id') }}</span>
-                        @endif
                     </div>
                     <div class="form-group{{ $errors->has('month_id') ? ' has-danger' : '' }} col-sm-3">
                         <select id="input-month_id" name="month_id"
                             class="selectpicker show-menu-arrow {{ $errors->has('month_id') ? ' has-danger' : '' }}"
                             data-style="btn-primary" data-width="100%" data-live-search="true">
                             @foreach ($months as $month)
-                                @if ($actualMonth >= $month['id'])
-                                    <option value="{{ $month['id'] }}" @if ($actualMonth == $month['id']) selected @endif>{{ $month['name'] }}
-                                    </option>
-                                @endif
+                                {{-- @if ($actualMonth >= $month['id']) --}}
+                                <option value="{{ $month['id'] }}" @if ($actualMonth == $month['id']) selected @endif>{{ $month['name'] }}
+                                </option>
+                                {{-- @endif --}}
                             @endforeach
                         </select>
-                        @if ($errors->has('monTth_id'))
-                            <span id="name-month_id" class="error text-danger"
-                                for="input-month_id">{{ $errors->first('month_id') }}</span>
-                        @endif
                     </div>
-                    @if (auth()->user()->roles->first()->id == 2)
-                        <div class="col-md-6 text-right">
-                            <a href="{{ route('getshopping', auth()->user()->company_id) }}"
-                                class="btn btn-sm btn-success">{{ __('Ver mi estado de cuenta') }}</a>
-                        </div>
-                    @endif
-                    @if (auth()->user()->roles->first()->id == 1)
-                        <div class="col-md-6 text-right pt-3">
-                            <a href="{{ route('prices.index') }}" class="btn btn-sm btn-success">
-                                {{ __('Capturar precios') }}
-                            </a>
+                    @if (count($years) > 0)
+                        <div class="form-group{{ $errors->has('year_id') ? ' has-danger' : '' }} col-sm-3">
+                            <select id="input-year_id" name="year_id"
+                                class="selectpicker show-menu-arrow {{ $errors->has('year_id') ? ' has-danger' : '' }}"
+                                data-style="btn-primary" data-width="100%">
+                                @foreach ($years as $year)
+                                    <option value="{{ $year }}" @if (date('Y') == $year) selected @endif>
+                                        {{ $year }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     @endif
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -654,21 +658,30 @@
         $(".selectpicker").change(function() {
             let terminal_id = document.getElementById('input-terminal_id').value;
             let month = document.getElementById('input-month_id').value;
+            let year = document.getElementById('input-year_id').value;
         });
         $('#input-terminal_id').change(function() {
             let terminal_id = document.getElementById('input-terminal_id').value;
             let month = document.getElementById('input-month_id').value;
-            getPrices(terminal_id, month);
+            let year = document.getElementById('input-year_id').value;
+            getPrices(terminal_id, month, year);
         });
         $('#input-month_id').change(function() {
             let terminal_id = document.getElementById('input-terminal_id').value;
             let month = document.getElementById('input-month_id').value;
-            getPrices(terminal_id, month);
+            let year = document.getElementById('input-year_id').value;
+            getPrices(terminal_id, month, year);
+        });
+        $('#input-year_id').change(function() {
+            let terminal_id = document.getElementById('input-terminal_id').value;
+            let month = document.getElementById('input-month_id').value;
+            let year = document.getElementById('input-year_id').value;
+            getPrices(terminal_id, month, year);
         });
 
-        async function getPrices(terminal, month) {
+        async function getPrices(terminal, month, year) {
             try {
-                const resp = await fetch('{{ url('') }}/pricesterminal/' + terminal + '/' + month);
+                const resp = await fetch(`{{ url('') }}/pricesterminal/${terminal}/${month}/${year}`);
                 const prices = await resp.json();
                 console.log(prices);
                 if (prices.pricesclient != null) {

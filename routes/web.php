@@ -64,7 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 //rutas cotizador
 Route::group(['middleware' => 'auth'], function () {
-	Route::get('pricesterminal/{terminal_id}/{month}/{company?}', 'HomeController@getPricesJson')->name('pricesterminal');
+	Route::get('pricesterminal/{terminal_id}/{month}/{year}/{company?}', 'HomeController@getPricesJson')->name('pricesterminal');
 	Route::get('monthstothepresentliters/', 'HomeController@monthsToThePresentLiters')->name('monthstothepresentliters');
 	Route::get('monthsdaysproduct/', 'HomeController@monthsDaysProduct')->name('monthsdaysproduct');
 	Route::resource('orders', 'OrderController', ['except' => ['create', 'edit', 'destroy']]);
