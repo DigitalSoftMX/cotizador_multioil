@@ -34,6 +34,8 @@ class HomeController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente', 'Ventas']);
         $activity = new Activities();
+        $currentYear = date('Y');
+        $years = [];
         $months = $activity->getMonths();
         $days = [];
         for ($i = 1; $i <= (int)date('d', strtotime(now())); $i++) {
@@ -41,14 +43,19 @@ class HomeController extends Controller
         }
         $pricesClient = null;
         $terminal = Terminal::all()->first();
-        if (auth()->user()->company_id != null) {
-            $prices = $terminal != null ? $this->getPrices($terminal->id, date('m'), auth()->user()->company_id) : [];
-            $pricesClient = auth()->user()->company->prices->where('terminal_id', $terminal->id)->sortByDesc('created_at')->first();
+        if (($admin = auth()->user()->company)->id ?? false) {
+            $prices = $terminal ? $this->getPrices($terminal->id, date('m'), $currentYear, auth()->user()->company_id) : [];
+            $pricesClient = $admin->prices()->where('terminal_id', $terminal->id)->get()->sortByDesc('created_at')->first();
+            // $year=
         } else {
-            $prices = $terminal != null ? $this->getPrices($terminal->id, date('m')) : [];
+            $prices = $terminal != null ? $this->getPrices($terminal->id, date('m'), $currentYear) : [];
+            $year = CompetitionPrice::all()->sortBy('created_at')->first()->created_at->format('Y');
+            for ($i = $currentYear; $i >= $year; $i--) {
+                array_push($years, (int) $i);
+            }
         }
-        //return $prices;
         return view('dashboard', [
+            'years' => $years,
             'months' => $months,
             'actualMonth' => date('m'),
             'terminals' => Terminal::all(),
@@ -62,12 +69,12 @@ class HomeController extends Controller
         ]);
     }
     // respuesta json precios por terminal
-    public function getPricesJson(Request $request, $terminal_id, $month)
+    public function getPricesJson(Request $request, $terminal_id, $month, $year)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente', 'Ventas']);
         $lastDay = date('d', strtotime(now()));
         if ($month != date('m')) {
-            $lastDay = new DateTime(date('Y') . '-' . $month . '-01');
+            $lastDay = new DateTime($year . '-' . $month . '-01');
             $lastDay->modify('last day of this month');
             $lastDay = $lastDay->format('d');
         }
@@ -77,19 +84,19 @@ class HomeController extends Controller
             array_push($days, $i);
         }
         $pricesClient = null;
-        if (auth()->user()->company_id != null)
-            $pricesClient = auth()->user()->company->prices->where('terminal_id', $terminal_id)->sortByDesc('created_at')->first();
+        if (($admin = auth()->user()->company)->id ?? false)
+            $pricesClient = $admin->prices->where('terminal_id', $terminal_id)->sortByDesc('created_at')->first();
         return response()->json([
             'days' => $days,
-            'prices' => $this->getPrices($terminal_id, $month, auth()->user()->company_id != null ? auth()->user()->company_id : null),
+            'prices' => $this->getPrices($terminal_id, $month, $year, auth()->user()->company_id ? auth()->user()->company_id : null),
             'pricesclient' => $pricesClient
         ]);
     }
     // precios por empresa
-    private function getPrices($terminal_id, $month, $company_id = null)
+    private function getPrices($terminal_id, $month, $year, $company_id = null)
     {
         $pemex = Company::where('name', 'like', '%pemex%')->first();
-        $start = date('Y') . '-' . $month . '-01';
+        $start = $year . '-' . $month . '-01';
         $lastDay = date('d');
         if ($month != date('m')) {
             $lastDay = new DateTime($start);
@@ -109,7 +116,7 @@ class HomeController extends Controller
         }
         foreach ($companies as $company) {
             $dataCompany = CompetitionPrice::whereDate('created_at', '>=', $start)
-                ->whereDate('created_at', '<=', date('Y') . '-' . $month . '-' . $lastDay)
+                ->whereDate('created_at', '<=', $year . '-' . $month . '-' . $lastDay)
                 ->where([['terminal_id', $terminal_id], ['company_id', $company->id]])->get()->sortBy('created_at');
             $data['id'] = $company->id;
             $data['name'] = $company->name;
