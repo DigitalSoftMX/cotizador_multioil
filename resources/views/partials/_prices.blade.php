@@ -59,21 +59,18 @@
                 <div class="row justify-content-center">
                     <div class="col-md-4 col-sm-12">
                         <label for="regular">{{ __('Regular') }}</label>
-                        <input class="form-control" id="regular" name="regular" placeholder="0" type="number" step="any"
-                            value="{{ old('regular', $price->regular ?? '') }}">
-                        </input>
+                        <input class="form-control" id="regular" name="regular" placeholder="0" type="number"
+                            step="any" value="{{ old('regular', $price->regular ?? '') }}" />
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <label for="premium">{{ __('Premium') }}</label>
-                        <input class="form-control" id="premium" name="premium" placeholder="0" type="number" step="any"
-                            value="{{ old('premium', $price->premium ?? '') }}">
-                        </input>
+                        <input class="form-control" id="premium" name="premium" placeholder="0" type="number"
+                            step="any" value="{{ old('premium', $price->premium ?? '') }}" />
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <label for="disel">{{ __('Diesel') }}</label>
                         <input class="form-control" id="diesel" name="diesel" placeholder="0" type="number" step="any"
-                            value="{{ old('diesel', $price->diesel ?? '') }}">
-                        </input>
+                            value="{{ old('diesel', $price->diesel ?? '') }}" />
                     </div>
                 </div>
                 <div class="row justify-content-center">
@@ -195,10 +192,11 @@
         let idFee = "{{ $price->fee_id ?? '' }}";
         let notification = 0;
         let companies = [];
+        let year = '{{ $year }}';
         $(document).ready(function() {
             loadTable('datatables');
-            init_calendar('calendar_first', `01-01-${date.getFullYear()}`, `12-31-${date.getFullYear()}`);
-            init_calendar('calendar', `01-01-${date.getFullYear()}`, `12-31-${date.getFullYear()}`);
+            init_calendar('calendar_first', `01-01-${year}`, `12-31-${date.getFullYear()}`);
+            init_calendar('calendar', `01-01-${year}`, `12-31-${date.getFullYear()}`);
             if (id != '') {
                 $('#calendar').val("{{ isset($price) ? $price->created_at->format('Y-m-d') : '' }}");
                 getValues();
