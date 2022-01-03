@@ -20,7 +20,8 @@ class CompetitionPriceController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
-        return view('prices.index', ['companies' => Company::all()]);
+        $year = CompetitionPrice::all()->sortBy('created_at')->first()->created_at->format('Y');
+        return view('prices.index', ['companies' => Company::all(), 'year' => $year]);
     }
 
     /**
@@ -31,10 +32,12 @@ class CompetitionPriceController extends Controller
     public function create(Request $request)
     {
         $request->user()->authorizeRoles(['Administrador']);
+        $year = CompetitionPrice::all()->sortBy('created_at')->first()->created_at->format('Y');
         return view('prices.create', [
             'terminals' => Terminal::all(),
             'companies' => Company::where('main', 0)->get(),
-            'bases' => Company::where('main', 1)->get()
+            'bases' => Company::where('main', 1)->get(),
+            'year' => $year,
         ]);
     }
 
@@ -88,11 +91,13 @@ class CompetitionPriceController extends Controller
     public function edit(Request $request, CompetitionPrice $price)
     {
         $request->user()->authorizeRoles(['Administrador']);
+        $year = CompetitionPrice::all()->sortBy('created_at')->first()->created_at->format('Y');
         return view('prices.edit', [
             'price' => $price,
             'terminals' => Terminal::all(),
             'companies' => Company::where('main', 0)->get(),
-            'bases' => Company::where('main', 1)->get()
+            'bases' => Company::where('main', 1)->get(),
+            'year' => $year,
         ]);
     }
 
