@@ -56,8 +56,9 @@
     <script src="{{ asset('js/ventas.js') }}"></script>
     <script>
         let date = new Date();
+        let year = "{{ $year }}";
         $(document).ready(function() {
-            init_calendar('calendar_first', `01-01-${date.getFullYear()}`, `12-31-${date.getFullYear()}`);
+            init_calendar('calendar_first', `01-01-${year}`, `12-31-${date.getFullYear()}`);
             loadTable('datatables');
         });
     </script>

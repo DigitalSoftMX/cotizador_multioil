@@ -21,9 +21,10 @@ class InvoiceController extends Controller
     public function edit(Request $request, Order $invoice)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
+        $year = Order::all()->sortBy('created_at')->first()->created_at->format('Y');
         return view(
             'invoices.edit',
-            ['invoice' => $invoice, 'payments' => $invoice->payments, 'sales' => Role::find(3)->users]
+            ['invoice' => $invoice, 'payments' => $invoice->payments, 'sales' => Role::find(3)->users, 'year' => $year]
         );
     }
 
