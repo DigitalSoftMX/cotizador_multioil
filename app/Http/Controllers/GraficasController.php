@@ -6,26 +6,25 @@ use App\Company;
 use App\Http\Controllers\Controller;
 use App\Order;
 use App\Repositories\Activities;
-use App\Repositories\Chartdata;
 use Illuminate\Http\Request;
 
 class GraficasController extends Controller
 {
-    public function gastoTotalTransporte()
+    public function gastoTotalTransporte($year = null)
     {
         $months = new Activities();
-        $orders = Order::where('status_id', 2)->whereYear('dispatched', date('Y'))->where('name_freight', '!=', null)
-            ->orderBy('dispatched', 'ASC')->with(['company', 'payments'])->get();
+        $orders = Order::where('status_id', 2)->where([['name_freight', '!=', null], ['dispatched', '!=', null]])
+            ->whereYear('dispatched', $year ?? date('Y'))->orderBy('dispatched', 'asc')->with(['company', 'payments'])->get();
+        if ($orders->count() == 0) return [];
         $date = date("Y-m", strtotime($orders->first()->dispatched));
         $month = $date;
         $data = [];
         $total = 0;
-
         foreach ($orders as $order) {
             $date = date("Y-m", strtotime($order->dispatched));
             if ($month != $date) {
                 array_push($data, ["month" => $months->getMonths($month), 'total' => '$ ' .  number_format($total, 2)]);
-                $date = date("Y-m", strtotime($order->dispatched));
+                $date = date("{$year}-m", strtotime($order->dispatched));
                 $month = $date;
                 $total = 0;
             }
@@ -107,10 +106,12 @@ class GraficasController extends Controller
         return $companies;
     }
     // Total de utilidad por cliente
-    public function utilidadCliente()
+    public function utilidadCliente($year = null)
     {
         $months = new Activities();
-        $orders = Order::where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get();
+        $orders = Order::where('status_id', 2)->whereYear('created_at', $year ?? date('Y'))->orderBy('created_at', 'asc')
+            ->with(['company', 'payments'])->get();
+        if ($orders->count() == 0) return [];
         $month = $orders->first()->created_at->format('Y-m');
         $data = [];
         $total = 0;
@@ -160,10 +161,11 @@ class GraficasController extends Controller
         return $companies;
     }
     // Total utilidad Guerrera
-    public function utilidadGuerrera()
+    public function utilidadGuerrera($year = null)
     {
         $months = new Activities();
-        $orders = Order::where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get();
+        $orders = Order::where('status_id', 2)->whereYear('created_at', $year ?? date('Y'))->with(['company', 'payments'])->get();
+        if ($orders->count() == 0) return [];
         $month = $orders->first()->created_at->format('Y-m');
         $data = [];
         $total = 0;
@@ -189,11 +191,16 @@ class GraficasController extends Controller
         return $data;
     }
     // Acumulado IVA por mes
-    public function iva()
+    public function iva($year = null)
     {
         $months = new Activities();
-        $orders = Order::where('status_id', 2)->whereYear('created_at', date('Y'))->with(['company', 'payments'])->get();
-        $month = $orders->first()->created_at->format('Y-m');
+        $orders = Order::where('status_id', 2)->whereYear('created_at', $year ?? date('Y'))->with(['company', 'payments'])->get();
+        $month = $orders->first();
+        if ($month) {
+            $month = $month->created_at->format('Y-m');
+        } else {
+            return [];
+        }
         $data = [];
         $totalIva = 0;
         foreach ($orders as $order) {

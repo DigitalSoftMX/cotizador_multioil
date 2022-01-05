@@ -94,14 +94,14 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 Route::group(['middleware' => 'auth'], function () {
-	Route::get('totaltransporte', 'GraficasController@gastoTotalTransporte')->name('totaltransporte');
+	Route::get('totaltransporte/{year?}', 'GraficasController@gastoTotalTransporte')->name('totaltransporte');
 	Route::get('transporte/{month?}', 'GraficasController@totalTransporte');
 	Route::get('guerrera/{month?}', 'GraficasController@totalClienteGuerrera');
 	Route::get('valeroguerrera/{month?}', 'GraficasController@totalValeroGuerrera');
-	Route::get('utilidadcliente', 'GraficasController@utilidadCliente');
+	Route::get('utilidadcliente/{year?}', 'GraficasController@utilidadCliente');
 	Route::get('utilidadgeneral/{month?}', 'GraficasController@utilidadGeneral');
-	Route::get('utilidadguerrera', 'GraficasController@utilidadGuerrera');
-	Route::get('iva', 'GraficasController@iva');
+	Route::get('utilidadguerrera/{year?}', 'GraficasController@utilidadGuerrera');
+	Route::get('iva/{year?}', 'GraficasController@iva');
 	Route::get('mermaporclientemes/{month?}', 'GraficasController@mermaPorClienteMes');
 	Route::get('ultimosmeses/{revers?}', 'GraficasController@mouthLast');
 });
