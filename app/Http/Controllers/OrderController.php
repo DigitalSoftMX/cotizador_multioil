@@ -38,7 +38,8 @@ class OrderController extends Controller
                 ['terminals' => Terminal::all(), 'company' => auth()->user()->company, 'lock' => $lock, 'day' => date('N'), 'datestart' => $datestart, 'dateend' => $dateend]
             );
         }
-        $datestart = '01-01-' . date("Y");
+        $year = Order::all()->sortBy('created_at')->first()->created_at->format('Y');
+        $datestart = "01-01-{$year}";
         $dateend = '12-31-' . date("Y");
         return view(
             'orders.index',
