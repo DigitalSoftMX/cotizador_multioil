@@ -242,7 +242,19 @@
                     <div class="col-sm-4">
                         <div class="card scroll-card-active" style="height: 55vh;">
                             <div class="card-body">
-                                <h4 class="font-weight-bold">IVA</h4>
+                                <div class="row">
+                                    <div class="col-12 col-sm-5">
+                                        <p class="h4 font-weight-bold pt-2">IVA</p>
+                                    </div>
+                                    <div class="col-12 col-sm-7">
+                                        <select id="totalIva" class="selectpicker show-menu-arrow" data-width="100%">
+                                            @foreach ($years as $year)
+                                                <option value="{{ $year }}">{{ $year }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                {{-- <h4 class="font-weight-bold">IVA</h4> --}}
                                 <div class="row m-0 pl-2 pr-2 pt-0 pb-0">
                                     <div class="table-full-width table-responsive col-sm-12 m-0 mr-0 ml-0 pr-0 pl-0">
                                         <table class="table table-shopping">
@@ -270,7 +282,19 @@
                     <div class="col-sm-5">
                         <div class="card" style="height: 60vh;">
                             <div class="card-body">
-                                <h4 class="font-weight-bold">{{ __('Gasto total por transporte') }}</h4>
+                                <div class="row">
+                                    <div class="col-12 col-sm-5">
+                                        <p class="h4 font-weight-bold pt-2">{{ __('Gasto total por transporte') }}</p>
+                                    </div>
+                                    <div class="col-12 col-sm-7">
+                                        <select id="totalGastoTotalTransporte" class="selectpicker show-menu-arrow"
+                                            data-width="100%">
+                                            @foreach ($years as $year)
+                                                <option value="{{ $year }}">{{ $year }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="row m-0 pl-2 pr-2 pt-0 pb-0">
                                     <div class="table-full-width table-responsive col-sm-12 m-0 mr-0 ml-0 pr-0 pl-0">
                                         <table class="table table-shopping">
@@ -447,7 +471,19 @@
                     <div class="col-sm-4 pr-5">
                         <div class="card scroll-card-active" style="height: 60vh;">
                             <div class="card-body">
-                                <h4 class="font-weight-bold">Utilidad cliente</h4>
+                                <div class="row">
+                                    <div class="col-12 col-sm-5">
+                                        <p class="h4 font-weight-bold pt-2">{{ __('Utilidad cliente') }}</p>
+                                    </div>
+                                    <div class="col-12 col-sm-7">
+                                        <select id="totalUtilidadClient" class="selectpicker show-menu-arrow"
+                                            data-width="100%">
+                                            @foreach ($years as $year)
+                                                <option value="{{ $year }}">{{ $year }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="row m-0 pl-2 pr-2 pt-0 pb-0">
                                     <div class="table-full-width table-responsive col-sm-12 m-0 mr-0 ml-0 pr-0 pl-0">
                                         <table class="table table-shopping">
@@ -488,7 +524,19 @@
                     <div class="col-sm-4 pl-5">
                         <div class="card scroll-card-active" style="height: 60vh;">
                             <div class="card-body">
-                                <h4 class="font-weight-bold">Utilidad guerrera</h4>
+                                <div class="row">
+                                    <div class="col-12 col-sm-5">
+                                        <p class="h4 font-weight-bold pt-2">{{ __('Utilidad guerrera') }}</p>
+                                    </div>
+                                    <div class="col-12 col-sm-7">
+                                        <select id="totalUtilidadGuerrera" class="selectpicker show-menu-arrow"
+                                            data-width="100%">
+                                            @foreach ($years as $year)
+                                                <option value="{{ $year }}">{{ $year }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="row m-0 pl-2 pr-2 pt-0 pb-0">
                                     <div class="table-full-width table-responsive col-sm-12 m-0 mr-0 ml-0 pr-0 pl-0">
                                         <table class="table table-shopping">
@@ -596,6 +644,30 @@
             selectUtilidadGeneral.addEventListener('change', async (event) => {
             const val = document.getElementById("uGeneral").value;
             await initDashboardTable('{{ url('/') }}', 'utilidadgeneral', val, 'utilidadgeneral');
+            });
+        
+            const selectTotalIva = document.querySelector('#totalIva');
+            selectTotalIva.addEventListener('change', async (event) => {
+            const val = document.getElementById("totalIva").value;
+            await initDashboardTable('{{ url('/') }}', `iva/${val}`, '', 'ivapormes', 'month');
+            });
+        
+            const selectTotalGastoTotalTransporte = document.querySelector('#totalGastoTotalTransporte');
+            selectTotalGastoTotalTransporte.addEventListener('change', async (event) => {
+            const val = document.getElementById("totalGastoTotalTransporte").value;
+            await initDashboardTable('{{ url('/') }}', `totaltransporte/${val}`, '', 'gastoTotalTransporte', 'month')
+            });
+        
+            const selecTotalUtilidadClient = document.querySelector('#totalUtilidadClient');
+            selecTotalUtilidadClient.addEventListener('change', async (event) => {
+            const val = document.getElementById("totalUtilidadClient").value;
+            await initDashboardTable('{{ url('/') }}', `utilidadcliente/${val}`, '', 'utilidadcliente', 'month');
+            });
+        
+            const selectTotalUtilidadGuerrera = document.querySelector('#totalUtilidadGuerrera');
+            selectTotalUtilidadGuerrera.addEventListener('change', async (event) => {
+            const val = document.getElementById("totalUtilidadGuerrera").value;
+            await initDashboardTable('{{ url('/') }}', `utilidadguerrera/${val}`, '', 'utilidadguerrera', 'month');
             });
         @endif
 
