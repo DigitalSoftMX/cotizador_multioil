@@ -83,7 +83,7 @@ class InvoiceController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         request()->validate([
-            'invoicepayment' => $request->file_invoicexml ? 'requried|numeric|min:1' : '',
+            'invoicepayment' => $request->file_invoicexml ? 'required|numeric|min:1' : '',
             'invoicepayment2' => $request->file_invoicexml2 ? 'required|numeric|min:1' : '',
             'invoicecfdi' => 'required|string|min:3',
             'invoicecfdi2' => $request->invoicecfdi2 ? 'string|min:3' : '',
