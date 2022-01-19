@@ -1,13 +1,20 @@
 @if (auth()->user()->roles->first()->id == 1)
+
     <div class="row">
+
         <div class="col-12 text-right">
+
             <button type="button" class="btn btn-sm btn-dark" data-toggle="modal"
                 data-target=".bd-example-modal-lg-commission">{{ ($invoice->commission ? 'Actualizar' : 'Agregar') . __(' comisión') }}
             </button>
+
             <div class="modal fade bd-example-modal-lg-commission" tabindex="-1" role="dialog"
                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
                 <div class="modal-dialog modal-lg">
+
                     <div class="modal-content">
+
                         <form method="post" action="{{ route('orders.update', $invoice) }}" autocomplete="off"
                             class="form-horizontal">
                             @method('put')

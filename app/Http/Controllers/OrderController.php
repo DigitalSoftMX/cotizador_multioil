@@ -107,18 +107,34 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $request->user()->authorizeRoles(['Administrador']);
+
         request()->validate([
-            'commission' => $request->commission ? 'numeric' : '',
-            'commission' => $request->user_id ? 'required|numeric' : '',
-            'commission_two' => $request->commission_two ? 'numeric' : '',
-            'commission_two' => $request->middleman_id ? 'required|numeric' : '',
-            'commission_three' => $request->commission_three ? 'numeric' : '',
-            'commission_three' => $request->commission_id ? 'required|numeric' : '',
+            'commission' => ($request->user_id or $request->commission) ? 'required|numeric' : '',
+            'user_id' => ($request->user_id or $request->commission) ? 'required|numeric' : '',
+            'commission_two' => ($request->middleman_id or $request->commission_two) ? 'required|numeric' : '',
+            'middleman_id' => ($request->middleman_id or $request->commission_two) ? 'required|numeric' : '',
+            'commission_three' => ($request->commission_id or $request->commission_three) ? 'required|numeric' : '',
+            'commission_id' => ($request->commission_id or $request->commission_three) ? 'required|numeric' : '',
         ]);
-        if ($request->user_id == $request->middleman_id or $request->user_id == $request->commission_id)
-            return redirect()->back()->withStatus('Los comisionistas deben ser diferentes')->withColor('danger');
-        if ($request->middleman_id == $request->commission_id)
-            return redirect()->back()->withStatus('Los comisionistas deben ser diferentes')->withColor('danger');
+
+        if (!$request->user_id and !$request->middleman_id and !$request->commission_id)
+            return redirect()->back()->withStatus('Debe seleccionar al menos un comisionista')->withColor('danger');
+
+        if ($request->user_id) {
+            if ($request->user_id == $request->middleman_id or $request->user_id == $request->commission_id)
+                return redirect()->back()->withStatus('Los comisionistas deben ser diferentes')->withColor('danger');
+        }
+
+        if ($request->middleman_id) {
+            if ($request->middleman_id == $request->user_id or $request->middleman_id == $request->commission_id)
+                return redirect()->back()->withStatus('Los comisionistas deben ser diferentes')->withColor('danger');
+        }
+
+        if ($request->commission_id) {
+            if ($request->commission_id == $request->user_id or $request->commission_id == $request->middleman_id)
+                return redirect()->back()->withStatus('Los comisionistas deben ser diferentes')->withColor('danger');
+        }
+
         $order->update($request->only('commission', 'user_id', 'commission_two', 'middleman_id', 'commission_three', 'commission_id'));
         return redirect()->back()->withStatus('Comisión del pedido agregado correctamente');
     }
