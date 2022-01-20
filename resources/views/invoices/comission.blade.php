@@ -91,7 +91,7 @@
                                     <div
                                         class="form-group{{ $errors->has('commission_three') ? ' has-danger' : '' }} col-lg-4 col-sm-12">
                                         <label
-                                            for="commission_three">{{ __('Comisión del segundo comisionista') }}</label>
+                                            for="commission_three">{{ __('Comisión del tercer comisionista') }}</label>
                                         <input type="number"
                                             class="form-control{{ $errors->has('commission_three') ? ' is-invalid' : '' }}"
                                             id="input-commission_three" aria-describedby="commission_threeHelp"

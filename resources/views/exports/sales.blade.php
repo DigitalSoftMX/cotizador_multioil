@@ -279,15 +279,15 @@
                 </td>
                 @php $totalUtilidadGeneral+=$utilidadGeneral; @endphp
                 <td>
-                    {{ '$' . number_format($comisionista1 = $order->commission ?? 0 * $litrosDespachados, 2) }}
+                    {{ '$' . number_format($comisionista1 = ($order->commission ?? 0) * $litrosDespachados, 2) }}
                     @php $totalComisionista1+=$comisionista1; @endphp
                 </td>
                 <td>
-                    {{ '$' . number_format($comisionista2 = $order->commission_two ?? 0 * $litrosDespachados, 2) }}
+                    {{ '$' . number_format($comisionista2 = ($order->commission_two ?? 0) * $litrosDespachados, 2) }}
                     @php $totalComisionista2+=$comisionista2; @endphp
                 </td>
                 <td>
-                    {{ '$' . number_format($comisionista3 = $order->commission_three ?? 0 * $litrosDespachados, 2) }}
+                    {{ '$' . number_format($comisionista3 = ($order->commission_three ?? 0 )* $litrosDespachados, 2) }}
                     @php $totalComisionista3 += $comisionista3; @endphp
                 </td>
                 <td>
