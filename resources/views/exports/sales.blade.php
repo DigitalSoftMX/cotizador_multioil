@@ -201,22 +201,22 @@
                 <td width="40">{{ $order->company->name }}</td>
                 <td>{{ $flete = $order->freight ? 'SI' : 'NO' }}</td>
                 <td>{{ $order->name_freight ?? '-' }}</td>
-                <td>{{ $regularCompra = $order->product == 'regular' ? $order->price : '' }}</td>
-                <td>{{ $premiumCompra = $order->product == 'premium' ? $order->price : '' }}</td>
-                <td>{{ $dieselCompra = $order->product == 'diesel' ? $order->price : '' }}</td>
                 <td>{{ $regularVenta = $order->product == 'regular' ? $order->sale_price : '' }}</td>
                 <td>{{ $premiumVenta = $order->product == 'premium' ? $order->sale_price : '' }}</td>
                 <td>{{ $dieselVenta = $order->product == 'diesel' ? $order->sale_price : '' }}</td>
+                <td>{{ $regularCompra = $order->product == 'regular' ? $order->price : '' }}</td>
+                <td>{{ $premiumCompra = $order->product == 'premium' ? $order->price : '' }}</td>
+                <td>{{ $dieselCompra = $order->product == 'diesel' ? $order->price : '' }}</td>
                 <td>
                     @switch($order->product)
                         @case('regular')
-                            {{ '$' . ($utilidadEstimadaPorLitro = $regularVenta - $regularCompra) }}
+                            {{ '$' . ($utilidadEstimadaPorLitro = $regularCompra - $regularVenta ) }}
                         @break
                         @case('premium')
-                            {{ '$' . ($utilidadEstimadaPorLitro = $premiumVenta - $premiumCompra) }}
+                            {{ '$' . ($utilidadEstimadaPorLitro = $premiumCompra - $premiumVenta) }}
                         @break
                         @case('diesel')
-                            {{ '$' . ($utilidadEstimadaPorLitro = $dieselVenta - $dieselCompra) }}
+                            {{ '$' . ($utilidadEstimadaPorLitro = $dieselCompra - $dieselVenta) }}
                         @break
                     @endswitch
                 </td>

@@ -8,7 +8,7 @@
                     <div class="card">
                         <div class="card-header card-header-primary">
                             <h4 class="card-title">
-                                <a href="{{ route('validations.index') }}" title="Volver a la lista de pedidos">
+                                <a href="{{ URL::previous() }}so" title="Volver a la lista de pedidos">
                                     <span class="material-icons">arrow_back_ios</span>
                                 </a>
                                 {{ __('Facturación y pagos del pedido') }}

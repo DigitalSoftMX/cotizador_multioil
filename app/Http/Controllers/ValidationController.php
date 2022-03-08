@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Events\EmailMultioil;
 use App\Http\Controllers\Controller;
 use App\Order;
+use App\Repositories\Activities;
 use Exception;
+use DateTime;
 use Illuminate\Http\Request;
 
 class ValidationController extends Controller
@@ -15,13 +17,46 @@ class ValidationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $month = null, $year = null)
     {
         $request->user()->authorizeRoles(['Administrador', 'Cliente']);
-        if (auth()->user()->company_id != null) {
-            return view('validations.index', ['orders' => Order::where('company_id', auth()->user()->company_id)->get()]);
+        if (!$month)
+            $month = date('m');
+
+        if (!$year)
+            $year = date('Y');
+
+        $activity = new Activities();
+        $months = $activity->getMonths();
+        $years = [];
+        $currentYear = Order::all()->sortBy('created_at')->first()->created_at->format('Y');
+
+        for ($i = date('Y'); $i >= $currentYear; $i--) {
+            array_push($years, (int) $i);
         }
-        return view('validations.index', ['orders' => Order::all()]);
+
+        $lastDay = new DateTime($year . '-' . $month . '-01');
+        $lastDay->modify('last day of this month');
+        $lastDay = $lastDay->format('d');
+
+        if (auth()->user()->company_id != null) {
+
+            $orders = Order::where('company_id', auth()->user()->company_id)
+                ->whereDate('created_at', '>=', "{$year}-{$month}-01")
+                ->whereDate('created_at', '<=', "{$year}-{$month}-{$lastDay}")
+                ->get();
+        } else {
+
+            $orders = Order::whereDate('created_at', '>=', "{$year}-{$month}-01")
+                ->whereDate('created_at', '<=', "{$year}-{$month}-{$lastDay}")
+                ->get();
+        }
+
+
+        return view('validations.index', [
+            'orders' => $orders, 'months' => $months,
+            'years' => $years, 'year' => $year, 'month' => $month
+        ]);
     }
     // acceptar un pedido
     public function accept(Request $request, Order $order)

@@ -78,7 +78,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('excel', 'OrderController@downloadExcel')->name('excel');
 	Route::get('sales', 'OrderController@downloadSales')->name('sales');
 	Route::get('excel2', 'PedidoController@downloadExcel')->name('excel2');
-	Route::resource('validations', 'ValidationController', ['only' => ['index']]);
+	Route::get('validations/{month?}/{year?}', 'ValidationController@index')->name('validations.index');
 	Route::post('validations/accept/{order}', 'ValidationController@accept')->name('accept');
 	Route::post('validations/deny/{order}', 'ValidationController@deny')->name('deny');
 	Route::post('validations/restore/{order}', 'ValidationController@restore')->name('restore');

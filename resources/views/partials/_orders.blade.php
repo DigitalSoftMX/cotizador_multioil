@@ -46,9 +46,9 @@
                                         data-style="btn-primary"
                                         onchange="confirm('{{ __('¿Estás seguro de que deseas autorizar este pedido?') }}') ? autorizar(`input-type{{ $order->id }}`,`auth{{ $order->id }}`,`input{{ $order->id }}`) : ''">
                                         <option selected disabled>{{ __('Autorizar') }}</option>
-                                        <option value="prepago">{{ __('Prepago') }}</option>
-                                        <option value="credito">{{ __('Crédito') }}</option>
-                                        <option value="itzel">{{ __('Itzel') }}</option>
+                                        <option value="prepago">{{ __('Multioil') }}</option>
+                                        <option value="credito">{{ __('Policon') }}</option>
+                                        <option value="itzel">{{ __('Dihico') }}</option>
                                     </select>
                                 </div>
                                 @if ($errors->has('type'))

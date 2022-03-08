@@ -237,7 +237,7 @@ class GraficasController extends Controller
                 $data['company'] = $company->alias;
                 $data['total'] = 0;
                 foreach ($orders as $order) {
-                    $data['total'] += $order->dispatched_liters - $order->root_liters ?? 0;
+                    $data['total'] += (($order->root_liters ?? 0) - $order->dispatched_liters);
                 }
                 array_push($companies, $data);
             }

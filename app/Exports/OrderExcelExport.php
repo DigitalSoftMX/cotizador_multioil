@@ -11,12 +11,16 @@ class OrderExcelExport implements WithMultipleSheets
     public function sheets(): array
     {
         $kindOfAuth = ['prepago', 'credito', 'itzel'];
+        $names = ['operaciones multioil', 'operaciones policon', 'operaciones dihico'];
+
         $sheets = [];
-        foreach ($kindOfAuth as $koa) {
-            $orders = Order::where([['status_id', 2], ['type', $koa]])->with(['company', 'payments'])->get();
+
+        for ($i = 0; $i < count($kindOfAuth); $i++) {
+            $orders = Order::where([['status_id', 2], ['type', $kindOfAuth[$i]]])->with(['company', 'payments'])->get();
             if ($orders->count() > 0)
-                $sheets[] = new OrderExport(strtoupper($koa), $orders);
+                $sheets[] = new OrderExport(strtoupper($names[$i]), $orders);
         }
+
         return $sheets;
     }
 }

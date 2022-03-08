@@ -75,6 +75,7 @@ class FeeController extends Controller
     {
         $request->user()->authorizeRoles(['Administrador']);
         $fit->update(['active' => 0]);
+        $fit->delete();
         return redirect()->route('fits.index')->withStatus(__('FEE dado de baja correctamente'));
     }
     // Método para obtener los fee, por terminal, empresa, precio base y/o fecha
@@ -95,6 +96,12 @@ class FeeController extends Controller
         } else {
             $fee = Fee::where($query)->get();
         }
+
+        foreach ($fee as $f) {
+            if ($f->active == 0)
+                $f->delete();
+        }
+
         foreach ($fee as $f) {
             $data['id'] = $f->id;
             $data['company'] = $f->terminals->name;

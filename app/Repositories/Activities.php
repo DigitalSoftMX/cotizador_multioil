@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Company;
 use App\CompetitionPrice;
+use App\Fee;
 use App\Order;
 use App\Terminal;
 use Exception;
@@ -17,17 +18,24 @@ class Activities
     public function getFees($company_id = null)
     {
         $fees = array();
+
+        foreach (Fee::all()  as $fee) {
+            if ($fee->active == 0)
+                $fee->delete();
+        }
+
         foreach (Terminal::all() as $terminal) {
             if ($company_id == null) {
                 foreach (Company::all() as $company) {
-                    $fee = $terminal->fits->where('company_id', $company->id)->where('active', 1)->last();
+                    $fee = $terminal->fits->where('company_id', $company->id)->last();
                     $fees = $fee != null ? $this->dataFees($fee, $fees) : $fees;
                 }
             } else {
-                $fee = $terminal->fits->where('company_id', $company_id)->where('active', 1)->last();
+                $fee = $terminal->fits->where('company_id', $company_id)->last();
                 $fees = $fee != null ? $this->dataFees($fee, $fees) : $fees;
             }
         }
+
         return $fees;
     }
     // llenado de fees

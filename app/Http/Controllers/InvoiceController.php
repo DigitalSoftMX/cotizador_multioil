@@ -82,6 +82,7 @@ class InvoiceController extends Controller
     public function updateinvoice(Request $request, Order $invoice)
     {
         $request->user()->authorizeRoles(['Administrador']);
+
         request()->validate([
             'invoicepayment' => $request->invoicepayment ? 'required|numeric|min:1' : '',
             'invoicepayment2' => $request->invoicepayment2 ? 'required|numeric|min:1' : '',
@@ -92,17 +93,24 @@ class InvoiceController extends Controller
             'file_invoicepdf2' => $request->file_invoicepdf2 ? 'file|mimes:pdf' : '',
             'file_invoicexml2' => $request->file_invoicexml2 ? 'file|mimes:xml' : ''
         ]);
+
         $activity = new Activities();
+
         if ($request->file("file_invoicepdf")) $activity->saveFile($request, $invoice, 'invoicepdf');
+
         if ($request->file("file_invoicepdf2")) $activity->saveFile($request, $invoice, 'invoicepdf2');
+
         if ($request->file("file_invoicexml")) {
             $activity->saveFile($request, $invoice, 'invoicexml');
             $xml = $activity->xmlTotalFolioUUID($request->file('file_invoicexml'));
+
             if (!$xml) return redirect()->back()->withStatus('El archivo xml no pudo ser leído');
+
             $invoice->update([
                 'paymentfolio' => $xml['folio'],
-                'invoicepayment' => $request->invoicepayment ?? $xml['total']
+                'invoicepayment' => $xml['total']
             ]);
+            
         } else {
             $invoice->update($request->only(['invoicepayment']));
         }

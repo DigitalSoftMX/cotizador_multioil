@@ -7,33 +7,35 @@
             <div class="form-group{{ $errors->has('dispatched') ? ' has-danger' : '' }} col-12 col-md-10">
                 <label class="label-control">{{ __('Fecha de despacho') }}</label>
                 <input class="form-control datetimepicker" id="calendar_first" name="dispatched" type="text"
-                    value="{{ old('dispatched', $invoice->dispatched) }}" @if ($rol != 1) readonly @endif />
-                @include('partials.errorsession',[$field='dispatched'])
+                    value="{{ old('dispatched', $invoice->dispatched) }}"
+                    @if ($rol != 1) readonly @endif />
+                @include('partials.errorsession', [($field = 'dispatched')])
             </div>
         </div>
         @if (auth()->user()->roles->first()->id == 1)
             <div class="row justify-content-center">
-                <div class="form-group{{ $errors->has('price') ? ' has-danger' : '' }} col-12 col-md-10">
+                <div class="form-group{{ $errors->has('sale_price') ? ' has-danger' : '' }} col-12 col-md-10">
                     <label for="price">{{ __('Precio de compra') }}</label>
-                    <input type="number" class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}"
-                        id="input-price" aria-describedby="priceHelp"
-                        placeholder="Escribe el precio de compra por litro"
-                        value="{{ old('price', $invoice->price) }}" name="price" step="any" @if ($rol != 1) readonly @endif>
-                    @include('partials.errorsession',[$field='price'])
+                    <input type="number" class="form-control{{ $errors->has('sale_price') ? ' is-invalid' : '' }}"
+                        id="input-sale_price" aria-describedby="sale_priceHelp"
+                        placeholder="Escribe el precio de venta por litro"
+                        value="{{ old('sale_price', $invoice->sale_price) }}" name="sale_price" step="any"
+                        @if ($rol != 1) readonly @endif>
+                    @include('partials.errorsession', [($field = 'sale_price')])
                 </div>
             </div>
         @endif
         <div class="row justify-content-center">
-            <div class="form-group{{ $errors->has('sale_price') ? ' has-danger' : '' }} col-12 col-md-10">
+            <div class="form-group{{ $errors->has('price') ? ' has-danger' : '' }} col-12 col-md-10">
                 <label for="sale_price">{{ __('Precio de venta') }}</label>
-                <input type="number" class="form-control{{ $errors->has('sale_price') ? ' is-invalid' : '' }}"
-                    id="input-sale_price" aria-describedby="sale_priceHelp"
-                    placeholder="Escribe el precio de venta por litro"
-                    value="{{ old('sale_price', $invoice->sale_price) }}" name="sale_price" step="any"
+                <input type="number" class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}"
+                    id="input-price" aria-describedby="priceHelp" placeholder="Escribe el precio de compra por litro"
+                    value="{{ old('price', $invoice->price) }}" name="price" step="any"
                     @if ($rol != 1) readonly @endif>
-                @include('partials.errorsession',[$field='sale_price'])
+                @include('partials.errorsession', [($field = 'price')])
             </div>
         </div>
+
         <div class="row justify-content-center">
             <div class="form-group{{ $errors->has('bol_load') ? ' has-danger' : '' }} col-12 col-md-10">
                 <label for="bol_load">{{ __('Folio Bol de carga 1') }}</label>
@@ -41,7 +43,7 @@
                     id="input-bol_load" aria-describedby="bol_loadHelp" placeholder="Escribe el folio bol de carga"
                     value="{{ old('bol_load', $invoice->bol_load) }}" name="bol_load" step="any"
                     @if ($rol != 1) readonly @endif>
-                @include('partials.errorsession',[$field='bol_load'])
+                @include('partials.errorsession', [($field = 'bol_load')])
             </div>
         </div>
         <div class="row justify-content-center">
@@ -51,28 +53,28 @@
                     id="input-bol_load2" aria-describedby="bol_load2Help" placeholder="Escribe el folio bol de carga"
                     value="{{ old('bol_load2', $invoice->bol_load2) }}" name="bol_load2" step="any"
                     @if ($rol != 1) readonly @endif>
-                @include('partials.errorsession',[$field='bol_load2'])
+                @include('partials.errorsession', [($field = 'bol_load2')])
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="form-group{{ $errors->has('dispatched_liters') ? ' has-danger' : '' }} col-12 col-md-10">
-                <label for="dispatched_liters">{{ __('Litros despachados') }}</label>
+                <label for="dispatched_liters">{{ __('Litros facturados') }}</label>
                 <input type="number" class="form-control{{ $errors->has('dispatched_liters') ? ' is-invalid' : '' }}"
                     id="input-dispatched_liters" aria-describedby="dispatched_litersHelp"
-                    placeholder="Escribe los litros despachados"
+                    placeholder="Escribe los litros facturados"
                     value="{{ old('dispatched_liters', $invoice->dispatched_liters) }}" name="dispatched_liters"
                     step="any" @if ($rol != 1) readonly @endif>
-                @include('partials.errorsession',[$field='dispatched_liters'])
+                @include('partials.errorsession', [($field = 'dispatched_liters')])
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="form-group{{ $errors->has('root_liters') ? ' has-danger' : '' }} col-12 col-md-10">
-                <label for="root_liters">{{ __('Litros vendedor v-root') }}</label>
+                <label for="root_liters">{{ __('Litros BOL') }}</label>
                 <input type="number" class="form-control{{ $errors->has('root_liters') ? ' is-invalid' : '' }}"
-                    id="input-root_liters" aria-describedby="root_litersHelp" placeholder="Escribe los litros root"
+                    id="input-root_liters" aria-describedby="root_litersHelp" placeholder="Escribe los litros BOL"
                     value="{{ old('root_liters', $invoice->root_liters) }}" name="root_liters" step="any"
                     @if ($rol != 1) readonly @endif>
-                @include('partials.errorsession',[$field='root_liters'])
+                @include('partials.errorsession', [($field = 'root_liters')])
             </div>
         </div>
         <div class="row justify-content-center">
@@ -83,7 +85,7 @@
                     placeholder="Escribe el nombre de la fletera"
                     value="{{ old('name_freight', $invoice->name_freight) }}" name="name_freight"
                     @if ($rol != 1) readonly @endif>
-                @include('partials.errorsession',[$field='name_freight'])
+                @include('partials.errorsession', [($field = 'name_freight')])
             </div>
         </div>
         <hr>
@@ -121,8 +123,9 @@
                 <label for="CFDI">{{ __('Factura') }}</label>
                 <input type="text" class="form-control{{ $errors->has('CFDI') ? ' is-invalid' : '' }}"
                     id="input-CFDI" aria-describedby="CFDIHelp" placeholder="Escribe la factura"
-                    value="{{ old('CFDI', $invoice->CFDI) }}" name="CFDI" step="any" @if ($rol != 1) readonly @endif>
-                @include('partials.errorsession',[$field='CFDI'])
+                    value="{{ old('CFDI', $invoice->CFDI) }}" name="CFDI" step="any"
+                    @if ($rol != 1) readonly @endif>
+                @include('partials.errorsession', [($field = 'CFDI')])
             </div>
         </div>
         @if ($rol == 1)
@@ -143,7 +146,7 @@
                                 <input type="file" name="file_pdf" accept=".pdf">
                             </span>
                         </div>
-                        @include('partials.errorsession',[$field='file_pdf'])
+                        @include('partials.errorsession', [($field = 'file_pdf')])
                     </div>
                 </div>
                 <div class="col-12 col-sm-6">
@@ -162,7 +165,7 @@
                                 <input type="file" name="file_xml" accept=".xml">
                             </span>
                         </div>
-                        @include('partials.errorsession',[$field='file_xml'])
+                        @include('partials.errorsession', [($field = 'file_xml')])
                     </div>
                 </div>
             </div>
@@ -202,8 +205,9 @@
                 <label for="CFDI2">{{ __('Factura') }}</label>
                 <input type="text" class="form-control{{ $errors->has('CFDI2') ? ' is-invalid' : '' }}"
                     id="input-CFDI2" aria-describedby="CFDI2Help" placeholder="Escribe la factura"
-                    value="{{ old('CFDI2', $invoice->CFDI2) }}" name="CFDI2" step="any" @if ($rol != 1) readonly @endif>
-                @include('partials.errorsession',[$field='CFDI2'])
+                    value="{{ old('CFDI2', $invoice->CFDI2) }}" name="CFDI2" step="any"
+                    @if ($rol != 1) readonly @endif>
+                @include('partials.errorsession', [($field = 'CFDI2')])
             </div>
         </div>
         @if ($rol == 1)
@@ -224,7 +228,7 @@
                                 <input type="file" name="file_pdf2" accept=".pdf">
                             </span>
                         </div>
-                        @include('partials.errorsession',[$field='file_pdf2'])
+                        @include('partials.errorsession', [($field = 'file_pdf2')])
                     </div>
                 </div>
                 <div class="col-12 col-sm-6">
@@ -243,7 +247,7 @@
                                 <input type="file" name="file_xml2" accept=".xml">
                             </span>
                         </div>
-                        @include('partials.errorsession',[$field='file_xml2'])
+                        @include('partials.errorsession', [($field = 'file_xml2')])
                     </div>
                 </div>
             </div>
