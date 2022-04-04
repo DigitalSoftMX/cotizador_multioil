@@ -22,7 +22,7 @@
                             <div class="row justify-content-md-start ml-1">
                                 <div class="form-group col-sm-3">
 
-                                    <select id="input-month_id" name="month_id" class="selectpicker show-menu-arrow"
+                                    <select id="input-month_id" name="month_id" class="time selectpicker show-menu-arrow"
                                         data-style="btn-primary" data-width="100%" data-live-search="true">
 
                                         @foreach ($months as $m)
@@ -38,7 +38,7 @@
                                 </div>
 
                                 <div class="form-group col-sm-3">
-                                    <select id="input-year_id" name="year_id" class="selectpicker show-menu-arrow"
+                                    <select id="input-year_id" name="year_id" class="time selectpicker show-menu-arrow"
                                         data-style="btn-primary" data-width="100%" data-live-search="true">
 
                                         @foreach ($years as $y)
@@ -125,7 +125,7 @@
         loadTable('autorizados');
         loadTable('denegados');
 
-        $(".selectpicker").change(function() {
+        $(".time").change(function() {
             const month = document.getElementById('input-month_id').value;
             const year = document.getElementById('input-year_id').value;
             window.location = `{{ url('/validations/${month}/${year}') }}`;
